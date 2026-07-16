@@ -1,0 +1,1331 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Inversiones</title>
+<style>
+  :root{
+    --sans:system-ui,"Segoe UI",-apple-system,Roboto,Helvetica,Arial,sans-serif;
+    --mono:"Cascadia Code",Consolas,ui-monospace,"SFMono-Regular",Menlo,monospace;
+    --page:#FAFAFA;--surface:#FFFFFF;--fg:#18181B;--muted:#71717A;--faint:#A1A1AA;
+    --line:#E4E4E7;--line-soft:#F1F1F2;--pos:#16A34A;--neg:#DC2626;
+    --accent:#2563EB;--accent-fg:#FFFFFF;
+    --c-fondo:#3F3F46;--c-acciones:#7C3AED;--c-cripto:#D97706;--c-otro:#71717A;
+    --accent-soft:#F1F1F2;
+    --shadow:0 1px 2px rgba(24,24,27,.04),0 6px 18px -10px rgba(24,24,27,.12);
+  }
+  @media (prefers-color-scheme:dark){
+    :root:not([data-theme="light"]){
+      --page:#09090B;--surface:#131316;--fg:#FAFAFA;--muted:#A1A1AA;--faint:#6B6B72;
+      --line:#27272C;--line-soft:#1C1C20;--pos:#4ADE80;--neg:#F87171;
+      --accent:#60A5FA;--accent-fg:#0B1220;
+      --c-fondo:#D4D4D8;--c-acciones:#A78BFA;--c-cripto:#FBBF24;--c-otro:#71717A;
+      --accent-soft:#1C1C20;
+      --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 20px -10px rgba(0,0,0,.5);
+    }
+  }
+  :root[data-theme="dark"]{
+    --page:#09090B;--surface:#131316;--fg:#FAFAFA;--muted:#A1A1AA;--faint:#6B6B72;
+    --line:#27272C;--line-soft:#1C1C20;--pos:#4ADE80;--neg:#F87171;
+    --accent:#60A5FA;--accent-fg:#0B1220;
+    --c-fondo:#D4D4D8;--c-acciones:#60A5FA;--c-cripto:#FBBF24;--c-otro:#71717A;
+    --accent-soft:#1C1C20;
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 20px -10px rgba(0,0,0,.5);
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:var(--sans);background:var(--page);color:var(--fg);-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1040px;margin:0 auto;padding:clamp(18px,4vw,40px) clamp(14px,4vw,24px) 80px}
+
+  /* header */
+  header{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:18px}
+  header h1{font-size:1.15rem;font-weight:650;margin:0;letter-spacing:-.01em}
+  header p{margin:2px 0 0;font-size:.8rem;color:var(--muted)}
+  .hdr-actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+  .btn{font-family:var(--sans);font-size:.8rem;font-weight:600;cursor:pointer;border:1px solid var(--line);
+    background:var(--surface);color:var(--fg);padding:8px 13px;border-radius:9px;transition:border-color .15s,background .15s}
+  .btn{transition:border-color .15s,background .15s,color .15s,transform .1s}
+  .btn:hover{border-color:var(--accent);color:var(--accent)}
+  .btn:active{transform:scale(.97)}
+  .btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+  .btn.primary{background:var(--accent);color:var(--accent-fg);border-color:var(--accent)}
+  .btn.primary:hover{opacity:.88;color:var(--accent-fg)}
+  .btn.primary.saved{background:var(--pos);border-color:var(--pos)}
+  .btn.ghost{border-color:transparent;background:none;color:var(--muted)}
+  .btn.ghost:hover{color:var(--accent);border-color:transparent}
+  input[type=file]{display:none}
+  .status{font-size:.72rem;color:var(--faint)}
+  .status.warn{color:var(--neg)}
+
+  /* nav tabs */
+  nav.tabs{display:flex;gap:2px;border-bottom:1px solid var(--line);margin-bottom:24px;overflow-x:auto}
+  nav.tabs button{font-family:var(--sans);font-size:.85rem;font-weight:600;color:var(--muted);
+    background:none;border:none;border-bottom:2px solid transparent;padding:10px 14px;cursor:pointer;white-space:nowrap;transition:color .15s,border-color .15s}
+  nav.tabs button:hover{color:var(--fg)}
+  nav.tabs button.active{color:var(--accent);border-bottom-color:var(--accent)}
+
+  .view{display:none}
+  .view.active{display:block}
+
+  /* hero / resumen */
+  .hero{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:clamp(18px,4vw,28px);margin-bottom:20px;box-shadow:var(--shadow)}
+  .hero-label{font-size:.72rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted)}
+  .hero-total{font-family:var(--mono);font-weight:650;letter-spacing:-.02em;line-height:1;
+    font-size:clamp(2rem,7vw,2.8rem);font-variant-numeric:tabular-nums;margin:.35rem 0 .5rem}
+  .hero-total .u{color:var(--muted);font-size:.42em;font-weight:500;margin-right:.25em;vertical-align:.3em}
+  .hero-sub{font-size:.9rem;color:var(--muted);font-variant-numeric:tabular-nums}
+  .hero-sub .g{font-weight:650;font-family:var(--mono)}
+  .hero-secondary{margin-top:16px;padding-top:14px;border-top:1px solid var(--line-soft)}
+  .hero-highlights{display:flex;gap:20px;margin-top:10px;font-size:.8rem;flex-wrap:wrap;color:var(--muted)}
+  .hero-highlights .lbl{color:var(--faint);margin-right:4px}
+  .hero-goal{font-size:.82rem;color:var(--muted);display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .hero-goal .badge{font-size:.68rem;font-weight:700;padding:3px 9px;border-radius:999px;white-space:nowrap}
+  .hero-goal .badge.ok{background:var(--pos);color:#fff}
+  .hero-goal .badge.low{background:var(--accent-soft);color:var(--muted);border:1px solid var(--line)}
+  .hero-goal .badge.high{background:var(--accent-soft);color:var(--accent);border:1px solid var(--accent)}
+  .pos{color:var(--pos)}.neg{color:var(--neg)}.dim{color:var(--faint)}
+  .dot{display:inline-block;width:8px;height:8px;border-radius:2px;margin-right:7px;vertical-align:middle}
+  .alloc-bar{display:flex;height:10px;border-radius:999px;overflow:hidden;background:var(--line-soft);gap:2px;margin-bottom:12px}
+  .alloc-seg{height:100%;min-width:2px}
+
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:18px}
+  @media (max-width:640px){.grid2{grid-template-columns:1fr}}
+  .metrics-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:18px}
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px;box-shadow:var(--shadow)}
+  .card h3{font-size:.78rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin:0 0 10px;font-weight:650}
+  .row-kv{display:flex;justify-content:space-between;align-items:center;padding:6px 0;font-size:.88rem;border-bottom:1px solid var(--line-soft)}
+  .row-kv:last-child{border-bottom:none}
+  .row-kv .v{font-family:var(--mono);font-variant-numeric:tabular-nums;font-weight:600}
+
+  /* generic table */
+  .tbl-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:14px;background:var(--surface);box-shadow:var(--shadow)}
+  table{border-collapse:collapse;width:100%;font-size:.84rem}
+  thead th{position:sticky;top:0;background:var(--surface);text-align:left;font-size:.68rem;text-transform:uppercase;
+    letter-spacing:.06em;color:var(--faint);padding:10px 12px;border-bottom:1px solid var(--line);white-space:nowrap}
+  thead th[data-sort]{cursor:pointer;user-select:none;transition:color .15s}
+  thead th[data-sort]:hover{color:var(--accent)}
+  tbody td{padding:9px 12px;border-bottom:1px solid var(--line-soft);white-space:nowrap;font-variant-numeric:tabular-nums;transition:background .12s}
+  tbody tr:last-child td{border-bottom:none}
+  tbody tr:hover td{background:var(--line-soft)}
+  .holding-row:hover td{background:var(--accent-soft)}
+  .mov-row{cursor:pointer}
+  .mov-row:hover td{background:var(--accent-soft)}
+  td.num,th.num{text-align:right}
+  .mono{font-family:var(--mono)}
+  .tag{display:inline-block;font-size:.68rem;font-weight:650;padding:2px 8px;border-radius:999px;background:var(--accent-soft);color:var(--muted)}
+
+  .edit-num{width:88px;font-family:var(--mono);font-size:.84rem;text-align:right;background:var(--accent-soft);
+    border:1px solid var(--line);border-radius:7px;padding:5px 7px;color:var(--fg);transition:border-color .15s,box-shadow .15s}
+  .edit-num:hover{border-color:var(--faint)}
+  .edit-num:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 18%,transparent)}
+  .del{background:none;border:none;color:var(--faint);cursor:pointer;font-size:1rem;padding:2px 6px;border-radius:6px}
+  .del:hover{color:var(--neg)}
+  .holding-row{cursor:pointer}
+  .detail-row td{background:var(--line-soft);white-space:normal}
+  .detail-row .tbl-wrap{border-color:var(--line)}
+  .mini-chart{width:100%;height:110px;overflow:visible;margin:4px 0}
+  .mini-note{font-size:.72rem;color:var(--faint);margin-top:2px}
+
+  /* toolbar / filters */
+  .toolbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:12px}
+  .toolbar select,.toolbar input[type=text],.toolbar input[type=date]{
+    font-family:var(--sans);font-size:.82rem;padding:7px 10px;border-radius:8px;border:1px solid var(--line);
+    background:var(--surface);color:var(--fg)}
+  .toolbar .spacer{flex:1}
+  .section-title{font-size:.95rem;font-weight:650;margin:26px 0 10px}
+  .section-title:first-child{margin-top:0}
+
+  /* form */
+  .form-card{background:var(--surface);border:1px dashed var(--line);border-radius:14px;padding:16px;margin-top:16px}
+  .form-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:10px;align-items:end}
+  .field{display:flex;flex-direction:column;gap:4px}
+  .field label{font-size:.68rem;text-transform:uppercase;letter-spacing:.05em;color:var(--faint)}
+  .field input,.field select{font-family:var(--sans);font-size:.85rem;padding:7px 9px;border-radius:8px;
+    border:1px solid var(--line);background:var(--accent-soft);color:var(--fg);transition:border-color .15s}
+  .field input:focus,.field select:focus{outline:none;border-color:var(--accent);background:var(--surface)}
+
+  /* chart */
+  .chart-box{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:16px;box-shadow:var(--shadow)}
+  svg.chart{width:100%;height:220px;overflow:visible}
+  .chart-grid line{stroke:var(--line-soft)}
+  .chart-line{fill:none;stroke:var(--fg);stroke-width:2}
+  .chart-line-invested{fill:none;stroke:var(--faint);stroke-width:1.5;stroke-dasharray:4 3}
+  .chart-area{fill:var(--fg);opacity:.06}
+  .chart-dot{fill:var(--fg)}
+  .chart-dot-invested{fill:var(--faint)}
+  .chart-label{font-family:var(--mono);font-size:.68rem;fill:var(--faint)}
+  .chart-legend{display:flex;gap:18px;font-size:.75rem;color:var(--muted);margin-bottom:8px}
+  .chart-legend .ln{display:inline-block;width:14px;height:2px;background:var(--fg);vertical-align:middle;margin-right:6px}
+  .chart-legend .ln.inv{background:none;border-top:1.5px dashed var(--faint)}
+  .contrib-bars{display:flex;align-items:flex-end;gap:6px;height:130px;overflow-x:auto}
+  .contrib-col{flex:1;min-width:22px;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%}
+  .contrib-bar{width:100%;max-width:26px;background:var(--accent);border-radius:4px 4px 0 0;min-height:2px;transition:opacity .12s}
+  .contrib-bar:hover{opacity:.75}
+  .contrib-label{font-size:.62rem;color:var(--faint);margin-top:6px;white-space:nowrap}
+
+  footer{margin-top:36px;font-size:.75rem;color:var(--faint);line-height:1.6}
+  .empty{padding:30px;text-align:center;color:var(--muted);font-size:.9rem}
+
+  /* iconos */
+  .icon{display:inline-block;vertical-align:middle;flex:none}
+  .chevron{display:inline-block;transition:transform .18s ease;color:var(--faint)}
+  .chevron.open{transform:rotate(90deg)}
+
+  /* tooltip de graficos */
+  .chart-tooltip{position:fixed;pointer-events:none;background:var(--fg);color:var(--page);
+    font-size:.74rem;font-family:var(--mono);padding:6px 10px;border-radius:8px;box-shadow:var(--shadow);
+    z-index:1000;white-space:nowrap;transform:translate(-50%,-135%);opacity:0;transition:opacity .1s}
+  .chart-tooltip.show{opacity:1}
+  .hoverable-pt{cursor:pointer}
+
+  /* filas y elementos clickeables genericos */
+  .clickable{cursor:pointer;transition:background .12s}
+  .clickable:hover{background:var(--accent-soft)}
+
+  /* filtro activo en Tenencias */
+  .filter-chip{display:inline-flex;align-items:center;gap:6px;background:var(--accent-soft);color:var(--accent);
+    border:1px solid var(--accent);font-size:.78rem;font-weight:600;padding:5px 8px 5px 12px;border-radius:999px;margin-bottom:12px}
+  .filter-chip button{background:none;border:none;color:inherit;cursor:pointer;display:flex;padding:2px;border-radius:50%}
+  .filter-chip button:hover{background:color-mix(in srgb,var(--accent) 15%,transparent)}
+
+  /* transicion entre pestañas */
+  .view.active{animation:viewIn .18s ease-out}
+  @keyframes viewIn{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+  @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <header>
+    <div>
+      <h1>Inversiones</h1>
+      <p id="hdrSub">Sin datos cargados</p>
+    </div>
+    <div class="hdr-actions">
+      <span class="status" id="statusMsg"></span>
+      <button class="btn" id="btnLoad" type="button">Cargar archivo</button>
+      <input type="file" id="fileInput" accept="application/json">
+      <button class="btn ghost" id="btnLoadPrices" type="button">Cargar precios</button>
+      <input type="file" id="pricesInput" accept="application/json">
+      <button class="btn ghost" id="btnRefreshPrices" type="button" style="display:none"><svg class="icon" width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="margin-right:5px"><path d="M13.7 8A5.7 5.7 0 1 1 12 4.1M13.7 2v3.6h-3.6"/></svg>Actualizar precios</button>
+      <button class="btn primary" id="btnSave" type="button">Guardar cambios</button>
+    </div>
+  </header>
+
+  <nav class="tabs">
+    <button class="tab-btn active" data-view="resumen">Resumen</button>
+    <button class="tab-btn" data-view="tenencias">Tenencias</button>
+    <button class="tab-btn" data-view="movimientos">Movimientos</button>
+    <button class="tab-btn" data-view="evolucion">Evolución</button>
+  </nav>
+
+  <!-- RESUMEN -->
+  <section id="view-resumen" class="view active">
+    <div class="hero">
+      <div class="hero-label">Tenés hoy</div>
+      <div class="hero-total" id="totalValue"><span class="u">US$</span>0</div>
+      <div class="hero-sub" id="totalSub"></div>
+      <div class="hero-secondary">
+        <div class="hero-goal" id="heroGoal"></div>
+        <div class="hero-highlights" id="heroHighlights"></div>
+      </div>
+    </div>
+    <div class="grid2">
+      <div class="card">
+        <h3>Por plataforma</h3>
+        <div id="byPlatform"></div>
+      </div>
+      <div class="card">
+        <h3>Por tipo de activo</h3>
+        <div class="alloc-bar" id="groupBar"></div>
+        <div id="byGroup"></div>
+      </div>
+    </div>
+    <div class="grid2">
+      <div class="card"><h3>Ganancias realizadas (ventas)</h3><div class="row-kv" id="realizedRow"><span>Total</span><span class="v mono">-</span></div></div>
+      <div class="card"><h3>Dividendos cobrados</h3><div class="row-kv" id="dividendsRow"><span>Total</span><span class="v mono">-</span></div></div>
+    </div>
+    <div class="card" id="benchmarkCard" style="margin-top:14px;display:none">
+      <h3>¿Y si hubiera invertido todo en SPY?</h3>
+      <div id="benchmarkBody"></div>
+    </div>
+    <div class="card" style="margin-top:14px" id="rebalanceCard">
+      <h3>Próximo aporte — dónde conviene ponerlo</h3>
+      <div id="rebalanceBody"></div>
+    </div>
+  </section>
+
+  <!-- TENENCIAS -->
+  <section id="view-tenencias" class="view">
+    <div id="tenenciasFilterBar"></div>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr>
+          <th>Instrumento</th><th>Plataforma</th><th>Grupo</th><th class="num">Cantidad</th>
+          <th class="num">Invertido US$</th><th class="num">Vale hoy US$</th>
+          <th class="num">Ganancia</th><th></th>
+        </tr></thead>
+        <tbody id="holdingsBody"></tbody>
+      </table>
+    </div>
+    <div class="form-card">
+      <div class="section-title" style="margin-top:0">+ Agregar tenencia</div>
+      <div class="form-grid" id="holdingForm">
+        <div class="field"><label>Plataforma</label><select id="hPlatform"></select></div>
+        <div class="field"><label>Ticker</label><input type="text" id="hTicker" placeholder="ej. EFA"></div>
+        <div class="field"><label>Nombre</label><input type="text" id="hName" placeholder="ej. Desarrollados"></div>
+        <div class="field"><label>Grupo</label>
+          <select id="hGroup"><option>Acciones</option><option>Fondo</option><option>Cripto</option><option>Otro</option></select>
+        </div>
+        <div class="field"><label>Invertido US$</label><input type="text" id="hCost" placeholder="0,00"></div>
+        <div class="field"><label>Vale hoy US$</label><input type="text" id="hValue" placeholder="0,00"></div>
+        <div class="field"><button class="btn primary" id="btnAddHolding" type="button">Agregar</button></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MOVIMIENTOS -->
+  <section id="view-movimientos" class="view">
+    <div class="grid2" style="margin-bottom:16px">
+      <div class="card"><h3>Comisiones pagadas (ARS)</h3><div class="row-kv"><span>Total</span><span class="v mono" id="commArs">-</span></div></div>
+      <div class="card"><h3>Comisiones pagadas (USD)</h3><div class="row-kv"><span>Total</span><span class="v mono" id="commUsd">-</span></div></div>
+    </div>
+    <div class="toolbar">
+      <select id="fltPlatform"><option value="">Todas las plataformas</option></select>
+      <select id="fltType"><option value="">Todos los tipos</option></select>
+      <input type="text" id="fltSearch" placeholder="Buscar instrumento...">
+      <label style="display:flex;align-items:center;gap:6px;font-size:.8rem;color:var(--muted);cursor:pointer">
+        <input type="checkbox" id="fltShowMinor"> Ver ajustes y dividendos menores
+      </label>
+      <span class="spacer"></span>
+      <span class="status" id="movCount"></span>
+    </div>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr>
+          <th data-sort="date">Fecha</th><th data-sort="platform">Plataforma</th><th data-sort="type">Tipo</th><th data-sort="instrument">Instrumento</th>
+          <th class="num" data-sort="quantity">Cantidad</th><th class="num" data-sort="price">Precio</th><th data-sort="currency">Moneda</th>
+          <th class="num" data-sort="commission">Comisión</th><th class="num" data-sort="total">Total</th>
+        </tr></thead>
+        <tbody id="movBody"></tbody>
+      </table>
+    </div>
+    <div class="form-card">
+      <div class="section-title" style="margin-top:0">+ Agregar movimiento</div>
+      <div class="form-grid">
+        <div class="field"><label>Fecha</label><input type="date" id="mDate"></div>
+        <div class="field"><label>Plataforma</label><select id="mPlatform"></select></div>
+        <div class="field"><label>Tipo</label>
+          <select id="mType"><option value="compra">Compra</option><option value="venta">Venta</option>
+            <option value="suscripcion_fci">Suscripción FCI</option><option value="rescate_fci">Rescate FCI</option>
+            <option value="deposito">Depósito</option><option value="retiro">Retiro</option>
+            <option value="dividendo">Dividendo</option><option value="otro">Otro</option></select>
+        </div>
+        <div class="field"><label>Instrumento</label><input type="text" id="mInstrument" placeholder="ej. SPY"></div>
+        <div class="field"><label>Cantidad</label><input type="text" id="mQty" placeholder="opcional"></div>
+        <div class="field"><label>Precio</label><input type="text" id="mPrice" placeholder="opcional"></div>
+        <div class="field"><label>Moneda</label><select id="mCurrency"><option>ARS</option><option>USD</option></select></div>
+        <div class="field"><label>Comisión</label><input type="text" id="mCommission" placeholder="0"></div>
+        <div class="field"><label>Total</label><input type="text" id="mTotal" placeholder="negativo si es compra"></div>
+        <div class="field"><button class="btn primary" id="btnAddMov" type="button">Agregar</button></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EVOLUCION -->
+  <section id="view-evolucion" class="view">
+    <div class="metrics-grid" id="evoMetrics"></div>
+    <div class="chart-box">
+      <div class="chart-legend"><span><span class="ln"></span>Valor</span><span><span class="ln inv"></span>Invertido</span></div>
+      <svg class="chart" id="evoChart"></svg>
+    </div>
+    <div class="section-title">Aportes por mes</div>
+    <div class="chart-box" id="contribBox"></div>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Fecha</th><th class="num">Invertido (US$)</th><th class="num">Valor (US$)</th><th class="num">Ganancia</th><th></th></tr></thead>
+        <tbody id="snapBody"></tbody>
+      </table>
+    </div>
+    <div style="margin-top:14px"><button class="btn primary" id="btnSnap" type="button">+ Guardar foto de hoy</button></div>
+  </section>
+
+  <footer>Datos guardados localmente. Acordate de <b>Guardar cambios</b> después de editar.</footer>
+</main>
+<div id="chartTooltip" class="chart-tooltip"></div>
+
+<script>
+(function(){
+"use strict";
+const LS_KEY = "inversiones-local-v3";
+const PRICES_LS_KEY = "inversiones-precios-v1";
+const DOLAR_LS_KEY = "inversiones-dolar-v1";
+let STATE = null;
+let PRICES = null;
+let DOLAR = null;
+let expandedHoldings = new Set();
+let tenenciasFilter = {platform:null, group:null};
+
+function goToTab(name){
+  document.querySelectorAll(".tab-btn").forEach(b=>b.classList.toggle("active", b.dataset.view===name));
+  document.querySelectorAll(".view").forEach(v=>v.classList.toggle("active", v.id==="view-"+name));
+}
+
+const fmt = new Intl.NumberFormat("es-AR",{minimumFractionDigits:2,maximumFractionDigits:2});
+const fmtInt = new Intl.NumberFormat("es-AR",{maximumFractionDigits:8});
+function money(n){ if(n==null||isNaN(n)) return "—"; return fmt.format(n); }
+function signed(n){ return (n>=0?"+":"−")+fmt.format(Math.abs(n)); }
+function pct(n){ return (n>=0?"+":"−")+Math.abs(n).toFixed(1)+"%"; }
+function cls(n){ return n>=0?"pos":"neg"; }
+function parseNum(s){
+  if(s==null) return null;
+  s=String(s).trim().replace(/us\$|\$|\s/gi,"");
+  if(s==="") return null;
+  if(s.indexOf(",")>-1 && s.indexOf(".")>-1) s=s.replace(/\./g,"").replace(",",".");
+  else if(s.indexOf(",")>-1) s=s.replace(",",".");
+  const v=parseFloat(s);
+  return isNaN(v)?null:v;
+}
+const TYPE_LABELS = {
+  compra:"Compra", venta:"Venta", mep_bono:"MEP (bono)", suscripcion_fci:"Suscripción FCI",
+  rescate_fci:"Rescate FCI", deposito:"Depósito", retiro:"Retiro", dividendo:"Dividendo",
+  ajuste:"Ajuste", otro:"Otro"
+};
+const GROUP_COLOR = {Fondo:"var(--c-fondo)",Acciones:"var(--c-acciones)",Cripto:"var(--c-cripto)",Otro:"var(--c-otro)"};
+
+// ---------- iconos SVG (reemplazan caracteres de texto tipo ▸ × ↻ ✓) ----------
+const ICON_CHEVRON = '<svg class="icon" width="9" height="9" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 1.5l4 3.5-4 3.5"/></svg>';
+const ICON_CLOSE = '<svg class="icon" width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M2 2l8 8M10 2l-8 8"/></svg>';
+const ICON_REFRESH = '<svg class="icon" width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M13.7 8A5.7 5.7 0 1 1 12 4.1M13.7 2v3.6h-3.6"/></svg>';
+const ICON_CHECK = '<svg class="icon" width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M2 6.2l2.8 2.8L10 3"/></svg>';
+
+// ---------- tooltip propio para graficos (reemplaza el <title> nativo del navegador) ----------
+const tipEl = document.getElementById("chartTooltip");
+function escapeHtml(s){ return String(s).replace(/[&<>"]/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c])); }
+function positionTip(e){
+  const pad=12, w=tipEl.offsetWidth||120;
+  let x = e.clientX, y = e.clientY;
+  x = Math.min(Math.max(x, w/2+pad), window.innerWidth-w/2-pad);
+  tipEl.style.left = x+"px"; tipEl.style.top = Math.max(y,40)+"px";
+}
+function bindTooltips(container){
+  container.querySelectorAll("[data-tip]").forEach(el=>{
+    el.addEventListener("mouseenter", e=>{ tipEl.innerHTML = el.getAttribute("data-tip"); tipEl.classList.add("show"); positionTip(e); });
+    el.addEventListener("mousemove", positionTip);
+    el.addEventListener("mouseleave", ()=>{ tipEl.classList.remove("show"); });
+  });
+}
+
+function emptyState(){
+  return {version:1, platforms:{}, holdings:{}, snapshots:[]};
+}
+
+function loadFromLocalStorage(){
+  try{ const raw = localStorage.getItem(LS_KEY); if(raw) return JSON.parse(raw); }catch(e){}
+  return null;
+}
+function persistLocalStorage(){
+  try{ localStorage.setItem(LS_KEY, JSON.stringify(STATE)); }catch(e){}
+}
+function setStatus(msg, warn){
+  const el = document.getElementById("statusMsg");
+  el.textContent = msg; el.className = "status"+(warn?" warn":"");
+}
+
+document.getElementById("btnLoad").addEventListener("click", ()=>document.getElementById("fileInput").click());
+document.getElementById("fileInput").addEventListener("change", function(e){
+  const file = e.target.files[0]; if(!file) return;
+  const reader = new FileReader();
+  reader.onload = function(ev){
+    try{
+      STATE = JSON.parse(ev.target.result);
+      persistLocalStorage();
+      renderAll();
+      setStatus("Cargado: "+file.name);
+    }catch(err){ setStatus("Error leyendo el archivo", true); }
+  };
+  reader.readAsText(file);
+});
+document.getElementById("btnLoadPrices").addEventListener("click", ()=>document.getElementById("pricesInput").click());
+document.getElementById("btnRefreshPrices").addEventListener("click", async function(){
+  const btn = this;
+  const original = btn.innerHTML;
+  btn.textContent = "Actualizando..."; btn.disabled = true;
+  try{
+    const res = await fetch("/actualizar-precios", {method:"POST"});
+    if(res.ok){
+      const priceRes = await fetch("data/precios_historicos.json");
+      if(priceRes.ok){
+        PRICES = await priceRes.json();
+        try{ localStorage.setItem(PRICES_LS_KEY, JSON.stringify(PRICES)); }catch(e){}
+      }
+      const dolarRes = await fetch("data/dolar_historico.json");
+      if(dolarRes.ok){
+        DOLAR = await dolarRes.json();
+        try{ localStorage.setItem(DOLAR_LS_KEY, JSON.stringify(DOLAR)); }catch(e){}
+      }
+      renderAll();
+      setStatus("Precios y cotizaciones actualizados");
+    } else { setStatus("No se pudieron actualizar los precios", true); }
+  }catch(e){ setStatus("Error actualizando precios — revisá tu conexión", true); }
+  btn.innerHTML = original; btn.disabled = false;
+});
+document.getElementById("pricesInput").addEventListener("change", function(e){
+  const file = e.target.files[0]; if(!file) return;
+  const reader = new FileReader();
+  reader.onload = function(ev){
+    try{
+      PRICES = JSON.parse(ev.target.result);
+      try{ localStorage.setItem(PRICES_LS_KEY, JSON.stringify(PRICES)); }catch(err){}
+      renderTenencias();
+      setStatus("Precios cargados: "+file.name);
+    }catch(err){ setStatus("Error leyendo el archivo de precios", true); }
+  };
+  reader.readAsText(file);
+});
+
+function isServerMode(){ return location.protocol==="http:" || location.protocol==="https:"; }
+
+function flashSaved(btn){
+  btn.classList.add("saved");
+  const original = btn.innerHTML;
+  btn.innerHTML = ICON_CHECK+' <span style="margin-left:5px">Guardado</span>';
+  setTimeout(()=>{ btn.classList.remove("saved"); btn.innerHTML = original; }, 1400);
+}
+document.getElementById("btnSave").addEventListener("click", async function(){
+  const btn = this;
+  if(!STATE){ setStatus("Nada para guardar todavía", true); return; }
+  if(isServerMode()){
+    try{
+      const res = await fetch("/guardar", {method:"POST", headers:{"Content-Type":"application/json"}, body: JSON.stringify(STATE)});
+      if(res.ok){ setStatus("Guardado en data/inversiones.json"); flashSaved(btn); return; }
+    }catch(e){}
+    setStatus("No se pudo guardar en el servidor, descargando archivo en su lugar...", true);
+  }
+  const blob = new Blob([JSON.stringify(STATE,null,2)], {type:"application/json"});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url; a.download = "inversiones.json";
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  setStatus("Descargado — movelo a data/inversiones.json");
+});
+
+// tabs
+document.querySelectorAll(".tab-btn").forEach(btn=>{
+  btn.addEventListener("click", ()=> goToTab(btn.dataset.view));
+});
+
+function platformKeys(){ return Object.keys(STATE.platforms||{}); }
+function platformName(key){ return (STATE.platforms[key]||{}).name || key; }
+function allMovements(){
+  const out=[];
+  for(const key of platformKeys()){
+    for(const m of (STATE.platforms[key].movements||[])) out.push(Object.assign({platform:key},m));
+  }
+  return out;
+}
+function instrumentMatchesTicker(instrument, ticker){
+  if(!instrument || !ticker) return false;
+  const iUp = instrument.toUpperCase(), tUp = ticker.toUpperCase();
+  if(iUp===tUp) return true;
+  // "(TICKER)" o TICKER como palabra suelta — evita falsos positivos con tickers cortos
+  // (ej. "V" no debe matchear "INVESCO")
+  const escaped = tUp.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  return new RegExp("(^|[^A-Z0-9])"+escaped+"([^A-Z0-9]|$)").test(iUp);
+}
+function movementsForHolding(platform, ticker){
+  if(!ticker) return [];
+  const movs = (STATE.platforms[platform] && STATE.platforms[platform].movements) || [];
+  return movs.filter(m=>instrumentMatchesTicker(m.instrument, ticker))
+    .sort((a,b)=> (a.date||"").localeCompare(b.date||""));
+}
+
+// ---------- Analisis automatico desde el ledger: cantidad, costo, ganancia realizada ----------
+const BUY_TYPES = new Set(["compra","suscripcion_fci"]);
+const SELL_TYPES = new Set(["venta","rescate_fci"]);
+
+function arsToUsd(amountArs, date){
+  if(!DOLAR || !DOLAR.rates) return null;
+  const rate = DOLAR.rates[date];
+  if(!rate || !rate.venta) return null;
+  return amountArs / rate.venta;
+}
+function movementAmountUSD(m){
+  if(m.total==null) return null;
+  if(m.currency==="USD") return Math.abs(m.total);
+  if(m.currency==="ARS") return arsToUsd(Math.abs(m.total), m.date);
+  return null;
+}
+
+// Recorre el historial en orden y calcula, con costo promedio:
+// cantidad actual, costo invertido (USD) y ganancia ya realizada por ventas/rescates.
+function analyzeHolding(platform, ticker){
+  const movs = movementsForHolding(platform, ticker);
+  let qty=0, costUSD=0, realizedUSD=0, complete=true, anyQty=false, anyBuyCost=false;
+  movs.forEach(m=>{
+    const isBuy = BUY_TYPES.has(m.type), isSell = SELL_TYPES.has(m.type);
+    if(!isBuy && !isSell) return;
+    const amountUSD = movementAmountUSD(m);
+    if(amountUSD==null && m.total!=null) complete = false;
+    const q = m.quantity!=null ? Math.abs(m.quantity) : null;
+    if(q!=null) anyQty = true;
+    if(isBuy){
+      if(amountUSD!=null){ costUSD += amountUSD; anyBuyCost = true; }
+      if(q!=null) qty += q;
+    } else if(isSell){
+      if(q!=null && qty>0){
+        const avgCost = costUSD/qty;
+        const sold = Math.min(q, qty);
+        const costOfSold = avgCost*sold;
+        if(amountUSD!=null) realizedUSD += (amountUSD - costOfSold);
+        else complete = false;
+        costUSD -= costOfSold; qty -= sold;
+      } else if(amountUSD!=null){ complete = false; }
+    }
+  });
+  return {
+    quantity: anyQty ? qty : null,
+    costBasisUSD: anyBuyCost ? costUSD : null,
+    realizedGainUSD: realizedUSD,
+    complete,
+    hasMovements: movs.length>0
+  };
+}
+function effectiveCostBasis(h){
+  const a = analyzeHolding(h.platform, h.instrument);
+  if(a.complete && a.costBasisUSD!=null) return {value:a.costBasisUSD, source:"auto"};
+  if(h.costBasisUSD>0) return {value:h.costBasisUSD, source:"manual"};
+  return {value:0, source:"none"};
+}
+function totalRealizedGainUSD(){
+  let total=0, complete=true;
+  allHoldings().forEach(h=>{
+    const a = analyzeHolding(h.platform, h.instrument);
+    total += a.realizedGainUSD;
+    if(!a.complete) complete=false;
+  });
+  return {total, complete};
+}
+// ---------- XIRR: rendimiento ponderado por dinero (el correcto para "cuanto gane YO") ----------
+function xnpv(rate, flows){
+  const t0 = new Date(flows[0].date+"T00:00:00").getTime();
+  return flows.reduce((sum,cf)=>{
+    const years = (new Date(cf.date+"T00:00:00").getTime()-t0)/86400000/365;
+    return sum + cf.amount/Math.pow(1+rate, years);
+  }, 0);
+}
+function xirr(flows){
+  if(flows.length<2) return null;
+  let lo=-0.9999, hi=10;
+  let fLo=xnpv(lo,flows), fHi=xnpv(hi,flows);
+  if(isNaN(fLo)||isNaN(fHi)) return null;
+  if(fLo*fHi>0){ hi=100; fHi=xnpv(hi,flows); if(fLo*fHi>0) return null; }
+  for(let i=0;i<80;i++){
+    const mid=(lo+hi)/2, fMid=xnpv(mid,flows);
+    if(Math.abs(fMid)<1e-7) return mid;
+    if((fLo<0)===(fMid<0)){ lo=mid; fLo=fMid; } else hi=mid;
+  }
+  return (lo+hi)/2;
+}
+function buildPortfolioCashflows(){
+  const flows = []; let complete = true;
+  allHoldings().forEach(h=>{
+    movementsForHolding(h.platform, h.instrument).forEach(m=>{
+      const isBuy=BUY_TYPES.has(m.type), isSell=SELL_TYPES.has(m.type);
+      if(!isBuy && !isSell) return;
+      if(!m.date){ complete=false; return; }
+      const amountUSD = movementAmountUSD(m);
+      if(amountUSD==null){ complete=false; return; }
+      flows.push({date:m.date, amount: isBuy? -amountUSD : amountUSD});
+    });
+  });
+  if(!flows.length) return {flows:[], complete:false};
+  const totalValue = allHoldings().reduce((s,h)=>s+(h.valueUSD||0),0);
+  flows.push({date:new Date().toISOString().slice(0,10), amount: totalValue});
+  flows.sort((a,b)=>a.date.localeCompare(b.date));
+  return {flows, complete};
+}
+function computeXirr(){
+  const {flows, complete} = buildPortfolioCashflows();
+  if(flows.length<2) return null;
+  const rate = xirr(flows);
+  if(rate==null) return null;
+  return {annualized: rate*100, complete};
+}
+
+// ---------- Comparacion contra un benchmark simple (SPY): "que hubiera pasado si..." ----------
+function benchmarkWhatIf(ticker){
+  if(!PRICES || !PRICES.series || !PRICES.series[ticker] || !PRICES.series[ticker].length) return null;
+  const series = PRICES.series[ticker];
+  function priceOn(date){
+    let found=null;
+    for(let i=series.length-1;i>=0;i--){ if(series[i].date<=date){ found=series[i]; break; } }
+    return found ? found.priceUSD : series[0].priceUSD;
+  }
+  let units=0, invested=0, complete=true;
+  allHoldings().forEach(h=>{
+    movementsForHolding(h.platform, h.instrument).forEach(m=>{
+      if(!BUY_TYPES.has(m.type)) return;
+      const amountUSD = movementAmountUSD(m);
+      if(amountUSD==null || !m.date){ complete=false; return; }
+      const price = priceOn(m.date);
+      if(!price){ complete=false; return; }
+      units += amountUSD/price; invested += amountUSD;
+    });
+  });
+  if(!invested) return null;
+  const lastPrice = series[series.length-1].priceUSD;
+  return {wouldBeWorth: units*lastPrice, invested, complete};
+}
+
+function totalDividendsUSD(){
+  // Los dividendos de Cocos llegan "en especie" como dólares: la cantidad ya esta en USD.
+  let total=0;
+  allMovements().forEach(m=>{ if(m.type==="dividendo" && m.quantity) total += m.quantity; });
+  return total;
+}
+function allHoldings(){
+  const out=[];
+  for(const key of Object.keys(STATE.holdings||{})){
+    for(const h of STATE.holdings[key]) out.push(Object.assign({platform:key},h));
+  }
+  return out;
+}
+
+const MES = ["ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic"];
+function fmtDateHuman(iso){
+  if(!iso) return "";
+  const p = iso.split("-"); return parseInt(p[2],10)+" "+MES[parseInt(p[1],10)-1]+" "+p[0];
+}
+function relativeLabel(iso){
+  if(!iso) return "";
+  const d = Math.round((Date.now()-new Date(iso+"T00:00:00").getTime())/86400000);
+  if(d<=0) return "hoy";
+  if(d===1) return "ayer";
+  return "hace "+d+" días";
+}
+
+function renderAll(){
+  if(!STATE){ document.getElementById("hdrSub").textContent="Sin datos cargados"; return; }
+  const holdings = allHoldings();
+  const lastUpdate = holdings.reduce((max,h)=> (h.asOf && h.asOf>max)?h.asOf:max, "");
+  document.getElementById("hdrSub").textContent = lastUpdate ? "Actualizado "+fmtDateHuman(lastUpdate) : "Cargá tus tenencias para empezar";
+  renderResumen(); renderTenencias(); renderMovimientos(); renderEvolucion();
+  persistLocalStorage();
+}
+
+// ---------- RESUMEN ----------
+const GROUP_TARGETS = {Fondo:[65,70], Acciones:[25,30], Cripto:[0,5]};
+
+function lastDepositInfo(){
+  let last = null;
+  allMovements().forEach(m=>{ if(m.type==="deposito" && m.date && (!last||m.date>last)) last=m.date; });
+  if(!last) return null;
+  return {date:last, days: Math.max(0, Math.round((Date.now()-new Date(last+"T00:00:00").getTime())/86400000))};
+}
+
+function renderResumen(){
+  const holdings = allHoldings();
+  let totalValue=0, totalCost=0;   // "Tenés hoy": TODA la plata, tenga costo cargado o no
+  let perfValue=0, perfCost=0;     // solo tenencias con costo real cargado, para % de ganancia
+  const byPlat={}, byGroup={};
+  let best=null, worst=null;
+  let sinCosto = 0;
+  holdings.forEach(h=>{
+    const v=h.valueUSD||0, c=effectiveCostBasis(h).value;
+    totalValue+=v; totalCost+=c;
+    byPlat[h.platform]=byPlat[h.platform]||{value:0,cost:0};
+    byPlat[h.platform].value+=v; byPlat[h.platform].cost+=c;
+    const g=h.group||"Otro";
+    byGroup[g]=byGroup[g]||{value:0,cost:0};
+    byGroup[g].value+=v; byGroup[g].cost+=c;
+    if(c>0){
+      perfValue+=v; perfCost+=c;
+      const gp=(v-c)/c*100;
+      if(!best||gp>best.gp) best={name:h.name,gp};
+      if(!worst||gp<worst.gp) worst={name:h.name,gp};
+    } else if(v>0){ sinCosto++; }
+  });
+  document.getElementById("totalValue").innerHTML = '<span class="u">US$</span>'+fmt.format(totalValue);
+  const sub = document.getElementById("totalSub");
+  if(perfCost>0){
+    const gain=perfValue-perfCost, p=gain/perfCost*100;
+    sub.innerHTML = 'Invertiste US$ '+fmt.format(perfCost)+' · <span class="g '+cls(gain)+'">'+signed(gain)+' ('+pct(p)+')</span>'+
+      (sinCosto? ' <span class="dim">· '+sinCosto+' sin costo cargado, no '+(sinCosto===1?'entra':'entran')+' en el %</span>' : '');
+  } else { sub.textContent = "Cargá el costo de tus tenencias para ver la ganancia."; }
+
+  const hl = document.getElementById("heroHighlights");
+  let hlParts = [];
+  if(best && worst && best.name!==worst.name){
+    hlParts.push('<span><span class="lbl">Mejor</span>'+best.name+' <b class="pos">'+pct(best.gp)+'</b></span>');
+    hlParts.push('<span><span class="lbl">Peor</span>'+worst.name+' <b class="neg">'+pct(worst.gp)+'</b></span>');
+  }
+  const dep = lastDepositInfo();
+  if(dep){
+    const warn = dep.days>35;
+    hlParts.push('<span><span class="lbl">Último aporte</span>'+relativeLabel(dep.date)+(warn?' <b class="neg">¿aportaste este mes?</b>':'')+'</span>');
+  }
+  hl.innerHTML = hlParts.join("");
+
+  const goalEl = document.getElementById("heroGoal");
+  const xr = computeXirr();
+  if(xr){
+    let badgeCls, badgeText;
+    if(xr.annualized<5){ badgeCls="low"; badgeText="por debajo de tu meta"; }
+    else if(xr.annualized<=15){ badgeCls="ok"; badgeText="dentro de tu meta"; }
+    else { badgeCls="high"; badgeText="por encima de tu meta"; }
+    goalEl.innerHTML = 'Rendimiento anualizado (XIRR<span class="dim" title="Tasa que pondera cuándo y cuánto invertiste en cada momento — el número correcto para saber qué ganaste vos, no solo la estrategia">*</span>): <b class="mono">'+pct(xr.annualized)+'</b> '+
+      '<span class="badge '+badgeCls+'">'+badgeText+'</span> <span class="dim">· meta 5–15%</span>'+
+      (xr.complete?'':' <span class="dim">(parcial)</span>');
+  } else { goalEl.innerHTML = ""; }
+
+  const bp = document.getElementById("byPlatform");
+  bp.innerHTML = Object.keys(byPlat).length ? Object.keys(byPlat).map(k=>{
+    const d=byPlat[k], g=d.value-d.cost, p = totalValue>0? d.value/totalValue*100:0;
+    return '<div class="row-kv clickable" data-goto-platform="'+k+'" style="margin:0 -6px;padding:6px;border-radius:8px"><span>'+platformName(k)+'</span><span class="v">'+p.toFixed(0)+'% · US$ '+fmt.format(d.value)+
+      ' <span class="'+cls(g)+'" style="font-weight:400">('+signed(g)+')</span></span></div>';
+  }).join("") : '<div class="empty">Sin tenencias</div>';
+  bp.querySelectorAll("[data-goto-platform]").forEach(el=>{
+    el.addEventListener("click", ()=>{ tenenciasFilter={platform:el.dataset.gotoPlatform, group:null}; goToTab("tenencias"); renderTenencias(); });
+  });
+
+  const groupKeys = Object.keys(byGroup).sort((a,b)=>byGroup[b].value-byGroup[a].value);
+  const barEl = document.getElementById("groupBar");
+  const legendEl = document.getElementById("byGroup");
+  if(groupKeys.length){
+    let barHtml="", legendHtml="";
+    groupKeys.forEach((k,i)=>{
+      const d=byGroup[k], p = totalValue>0? d.value/totalValue*100:0;
+      const color = GROUP_COLOR[k]||"var(--c-otro)";
+      const barTip = escapeHtml(k+": "+p.toFixed(0)+"% · US$ "+fmt.format(d.value));
+      barHtml += '<div class="alloc-seg hoverable-pt" data-tip="'+barTip+'" style="width:'+p+'%;background:'+color+'"></div>';
+      const target = GROUP_TARGETS[k];
+      let targetHtml = "";
+      if(target){
+        const [lo,hi] = target;
+        const within = p>=lo && p<=hi;
+        targetHtml = '<div class="dim" style="font-size:.72rem;margin-top:1px;margin-left:15px">Meta '+lo+'–'+hi+'% '+
+          (within ? '<span class="pos">✓ en línea</span>' : '<span class="neg">'+(p<lo?'por debajo':'por encima')+'</span>')+'</div>';
+      }
+      const borderStyle = i===groupKeys.length-1 ? "border:none" : "border:none;border-bottom:1px solid var(--line-soft)";
+      legendHtml += '<div class="clickable" data-goto-group="'+k+'" style="padding:6px;margin:0 -6px;border-radius:8px;'+borderStyle+'">'+
+        '<div class="row-kv" style="border:none;padding:0"><span><span class="dot" style="background:'+color+'"></span>'+k+'</span><span class="v">'+p.toFixed(0)+'% · US$ '+fmt.format(d.value)+'</span></div>'+
+        targetHtml+'</div>';
+    });
+    barEl.innerHTML = barHtml; legendEl.innerHTML = legendHtml;
+    bindTooltips(barEl);
+    legendEl.querySelectorAll("[data-goto-group]").forEach(el=>{
+      el.addEventListener("click", ()=>{ tenenciasFilter={platform:null, group:el.dataset.gotoGroup}; goToTab("tenencias"); renderTenencias(); });
+    });
+  } else { barEl.innerHTML=""; legendEl.innerHTML = '<div class="empty">Sin tenencias</div>'; }
+
+  const realized = totalRealizedGainUSD();
+  document.getElementById("realizedRow").innerHTML =
+    '<span>Total'+(realized.complete?'':' <span class="dim">(parcial, falta cotización de algún día)</span>')+'</span>'+
+    '<span class="v mono '+cls(realized.total)+'">'+signed(realized.total)+'</span>';
+  const dividends = totalDividendsUSD();
+  document.getElementById("dividendsRow").innerHTML =
+    '<span>Total</span><span class="v mono pos">'+(dividends>0?"+":"")+fmt.format(dividends)+'</span>';
+
+  // Comparacion contra SPY como benchmark simple
+  const bench = benchmarkWhatIf("SPY");
+  const benchCard = document.getElementById("benchmarkCard");
+  if(bench){
+    benchCard.style.display = "";
+    const diff = totalValue - bench.wouldBeWorth;
+    document.getElementById("benchmarkBody").innerHTML =
+      '<div class="row-kv"><span>Invertiste en total</span><span class="v mono">US$ '+fmt.format(bench.invested)+'</span></div>'+
+      '<div class="row-kv"><span>Tu cartera real hoy</span><span class="v mono">US$ '+fmt.format(totalValue)+'</span></div>'+
+      '<div class="row-kv"><span>Si hubiera ido todo a SPY</span><span class="v mono">US$ '+fmt.format(bench.wouldBeWorth)+'</span></div>'+
+      '<div class="row-kv" style="border:none"><span>Diferencia</span><span class="v mono '+cls(diff)+'">'+signed(diff)+'</span></div>'+
+      (bench.complete?'':'<div class="dim" style="font-size:.72rem;margin-top:4px">Estimado parcial — falta convertir algún movimiento</div>');
+  } else { benchCard.style.display = "none"; }
+
+  // Guia simple de rebalanceo: a donde conviene que vaya el proximo aporte
+  const rebalRows = Object.keys(GROUP_TARGETS).map(g=>{
+    const current = byGroup[g] ? byGroup[g].value : 0;
+    const p = totalValue>0 ? current/totalValue*100 : 0;
+    const [lo,hi] = GROUP_TARGETS[g];
+    return {group:g, p, lo, hi, under: p<lo?lo-p:0};
+  });
+  const priority = rebalRows.filter(r=>r.under>0).sort((a,b)=>b.under-a.under)[0];
+  const rebalBody = document.getElementById("rebalanceBody");
+  if(totalValue<=0){
+    rebalBody.innerHTML = '<div class="empty">Cargá tus tenencias primero</div>';
+  } else if(priority){
+    rebalBody.innerHTML = 'Tu <b>'+priority.group+'</b> está en '+priority.p.toFixed(0)+'% (meta: '+priority.lo+'–'+priority.hi+'%). '+
+      'Convendría que tu próximo aporte vaya principalmente ahí para volver a tu plan.';
+  } else {
+    rebalBody.innerHTML = '<span class="pos">Tu cartera está dentro de los rangos que definiste.</span> Podés repartir el próximo aporte como venís haciendo.';
+  }
+}
+
+// ---------- TENENCIAS ----------
+function estimatedSeriesForHolding(h){
+  if(!PRICES || !PRICES.series || !PRICES.series[h.instrument] || !h.valueUSD) return null;
+  const series = PRICES.series[h.instrument];
+  if(!series.length) return null;
+  const anchorDate = h.asOf || series[series.length-1].date;
+  let anchor = null;
+  for(let i=series.length-1;i>=0;i--){ if(series[i].date<=anchorDate){ anchor=series[i]; break; } }
+  if(!anchor) anchor = series[0];
+  if(!anchor.priceUSD) return null;
+  return series.map(p=>({date:p.date, estValueUSD: h.valueUSD*(p.priceUSD/anchor.priceUSD)}));
+}
+function drawMiniChart(svg, points){
+  if(!points || points.length<2){ svg.innerHTML=""; return; }
+  const W=1000,H=110,pad=8;
+  const vals = points.map(p=>p.estValueUSD);
+  const min=Math.min(...vals)*0.99, max=Math.max(...vals)*1.01, range=(max-min)||1;
+  const x = i => pad + i*(W-2*pad)/(points.length-1);
+  const y = v => H-pad - (v-min)/range*(H-2*pad);
+  const path = points.map((p,i)=>(i===0?"M":"L")+x(i)+","+y(p.estValueUSD)).join(" ");
+  const area = path+" L"+x(points.length-1)+","+(H-pad)+" L"+x(0)+","+(H-pad)+" Z";
+  const up = points[points.length-1].estValueUSD >= points[0].estValueUSD;
+  const strokeVar = up? "var(--pos)":"var(--neg)";
+  // puntos de hover cada ~5 dias, mas el ultimo, para no saturar
+  const step = Math.max(1, Math.round(points.length/60));
+  let dots = "";
+  for(let i=0;i<points.length;i+=step){
+    const p = points[i];
+    const tip = escapeHtml(fmtDateHuman(p.date)+": US$ "+fmt.format(p.estValueUSD)+" (estimado)");
+    dots += '<circle class="hoverable-pt" data-tip="'+tip+'" cx="'+x(i)+'" cy="'+y(p.estValueUSD)+'" r="8" fill="transparent" stroke="none"/>'+
+      '<circle cx="'+x(i)+'" cy="'+y(p.estValueUSD)+'" r="2" fill="'+strokeVar+'" opacity="0" style="pointer-events:none"/>';
+  }
+  const lastP = points[points.length-1];
+  const lastTip = escapeHtml(fmtDateHuman(lastP.date)+": US$ "+fmt.format(lastP.estValueUSD)+" (estimado)");
+  dots += '<circle class="hoverable-pt" data-tip="'+lastTip+'" cx="'+x(points.length-1)+'" cy="'+y(lastP.estValueUSD)+'" r="3.5" fill="'+strokeVar+'"/>';
+  svg.setAttribute("viewBox","0 0 "+W+" "+H);
+  svg.innerHTML = '<path d="'+area+'" fill="'+strokeVar+'" opacity=".08"/>'+
+    '<path d="'+path+'" fill="none" stroke="'+strokeVar+'" stroke-width="2"/>'+
+    dots +
+    '<text class="chart-label" x="'+x(0)+'" y="'+(H-2)+'">'+points[0].date+'</text>'+
+    '<text class="chart-label" x="'+x(points.length-1)+'" y="'+(H-2)+'" text-anchor="end">'+points[points.length-1].date+'</text>';
+  bindTooltips(svg);
+}
+
+function ledgerTable(movs){
+  if(!movs.length) return '<div class="empty">Sin movimientos registrados para este instrumento</div>';
+  const rows = movs.map(m=>
+    '<tr><td class="mono">'+(m.date||"—")+'</td><td>'+(TYPE_LABELS[m.type]||m.type)+'</td>'+
+    '<td class="num mono">'+(m.quantity!=null?fmtInt.format(m.quantity):"—")+'</td>'+
+    '<td class="num mono">'+(m.price!=null?fmt.format(m.price):"—")+'</td>'+
+    '<td>'+(m.currency||"—")+'</td>'+
+    '<td class="num mono '+((m.total||0)>=0?"pos":"neg")+'">'+(m.total!=null?fmt.format(m.total):"—")+'</td></tr>'
+  ).join("");
+  return '<div class="tbl-wrap" style="margin:6px 0 2px"><table><thead><tr>'+
+    '<th>Fecha</th><th>Tipo</th><th class="num">Cantidad</th><th class="num">Precio</th><th>Moneda</th><th class="num">Total</th>'+
+    '</tr></thead><tbody>'+rows+'</tbody></table></div>';
+}
+
+function renderTenencias(){
+  const tbody = document.getElementById("holdingsBody");
+  const filterBar = document.getElementById("tenenciasFilterBar");
+  if(tenenciasFilter.platform || tenenciasFilter.group){
+    const label = tenenciasFilter.platform ? platformName(tenenciasFilter.platform) : tenenciasFilter.group;
+    filterBar.innerHTML = '<div class="filter-chip">Mostrando: '+label+'<button id="clearTenFilter" aria-label="Quitar filtro">'+ICON_CLOSE+'</button></div>';
+    document.getElementById("clearTenFilter").addEventListener("click", ()=>{ tenenciasFilter={platform:null,group:null}; renderTenencias(); });
+  } else { filterBar.innerHTML = ""; }
+
+  const holdings = allHoldings()
+    .filter(h=> !tenenciasFilter.platform || h.platform===tenenciasFilter.platform)
+    .filter(h=> !tenenciasFilter.group || (h.group||"Otro")===tenenciasFilter.group)
+    .map(h=>{
+      const cost = effectiveCostBasis(h).value;
+      const gain=(h.valueUSD||0)-cost;
+      const gp = cost>0 ? gain/cost*100 : null;
+      return Object.assign({},h,{_gain:gain,_gp:gp});
+    }).sort((a,b)=> (b._gp==null?-Infinity:b._gp) - (a._gp==null?-Infinity:a._gp));
+
+  if(!holdings.length){ tbody.innerHTML = '<tr><td colspan="8" class="empty">'+((tenenciasFilter.platform||tenenciasFilter.group)?"Nada con este filtro":"Sin tenencias cargadas")+'</td></tr>'; }
+  else {
+    tbody.innerHTML = holdings.map(h=>{
+      const gain=h._gain, p=h._gp;
+      const key = h.platform+"|"+h.instrument;
+      const open = expandedHoldings.has(key);
+      const analysis = analyzeHolding(h.platform, h.instrument);
+      const cb = effectiveCostBasis(h);
+      const qtyHtml = analysis.quantity!=null ? fmtInt.format(analysis.quantity) : '<span class="dim">—</span>';
+      const costHtml = cb.source==="auto"
+        ? '<span title="Calculado de tus movimientos reales">'+fmt.format(cb.value)+' <span class="dim" style="font-size:.68rem">(auto)</span></span>'
+        : '<input class="edit-num" data-field="costBasisUSD" value="'+fmt.format(h.costBasisUSD||0)+'">';
+      let detail = "";
+      if(open){
+        const movs = movementsForHolding(h.platform, h.instrument);
+        const first = movs.length ? movs[0].date : null;
+        const days = first ? Math.max(0, Math.round((Date.now()-new Date(first+"T00:00:00").getTime())/86400000)) : null;
+        const summary = first ? "Desde "+fmtDateHuman(first)+" · hace "+days+" día"+(days===1?"":"s")+" · "+movs.length+" operación"+(movs.length===1?"":"es")
+                               : "Sin historial de movimientos para este instrumento";
+        const est = estimatedSeriesForHolding(h);
+        const chartId = "mini-"+h.platform+"-"+h.instrument;
+        const chartHtml = est ?
+          '<svg class="chart mini-chart" id="'+chartId+'"></svg>'+
+          '<div class="mini-note">Tendencia estimada según la variación de precio de '+h.instrument+' — no es el valor exacto del CEDEAR en cada fecha (ver nota).</div>'
+          : '';
+        const realizedHtml = analysis.realizedGainUSD ? '<div class="dim" style="font-size:.78rem;margin:4px 0">Ganancia realizada de ventas: <b class="'+cls(analysis.realizedGainUSD)+'">'+signed(analysis.realizedGainUSD)+'</b></div>' : '';
+        detail = '<tr class="detail-row"><td colspan="8">'+
+          '<div style="padding:8px 0 2px;font-size:.8rem;color:var(--muted)">'+summary+'</div>'+
+          realizedHtml + chartHtml + ledgerTable(movs) + '</td></tr>';
+      }
+      return '<tr class="holding-row" data-plat="'+h.platform+'" data-inst="'+h.instrument+'">'+
+        '<td><span class="chevron'+(open?" open":"")+'" style="margin-right:6px">'+ICON_CHEVRON+'</span><b>'+h.name+'</b><br><span class="mono dim" style="font-size:.72rem;margin-left:15px">'+h.instrument+'</span></td>'+
+        '<td>'+platformName(h.platform)+'</td>'+
+        '<td><span class="tag">'+(h.group||"Otro")+'</span></td>'+
+        '<td class="num mono">'+qtyHtml+'</td>'+
+        '<td class="num">'+costHtml+'</td>'+
+        '<td class="num"><input class="edit-num" data-field="valueUSD" value="'+fmt.format(h.valueUSD||0)+'">'+
+          (h.asOf?'<div class="dim" style="font-size:.68rem;margin-top:3px">'+relativeLabel(h.asOf)+'</div>':'')+'</td>'+
+        '<td class="num '+cls(gain)+'">'+signed(gain)+(p!=null?' <span class="dim">('+pct(p)+')</span>':'')+'</td>'+
+        '<td><button class="del" data-action="del-holding" aria-label="Quitar tenencia">'+ICON_CLOSE+'</button></td>'+
+        '</tr>' + detail;
+    }).join("");
+  }
+
+  tbody.querySelectorAll(".holding-row").forEach(tr=>{
+    tr.addEventListener("click", function(){
+      const key = tr.dataset.plat+"|"+tr.dataset.inst;
+      if(expandedHoldings.has(key)) expandedHoldings.delete(key); else expandedHoldings.add(key);
+      renderTenencias();
+    });
+  });
+  holdings.forEach(h=>{
+    if(!expandedHoldings.has(h.platform+"|"+h.instrument)) return;
+    const est = estimatedSeriesForHolding(h);
+    if(!est) return;
+    const svg = document.getElementById("mini-"+h.platform+"-"+h.instrument);
+    if(svg) drawMiniChart(svg, est);
+  });
+  tbody.querySelectorAll(".edit-num, .del").forEach(el=>{
+    el.addEventListener("click", e=>e.stopPropagation());
+  });
+  tbody.querySelectorAll(".edit-num").forEach(inp=>{
+    inp.addEventListener("change", function(){
+      const tr = inp.closest("tr"); const plat=tr.dataset.plat, inst=tr.dataset.inst, field=inp.dataset.field;
+      const h = STATE.holdings[plat].find(x=>x.instrument===inst);
+      if(h){ h[field] = parseNum(inp.value); if(field==="valueUSD") h.asOf = new Date().toISOString().slice(0,10); }
+      renderAll();
+    });
+  });
+  tbody.querySelectorAll('[data-action="del-holding"]').forEach(btn=>{
+    btn.addEventListener("click", function(){
+      const tr = btn.closest("tr"); const plat=tr.dataset.plat, inst=tr.dataset.inst;
+      STATE.holdings[plat] = STATE.holdings[plat].filter(x=>x.instrument!==inst);
+      renderAll();
+    });
+  });
+
+  const sel = document.getElementById("hPlatform");
+  sel.innerHTML = platformKeys().map(k=>'<option value="'+k+'">'+platformName(k)+'</option>').join("");
+}
+document.getElementById("btnAddHolding").addEventListener("click", function(){
+  if(!STATE) return;
+  const plat = document.getElementById("hPlatform").value;
+  const ticker = document.getElementById("hTicker").value.trim().toUpperCase();
+  const name = document.getElementById("hName").value.trim();
+  const group = document.getElementById("hGroup").value;
+  const cost = parseNum(document.getElementById("hCost").value) || 0;
+  const value = parseNum(document.getElementById("hValue").value) || 0;
+  if(!plat || !ticker){ setStatus("Falta plataforma o ticker", true); return; }
+  if(cost<=0){ setStatus("Completá cuánto invertiste (\"Invertido US$\") — sin eso, distorsiona tu rendimiento total", true); return; }
+  STATE.holdings[plat] = STATE.holdings[plat] || [];
+  STATE.holdings[plat].push({instrument:ticker, name:name||ticker, group, costBasisUSD:cost, valueUSD:value, asOf:new Date().toISOString().slice(0,10)});
+  ["hTicker","hName","hCost","hValue"].forEach(id=>document.getElementById(id).value="");
+  renderAll();
+});
+
+// ---------- MOVIMIENTOS ----------
+let movSort = {field:"date", dir:"desc"};
+const MOV_COL_LABELS = {date:"Fecha",platform:"Plataforma",type:"Tipo",instrument:"Instrumento",quantity:"Cantidad",price:"Precio",currency:"Moneda",commission:"Comisión",total:"Total"};
+const MOV_SORT_ACCESSOR = {
+  date: m=>m.date||"", platform: m=>platformName(m.platform), type: m=>TYPE_LABELS[m.type]||m.type||"",
+  instrument: m=>m.instrument||"", quantity: m=>m.quantity==null?-Infinity:m.quantity,
+  price: m=>m.price==null?-Infinity:m.price, currency: m=>m.currency||"",
+  commission: m=>m.commission||0, total: m=>m.total==null?-Infinity:m.total
+};
+document.querySelectorAll('#view-movimientos thead th[data-sort]').forEach(th=>{
+  th.addEventListener("click", function(){
+    const field = th.dataset.sort;
+    if(movSort.field===field) movSort.dir = movSort.dir==="asc"?"desc":"asc";
+    else movSort = {field, dir:"desc"};
+    renderMovimientos();
+  });
+});
+
+function renderMovimientos(){
+  fillMovPlatformSelect();
+  document.querySelectorAll('#view-movimientos thead th[data-sort]').forEach(th=>{
+    const f = th.dataset.sort;
+    th.textContent = MOV_COL_LABELS[f] + (f===movSort.field ? (movSort.dir==="asc"?" ▲":" ▼") : "");
+  });
+  const acc = MOV_SORT_ACCESSOR[movSort.field] || MOV_SORT_ACCESSOR.date;
+  const dir = movSort.dir==="asc" ? 1 : -1;
+  const movs = allMovements().sort((a,b)=>{
+    const av=acc(a), bv=acc(b);
+    return av<bv ? -dir : av>bv ? dir : 0;
+  });
+  const platSel = document.getElementById("fltPlatform");
+  const curPlat = platSel.value;
+  platSel.innerHTML = '<option value="">Todas las plataformas</option>'+platformKeys().map(k=>'<option value="'+k+'">'+platformName(k)+'</option>').join("");
+  platSel.value = curPlat;
+
+  const typeSel = document.getElementById("fltType");
+  const curType = typeSel.value;
+  const typesPresent = Array.from(new Set(movs.map(m=>m.type)));
+  typeSel.innerHTML = '<option value="">Todos los tipos</option>'+typesPresent.map(t=>'<option value="'+t+'">'+(TYPE_LABELS[t]||t)+'</option>').join("");
+  typeSel.value = curType;
+
+  const search = document.getElementById("fltSearch").value.trim().toUpperCase();
+  const showMinor = document.getElementById("fltShowMinor").checked;
+  const DUST = {ajuste:1, dividendo:1};
+  const filtered = movs.filter(m=>
+    (!curPlat || m.platform===curPlat) &&
+    (!curType || m.type===curType) &&
+    (!search || (m.instrument||"").toUpperCase().includes(search)) &&
+    (showMinor || curType || !DUST[m.type])
+  );
+
+  document.getElementById("movCount").textContent = filtered.length+" de "+movs.length+" movimientos";
+
+  const tbody = document.getElementById("movBody");
+  tbody.innerHTML = filtered.length ? filtered.map(m=>{
+    const holding = m.instrument ? (STATE.holdings[m.platform]||[]).find(h=>instrumentMatchesTicker(m.instrument, h.instrument)) : null;
+    const rowAttrs = holding ? ' class="mov-row" data-plat="'+m.platform+'" data-inst="'+holding.instrument+'" title="Ver '+holding.name+' en Tenencias"' : '';
+    return '<tr'+rowAttrs+'><td class="mono">'+(m.date||"—")+'</td>'+
+    '<td>'+platformName(m.platform)+'</td>'+
+    '<td>'+(TYPE_LABELS[m.type]||m.typeRaw||m.type)+'</td>'+
+    '<td>'+(m.instrument||"—")+'</td>'+
+    '<td class="num mono">'+(m.quantity!=null?fmtInt.format(m.quantity):"—")+'</td>'+
+    '<td class="num mono">'+(m.price!=null?fmt.format(m.price):"—")+'</td>'+
+    '<td>'+(m.currency||"—")+'</td>'+
+    '<td class="num mono">'+(m.commission?fmt.format(m.commission):"—")+'</td>'+
+    '<td class="num mono '+((m.total||0)>=0?"pos":"neg")+'">'+(m.total!=null?fmt.format(m.total):"—")+'</td>'+
+    '</tr>';
+  }).join("") : '<tr><td colspan="9" class="empty">Sin movimientos</td></tr>';
+  tbody.querySelectorAll(".mov-row").forEach(tr=>{
+    tr.addEventListener("click", ()=>{
+      tenenciasFilter={platform:null,group:null};
+      expandedHoldings.add(tr.dataset.plat+"|"+tr.dataset.inst);
+      goToTab("tenencias"); renderTenencias();
+      const row = document.querySelector('.holding-row[data-plat="'+tr.dataset.plat+'"][data-inst="'+tr.dataset.inst+'"]');
+      if(row) row.scrollIntoView({block:"center", behavior:"smooth"});
+    });
+  });
+
+  let commArs=0, commUsd=0;
+  movs.forEach(m=>{
+    const c=(m.commission||0)+(m.marketFee||0)+(m.iva||0);
+    if(m.currency==="ARS") commArs+=c; else if(m.currency==="USD") commUsd+=c;
+  });
+  document.getElementById("commArs").textContent = "$ "+fmt.format(Math.abs(commArs));
+  document.getElementById("commUsd").textContent = "US$ "+fmt.format(Math.abs(commUsd));
+}
+["fltPlatform","fltType","fltSearch"].forEach(id=>{
+  document.getElementById(id).addEventListener("input", renderMovimientos);
+});
+document.getElementById("fltShowMinor").addEventListener("change", renderMovimientos);
+document.getElementById("btnAddMov").addEventListener("click", function(){
+  if(!STATE) return;
+  const plat = document.getElementById("mPlatform").value;
+  if(!plat){ setStatus("Falta plataforma", true); return; }
+  const mov = {
+    id: "manual-"+Date.now(),
+    date: document.getElementById("mDate").value || null,
+    type: document.getElementById("mType").value,
+    typeRaw: TYPE_LABELS[document.getElementById("mType").value],
+    instrument: document.getElementById("mInstrument").value.trim().toUpperCase() || null,
+    currency: document.getElementById("mCurrency").value,
+    quantity: parseNum(document.getElementById("mQty").value),
+    price: parseNum(document.getElementById("mPrice").value),
+    gross: null,
+    commission: parseNum(document.getElementById("mCommission").value) || 0,
+    marketFee: 0, iva: 0, other: 0,
+    total: parseNum(document.getElementById("mTotal").value)
+  };
+  STATE.platforms[plat] = STATE.platforms[plat] || {name:plat, movements:[]};
+  STATE.platforms[plat].movements.push(mov);
+  ["mInstrument","mQty","mPrice","mCommission","mTotal"].forEach(id=>document.getElementById(id).value="");
+  renderAll();
+  setStatus("Movimiento agregado — no olvides Guardar cambios");
+});
+function fillMovPlatformSelect(){
+  const sel = document.getElementById("mPlatform");
+  sel.innerHTML = platformKeys().map(k=>'<option value="'+k+'">'+platformName(k)+'</option>').join("");
+}
+
+// ---------- Aportes por mes (solo cash flows reales, sin estimar nada) ----------
+function monthlyContributions(){
+  const byMonth = {};
+  allMovements().forEach(m=>{
+    if(!BUY_TYPES.has(m.type) || !m.date) return;
+    const amountUSD = movementAmountUSD(m);
+    if(amountUSD==null) return;
+    const ym = m.date.slice(0,7);
+    byMonth[ym] = (byMonth[ym]||0) + amountUSD;
+  });
+  return byMonth;
+}
+function renderContribChart(){
+  const box = document.getElementById("contribBox");
+  const byMonth = monthlyContributions();
+  const months = Object.keys(byMonth).sort();
+  if(!months.length){ box.innerHTML = '<div class="empty">Todavía no hay aportes registrados</div>'; return; }
+  const max = Math.max(...months.map(m=>byMonth[m]));
+  const MES_CORTO = ["ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic"];
+  const bars = months.map(ym=>{
+    const [y,m] = ym.split("-");
+    const val = byMonth[ym];
+    const h = max>0 ? Math.max(3, val/max*100) : 3;
+    const tip = escapeHtml(MES_CORTO[parseInt(m,10)-1]+" "+y+": US$ "+fmt.format(val));
+    return '<div class="contrib-col"><div class="contrib-bar hoverable-pt" data-tip="'+tip+'" style="height:'+h+'%"></div>'+
+      '<span class="contrib-label">'+MES_CORTO[parseInt(m,10)-1]+" "+y.slice(2)+'</span></div>';
+  }).join("");
+  box.innerHTML = '<div class="contrib-bars">'+bars+'</div>';
+  bindTooltips(box);
+}
+
+// ---------- EVOLUCION ----------
+function renderEvoMetrics(snaps){
+  const box = document.getElementById("evoMetrics");
+  if(!snaps.length){ box.innerHTML=""; return; }
+  const withGp = snaps.map(s=>Object.assign({}, s, {gp: s.investedUSD ? (s.valueUSD-s.investedUSD)/s.investedUSD*100 : 0}));
+  const first = withGp[0], last = withGp[withGp.length-1];
+  const gainNow = last.valueUSD - last.investedUSD;
+
+  if(withGp.length===1){
+    box.innerHTML = '<div class="card" style="grid-column:1/-1">'+
+      '<h3>Primera foto — '+fmtDateHuman(first.date)+'</h3>'+
+      '<div class="row-kv" style="border:none;padding:0"><span class="v mono '+cls(gainNow)+'" style="font-size:1.05rem">'+signed(gainNow)+' ('+pct(last.gp)+')</span></div>'+
+      '<div class="dim" style="font-size:.8rem;margin-top:6px">Guardá otra foto más adelante para ver tu evolución real.</div>'+
+      '</div>';
+    return;
+  }
+
+  const days = Math.max(1, Math.round((new Date(last.date)-new Date(first.date))/86400000));
+  const prev = withGp[withGp.length-2];
+  const deltaValue = last.valueUSD - prev.valueUSD;
+  const periodDays = Math.max(1, Math.round((new Date(last.date)-new Date(prev.date))/86400000));
+  let best = withGp[0], worst = withGp[0];
+  withGp.forEach(s=>{ if(s.gp>best.gp) best=s; if(s.gp<worst.gp) worst=s; });
+
+  const cards = [
+    {label:"Ganancia actual", value: signed(gainNow), sub: pct(last.gp), c: cls(gainNow)},
+    {label:"Desde la última foto", value: signed(deltaValue), sub: "en "+periodDays+" día"+(periodDays===1?"":"s")+" · "+pct(prev.gp)+" → "+pct(last.gp), c: cls(deltaValue)},
+    {label:"Mejor momento", value: pct(best.gp), sub: fmtDateHuman(best.date), c: cls(best.gp)},
+    {label:"Peor momento", value: pct(worst.gp), sub: fmtDateHuman(worst.date), c: cls(worst.gp)},
+    {label:"Seguimiento", value: days+" días", sub: "desde "+fmtDateHuman(first.date), c:""}
+  ];
+  box.innerHTML = cards.map(c=>
+    '<div class="card"><h3>'+c.label+'</h3>'+
+    '<div class="row-kv" style="border:none;padding:0"><span class="v mono '+(c.c||"")+'" style="font-size:1.05rem">'+c.value+'</span></div>'+
+    (c.sub?'<div class="dim" style="font-size:.78rem;margin-top:4px">'+c.sub+'</div>':'')+'</div>'
+  ).join("");
+}
+
+function renderEvolucion(){
+  const snaps = (STATE.snapshots||[]).slice().sort((a,b)=>a.date.localeCompare(b.date));
+  renderEvoMetrics(snaps);
+  renderContribChart();
+  const tbody = document.getElementById("snapBody");
+  tbody.innerHTML = snaps.length ? snaps.map((s,i)=>{
+    const g = s.valueUSD-s.investedUSD, p = s.investedUSD? g/s.investedUSD*100:0;
+    return '<tr><td class="mono">'+s.date+'</td><td class="num mono">'+fmt.format(s.investedUSD)+'</td>'+
+      '<td class="num mono">'+fmt.format(s.valueUSD)+'</td>'+
+      '<td class="num mono '+cls(g)+'">'+signed(g)+' ('+pct(p)+')</td>'+
+      '<td><button class="del" data-idx="'+i+'" aria-label="Quitar foto">'+ICON_CLOSE+'</button></td></tr>';
+  }).join("") : '<tr><td colspan="5" class="empty">Sin fotos guardadas todavía</td></tr>';
+  tbody.querySelectorAll(".del").forEach(btn=>{
+    btn.addEventListener("click", function(){
+      snaps.splice(parseInt(btn.dataset.idx,10),1);
+      STATE.snapshots = snaps;
+      renderAll();
+    });
+  });
+  drawChart(snaps);
+}
+function drawChart(snaps){
+  const svg = document.getElementById("evoChart");
+  svg.innerHTML = "";
+  if(snaps.length<1){ svg.innerHTML='<text x="10" y="100" class="chart-label">Guardá al menos una foto para ver el gráfico.</text>'; return; }
+  const W=1000,H=200,pad=30;
+  const allVals = snaps.flatMap(s=>[s.valueUSD,s.investedUSD]);
+  const min = Math.min(...allVals)*0.98, max = Math.max(...allVals)*1.02;
+  const range = (max-min)||1;
+  const x = i => snaps.length===1? W/2 : pad + i*(W-2*pad)/(snaps.length-1);
+  const y = v => H-pad - (v-min)/range*(H-2*pad);
+  let gridLines="";
+  for(let i=0;i<=3;i++){ const gy=pad+i*(H-2*pad)/3; gridLines+='<line class="chart-grid" x1="0" y1="'+gy+'" x2="'+W+'" y2="'+gy+'"/>'; }
+  const lineFor = key => snaps.map((s,i)=> (i===0?"M":"L")+x(i)+","+y(s[key])).join(" ");
+  const valuePath = lineFor("valueUSD"), investedPath = lineFor("investedUSD");
+  const area = valuePath + " L"+x(snaps.length-1)+","+(H-pad)+" L"+x(0)+","+(H-pad)+" Z";
+  const valueDots = snaps.map((s,i)=>{
+    const tip = escapeHtml(fmtDateHuman(s.date)+" · Valor: US$ "+fmt.format(s.valueUSD));
+    return '<circle class="hoverable-pt" data-tip="'+tip+'" cx="'+x(i)+'" cy="'+y(s.valueUSD)+'" r="9" fill="transparent" stroke="none"/>'+
+      '<circle class="chart-dot" cx="'+x(i)+'" cy="'+y(s.valueUSD)+'" r="3.5" style="pointer-events:none"/>';
+  }).join("");
+  const investedDots = snaps.map((s,i)=>{
+    const tip = escapeHtml(fmtDateHuman(s.date)+" · Invertido: US$ "+fmt.format(s.investedUSD));
+    return '<circle class="hoverable-pt" data-tip="'+tip+'" cx="'+x(i)+'" cy="'+y(s.investedUSD)+'" r="8" fill="transparent" stroke="none"/>'+
+      '<circle class="chart-dot-invested" cx="'+x(i)+'" cy="'+y(s.investedUSD)+'" r="2.5" style="pointer-events:none"/>';
+  }).join("");
+  const labels = snaps.map((s,i)=> (i===0||i===snaps.length-1) ? '<text class="chart-label" x="'+x(i)+'" y="'+(H-6)+'" text-anchor="'+(i===0?"start":"end")+'">'+s.date+'</text>' : "").join("");
+  svg.setAttribute("viewBox","0 0 "+W+" "+H);
+  svg.innerHTML = gridLines + '<path class="chart-area" d="'+area+'"/>' +
+    '<path class="chart-line-invested" d="'+investedPath+'"/>' + '<path class="chart-line" d="'+valuePath+'"/>' +
+    investedDots + valueDots + labels;
+  bindTooltips(svg);
+}
+document.getElementById("btnSnap").addEventListener("click", function(){
+  if(!STATE) return;
+  const holdings = allHoldings();
+  let value=0, cost=0;
+  holdings.forEach(h=>{ value+=h.valueUSD||0; cost+=effectiveCostBasis(h).value; });
+  const today = new Date().toISOString().slice(0,10);
+  STATE.snapshots = STATE.snapshots || [];
+  const existing = STATE.snapshots.find(s=>s.date===today);
+  if(existing){ existing.investedUSD=cost; existing.valueUSD=value; }
+  else STATE.snapshots.push({date:today, investedUSD:cost, valueUSD:value});
+  renderAll();
+  setStatus("Foto guardada — no olvides Guardar cambios");
+});
+
+// ---------- init ----------
+async function tryAutoLoad(){
+  if(!isServerMode()) return false;
+  try{
+    const [invRes, priceRes, dolarRes] = await Promise.allSettled([
+      fetch("data/inversiones.json"), fetch("data/precios_historicos.json"), fetch("data/dolar_historico.json")
+    ]);
+    let ok = false;
+    if(invRes.status==="fulfilled" && invRes.value.ok){ STATE = await invRes.value.json(); ok = true; }
+    if(priceRes.status==="fulfilled" && priceRes.value.ok){
+      PRICES = await priceRes.value.json();
+      try{ localStorage.setItem(PRICES_LS_KEY, JSON.stringify(PRICES)); }catch(e){}
+    }
+    if(dolarRes.status==="fulfilled" && dolarRes.value.ok){
+      DOLAR = await dolarRes.value.json();
+      try{ localStorage.setItem(DOLAR_LS_KEY, JSON.stringify(DOLAR)); }catch(e){}
+    }
+    return ok;
+  }catch(e){ return false; }
+}
+
+(async function init(){
+  try{ const p = localStorage.getItem(PRICES_LS_KEY); if(p) PRICES = JSON.parse(p); }catch(e){}
+  try{ const d = localStorage.getItem(DOLAR_LS_KEY); if(d) DOLAR = JSON.parse(d); }catch(e){}
+  if(isServerMode()) document.getElementById("btnRefreshPrices").style.display = "";
+  if(await tryAutoLoad()){
+    renderAll();
+    setStatus("Cargado automáticamente");
+    document.getElementById("btnLoad").style.display = "none";
+    document.getElementById("btnLoadPrices").style.display = "none";
+    return;
+  }
+  const cached = loadFromLocalStorage();
+  if(cached){ STATE = cached; renderAll(); setStatus("Datos de este navegador (recordá cargar el archivo si cambiaste de compu)"); }
+  else { STATE = emptyState(); renderAll(); setStatus("Cargá tu archivo data/inversiones.json para empezar", true); }
+})();
+})();
+</script>
+</body>
+</html>

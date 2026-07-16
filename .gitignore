@@ -1,0 +1,17 @@
+# Datos financieros reales — NUNCA subir esto a ningun lado publico
+data/
+scripts/seed_manual.py
+
+# Extractos y notas personales (montos, capturas, decisiones reales)
+Cocos Capital/
+Uala/
+Investigacion/
+mi-plan.md
+README.md
+
+# Archivos temporales
+_check_tmp.js
+_test_*.js
+*.log
+__pycache__/
+*.pyc
