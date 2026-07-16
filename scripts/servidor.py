@@ -2,9 +2,12 @@
 """
 Servidor local para el dashboard de inversiones.
 
-Corre un mini servidor SOLO en tu compu (localhost, nunca sale a internet) para que
-dashboard.html cargue los datos automaticamente al abrir, y pueda "Guardar cambios"
-escribiendo directo en data/inversiones.json — sin descargar archivos ni moverlos a mano.
+Corre un mini servidor en tu compu (nunca en la nube) para que dashboard.html cargue
+los datos automaticamente al abrir, y pueda "Guardar cambios" escribiendo directo en
+data/inversiones.json — sin descargar archivos ni moverlos a mano.
+
+Escucha en tu red WiFi de casa (no en internet), asi que tambien podes abrirlo desde
+el celular si esta conectado al mismo WiFi que la compu.
 
 Uso:
     python3 scripts/servidor.py
@@ -15,6 +18,7 @@ Se abre solo en el navegador. Para cerrarlo: Ctrl+C en esta ventana, o cerrarla.
 import http.server
 import json
 import shutil
+import socket
 import sys
 import webbrowser
 import threading
@@ -96,12 +100,27 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         pass  # no llenar la consola con cada pedido
 
 
+def obtener_ip_local():
+    """IP de la compu en la red WiFi de casa (para abrir desde el celular)."""
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    try:
+        s.connect(("8.8.8.8", 80))
+        return s.getsockname()[0]
+    except OSError:
+        return None
+    finally:
+        s.close()
+
+
 def main():
-    url = f"http://localhost:{PORT}/dashboard.html"
-    server = http.server.HTTPServer(("localhost", PORT), Handler)
-    print(f"Dashboard corriendo en {url}")
+    local_url = f"http://localhost:{PORT}/dashboard.html"
+    server = http.server.HTTPServer(("0.0.0.0", PORT), Handler)
+    ip = obtener_ip_local()
+    print(f"Dashboard corriendo en {local_url}")
+    if ip:
+        print(f"Desde el celular (mismo WiFi que esta compu): http://{ip}:{PORT}/dashboard.html")
     print("Dejá esta ventana abierta mientras lo usás. Ctrl+C (o cerrar la ventana) para salir.")
-    threading.Timer(0.6, lambda: webbrowser.open(url)).start()
+    threading.Timer(0.6, lambda: webbrowser.open(local_url)).start()
     try:
         server.serve_forever()
     except KeyboardInterrupt:
