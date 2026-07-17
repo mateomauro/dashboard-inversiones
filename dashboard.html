@@ -168,7 +168,7 @@
   .modal-box{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:28px;max-width:340px;width:100%;box-shadow:var(--shadow)}
   .modal-box h2{font-size:1.05rem;margin:0 0 6px;font-weight:650}
   .modal-box p{font-size:.85rem;color:var(--muted);margin:0 0 16px;line-height:1.5}
-  .modal-box input[type=password]{width:100%;font-family:var(--sans);font-size:.95rem;padding:10px 12px;
+  .modal-box input[type=password]{width:100%;font-family:var(--sans);font-size:16px;padding:13px 12px;
     border-radius:9px;border:1px solid var(--line-strong,var(--line));background:var(--accent-soft);color:var(--fg);margin-bottom:12px}
   .modal-box input[type=password]:focus{outline:none;border-color:var(--accent)}
   .modal-box .btn{width:100%;justify-content:center;display:flex;align-items:center}
@@ -203,6 +203,33 @@
   .view.active{animation:viewIn .18s ease-out}
   @keyframes viewIn{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
   @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+
+  /* mobile: targets tactiles mas grandes, tablas mas simples, menos columnas */
+  @media (max-width:640px){
+    .btn{padding:12px 16px;font-size:.85rem}
+    nav.tabs button{padding:14px 12px}
+    .del{padding:9px}
+    .filter-chip button{padding:8px}
+    .toolbar select,.toolbar input[type=text],.toolbar input[type=date]{padding:12px 10px;font-size:.88rem}
+    .field input,.field select{padding:11px 9px}
+    table{font-size:.82rem}
+    tbody td{padding:12px 7px}
+    thead th{padding:10px 7px}
+    #view-tenencias table th:nth-child(2),#view-tenencias table td:nth-child(2),
+    #view-tenencias table th:nth-child(3),#view-tenencias table td:nth-child(3),
+    #view-tenencias table th:nth-child(4),#view-tenencias table td:nth-child(4),
+    #view-tenencias table th:nth-child(5),#view-tenencias table td:nth-child(5){display:none}
+    #view-tenencias .edit-num{width:66px;padding:5px 4px}
+    #view-tenencias table td:nth-child(7) .dim{display:block;margin-top:2px}
+    #view-movimientos table th:nth-child(2),#view-movimientos table td:nth-child(2),
+    #view-movimientos table th:nth-child(5),#view-movimientos table td:nth-child(5),
+    #view-movimientos table th:nth-child(6),#view-movimientos table td:nth-child(6),
+    #view-movimientos table th:nth-child(7),#view-movimientos table td:nth-child(7),
+    #view-movimientos table th:nth-child(8),#view-movimientos table td:nth-child(8){display:none}
+    #view-movimientos table td:nth-child(4){max-width:92px;overflow:hidden;text-overflow:ellipsis}
+    #view-movimientos table td:nth-child(3){max-width:66px;overflow:hidden;text-overflow:ellipsis}
+    #view-evolucion table th:nth-child(2),#view-evolucion table td:nth-child(2){display:none}
+  }
 </style>
 </head>
 <body>
@@ -255,9 +282,10 @@
         <div id="byGroup"></div>
       </div>
     </div>
-    <div class="grid2">
-      <div class="card"><h3>Ganancias realizadas (ventas)</h3><div class="row-kv" id="realizedRow"><span>Total</span><span class="v mono">-</span></div></div>
-      <div class="card"><h3>Dividendos cobrados</h3><div class="row-kv" id="dividendsRow"><span>Total</span><span class="v mono">-</span></div></div>
+    <div class="card" style="margin-top:14px">
+      <h3>Ganancias adicionales</h3>
+      <div class="row-kv"><span>Realizadas (ventas)<span class="dim" id="realizedPartial" style="display:none"> (parcial)</span></span><span class="v mono" id="realizedRow">-</span></div>
+      <div class="row-kv" style="border-bottom:none"><span>Dividendos cobrados</span><span class="v mono" id="dividendsRow">-</span></div>
     </div>
     <div class="card" id="benchmarkCard" style="margin-top:14px;display:none">
       <h3>¿Y si hubiera invertido todo en SPY?</h3>
@@ -364,7 +392,7 @@
     <div style="margin-top:14px" id="addSnapCard"><button class="btn primary" id="btnSnap" type="button">+ Guardar foto de hoy</button></div>
   </section>
 
-  <footer>Datos guardados localmente. Acordate de <b>Guardar cambios</b> después de editar.</footer>
+  <footer id="footerNote">Datos guardados localmente. Acordate de <b>Guardar cambios</b> después de editar.</footer>
 </main>
 <div id="chartTooltip" class="chart-tooltip"></div>
 <div id="unlockModal" class="modal-overlay" style="display:none">
@@ -436,6 +464,14 @@ function bindTooltips(container){
     el.addEventListener("mouseenter", e=>{ tipEl.innerHTML = el.getAttribute("data-tip"); tipEl.classList.add("show"); positionTip(e); });
     el.addEventListener("mousemove", positionTip);
     el.addEventListener("mouseleave", ()=>{ tipEl.classList.remove("show"); });
+    el.addEventListener("touchstart", e=>{
+      const t = e.touches[0];
+      tipEl.innerHTML = el.getAttribute("data-tip");
+      tipEl.classList.add("show");
+      positionTip({clientX:t.clientX, clientY:t.clientY});
+      clearTimeout(tipEl._hideTimer);
+      tipEl._hideTimer = setTimeout(()=>tipEl.classList.remove("show"), 2200);
+    }, {passive:true});
   });
 }
 
@@ -520,6 +556,8 @@ function applyReadOnly(){
   const addHolding = document.getElementById("addHoldingCard"); if(addHolding) addHolding.style.display="none";
   const addMov = document.getElementById("addMovCard"); if(addMov) addMov.style.display="none";
   const addSnap = document.getElementById("addSnapCard"); if(addSnap) addSnap.style.display="none";
+  const footer = document.getElementById("footerNote");
+  if(footer) footer.innerHTML = "Vista de solo lectura — los datos se desencriptan acá mismo, en tu navegador.";
 }
 
 // ---------- Desencriptado de la vista publica (AES-GCM + PBKDF2, igual que scripts/publicar.js) ----------
@@ -853,9 +891,10 @@ function renderResumen(){
     if(xr.annualized<5){ badgeCls="low"; badgeText="por debajo de tu meta"; }
     else if(xr.annualized<=15){ badgeCls="ok"; badgeText="dentro de tu meta"; }
     else { badgeCls="high"; badgeText="por encima de tu meta"; }
-    goalEl.innerHTML = 'Rendimiento anualizado (XIRR<span class="dim" title="Tasa que pondera cuándo y cuánto invertiste en cada momento — el número correcto para saber qué ganaste vos, no solo la estrategia">*</span>): <b class="mono">'+pct(xr.annualized)+'</b> '+
+    goalEl.innerHTML = 'Rendimiento anualizado (XIRR<span class="dim hoverable-pt" data-tip="Tasa que pondera cuándo y cuánto invertiste en cada momento — el número correcto para saber qué ganaste vos, no solo la estrategia">*</span>): <b class="mono">'+pct(xr.annualized)+'</b> '+
       '<span class="badge '+badgeCls+'">'+badgeText+'</span> <span class="dim">· meta 5–15%</span>'+
       (xr.complete?'':' <span class="dim">(parcial)</span>');
+    bindTooltips(goalEl);
   } else { goalEl.innerHTML = ""; }
 
   const bp = document.getElementById("byPlatform");
@@ -899,12 +938,14 @@ function renderResumen(){
   } else { barEl.innerHTML=""; legendEl.innerHTML = '<div class="empty">Sin tenencias</div>'; }
 
   const realized = totalRealizedGainUSD();
-  document.getElementById("realizedRow").innerHTML =
-    '<span>Total'+(realized.complete?'':' <span class="dim">(parcial, falta cotización de algún día)</span>')+'</span>'+
-    '<span class="v mono '+cls(realized.total)+'">'+signed(realized.total)+'</span>';
+  document.getElementById("realizedPartial").style.display = realized.complete ? "none" : "";
+  const realizedEl = document.getElementById("realizedRow");
+  realizedEl.className = "v mono "+cls(realized.total);
+  realizedEl.textContent = signed(realized.total);
   const dividends = totalDividendsUSD();
-  document.getElementById("dividendsRow").innerHTML =
-    '<span>Total</span><span class="v mono pos">'+(dividends>0?"+":"")+fmt.format(dividends)+'</span>';
+  const dividendsEl = document.getElementById("dividendsRow");
+  dividendsEl.className = "v mono pos";
+  dividendsEl.textContent = (dividends>0?"+":"")+fmt.format(dividends);
 
   // Comparacion contra SPY como benchmark simple
   const bench = benchmarkWhatIf("SPY");
@@ -1027,7 +1068,7 @@ function renderTenencias(){
       const qtyHtml = analysis.quantity!=null ? fmtInt.format(analysis.quantity) : '<span class="dim">—</span>';
       const costHtml = cb.source==="auto"
         ? '<span title="Calculado de tus movimientos reales">'+fmt.format(cb.value)+' <span class="dim" style="font-size:.68rem">(auto)</span></span>'
-        : '<input class="edit-num" data-field="costBasisUSD" value="'+fmt.format(h.costBasisUSD||0)+'">';
+        : (READ_ONLY ? fmt.format(h.costBasisUSD||0) : '<input class="edit-num" data-field="costBasisUSD" value="'+fmt.format(h.costBasisUSD||0)+'">');
       let detail = "";
       if(open){
         const movs = movementsForHolding(h.platform, h.instrument);
@@ -1046,16 +1087,17 @@ function renderTenencias(){
           '<div style="padding:8px 0 2px;font-size:.8rem;color:var(--muted)">'+summary+'</div>'+
           realizedHtml + chartHtml + ledgerTable(movs) + '</td></tr>';
       }
+      const valueHtml = READ_ONLY ? fmt.format(h.valueUSD||0) : '<input class="edit-num" data-field="valueUSD" value="'+fmt.format(h.valueUSD||0)+'">';
       return '<tr class="holding-row" data-plat="'+h.platform+'" data-inst="'+h.instrument+'">'+
         '<td><span class="chevron'+(open?" open":"")+'" style="margin-right:6px">'+ICON_CHEVRON+'</span><b>'+h.name+'</b><br><span class="mono dim" style="font-size:.72rem;margin-left:15px">'+h.instrument+'</span></td>'+
         '<td>'+platformName(h.platform)+'</td>'+
         '<td><span class="tag">'+(h.group||"Otro")+'</span></td>'+
         '<td class="num mono">'+qtyHtml+'</td>'+
         '<td class="num">'+costHtml+'</td>'+
-        '<td class="num"><input class="edit-num" data-field="valueUSD" value="'+fmt.format(h.valueUSD||0)+'">'+
+        '<td class="num">'+valueHtml+
           (h.asOf?'<div class="dim" style="font-size:.68rem;margin-top:3px">'+relativeLabel(h.asOf)+'</div>':'')+'</td>'+
         '<td class="num '+cls(gain)+'">'+signed(gain)+(p!=null?' <span class="dim">('+pct(p)+')</span>':'')+'</td>'+
-        '<td><button class="del" data-action="del-holding" aria-label="Quitar tenencia">'+ICON_CLOSE+'</button></td>'+
+        '<td>'+(READ_ONLY?'':'<button class="del" data-action="del-holding" aria-label="Quitar tenencia">'+ICON_CLOSE+'</button>')+'</td>'+
         '</tr>' + detail;
     }).join("");
   }
@@ -1310,7 +1352,7 @@ function renderEvolucion(){
     return '<tr><td class="mono">'+s.date+'</td><td class="num mono">'+fmt.format(s.investedUSD)+'</td>'+
       '<td class="num mono">'+fmt.format(s.valueUSD)+'</td>'+
       '<td class="num mono '+cls(g)+'">'+signed(g)+' ('+pct(p)+')</td>'+
-      '<td><button class="del" data-idx="'+i+'" aria-label="Quitar foto">'+ICON_CLOSE+'</button></td></tr>';
+      '<td>'+(READ_ONLY?'':'<button class="del" data-idx="'+i+'" aria-label="Quitar foto">'+ICON_CLOSE+'</button>')+'</td></tr>';
   }).join("") : '<tr><td colspan="5" class="empty">Sin fotos guardadas todavía</td></tr>';
   tbody.querySelectorAll(".del").forEach(btn=>{
     btn.addEventListener("click", function(){
