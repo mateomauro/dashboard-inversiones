@@ -1,5 +1,6 @@
 # Datos financieros reales — NUNCA subir esto a ningun lado publico
 data/
+!data/inversiones.enc.json
 scripts/seed_manual.py
 
 # Extractos y notas personales (montos, capturas, decisiones reales)
