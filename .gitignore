@@ -16,3 +16,9 @@ _test_*.js
 *.log
 __pycache__/
 *.pyc
+
+# Local Netlify folder
+.netlify
+
+# Carpeta generada para publicar (solo dashboard.html + data encriptada)
+site/
