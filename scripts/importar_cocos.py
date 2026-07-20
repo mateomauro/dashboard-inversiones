@@ -30,6 +30,8 @@ TYPE_MAP = {
     "Venta Registracion ARS": "mep_bono",
     "Liq Suscripcion Fci Usd": "suscripcion_fci",
     "Liq Rescate Fci Usd": "rescate_fci",
+    "Liquidacion Suscripcion Fci": "suscripcion_fci",
+    "Liquidacion Rescate Fci": "rescate_fci",
     "Recibo De Cobro Dolares": "deposito",
     "Recibo De Cobro": "deposito",
     "Orden De Pago": "retiro",
