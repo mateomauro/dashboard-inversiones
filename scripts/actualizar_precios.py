@@ -7,9 +7,9 @@ Fuentes (gratis, sin API key):
 - Acciones/ETFs de EE.UU. (SPY, QQQ, AAPL, etc.): Yahoo Finance (endpoint publico de graficos)
 - Bitcoin: CoinGecko (coingecko.com) — plan gratis limitado a los ultimos 365 dias
 
-Los fondos en pesos/dolares (Cocos Dolares Plus, Ualá, etc.) NO se bajan aca:
-no hay una fuente gratis y confiable para su historial, se siguen registrando a mano
-con "Guardar foto de hoy" en el dashboard.
+El historial de precios de los fondos (Cocos Dolares Plus, Ualá, etc.) no se baja
+aca: no hay fuente gratis para su historial completo. Su valor de HOY si se
+actualiza solo, ver scripts/actualizar_valores.py (usa CAFCI via ArgentinaDatos).
 
 Uso:
     python3 scripts/actualizar_precios.py

@@ -28,6 +28,8 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import actualizar_precios as ap
 import actualizar_dolar as ad
+import actualizar_valores as av
+import guardar_snapshot as gs
 
 ROOT = Path(__file__).resolve().parent.parent
 PORT = 8420
@@ -80,13 +82,23 @@ class Handler(http.server.SimpleHTTPRequestHandler):
                     resumen["dolar"] = ad.actualizar_dolar()
                 except Exception as e:
                     resumen["dolar"] = {"error": str(e)}
+                try:
+                    hacer_backup()  # actualizar_valores() sobreescribe inversiones.json
+                    resumen["valores"] = av.actualizar_valores()
+                except Exception as e:
+                    resumen["valores"] = {"error": str(e)}
+                try:
+                    resumen["snapshot"] = gs.guardar_snapshot()
+                except Exception as e:
+                    resumen["snapshot"] = {"ok": False, "error": str(e)}
                 body = json.dumps(resumen).encode("utf-8")
                 self.send_response(200)
                 self.send_header("Content-Type", "application/json")
                 self.end_headers()
                 self.wfile.write(body)
                 ok = sum(1 for t in resumen["tickers"] if t["ok"])
-                print(f"  Precios actualizados: {ok}/{len(resumen['tickers'])} · dolar: {resumen['dolar']}")
+                n_val = len(resumen.get("valores", {}).get("actualizados", []))
+                print(f"  Precios actualizados: {ok}/{len(resumen['tickers'])} · dolar: {resumen['dolar']} · valores recalculados: {n_val}")
             except Exception as e:
                 self.send_response(500)
                 self.end_headers()
