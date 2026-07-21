@@ -601,6 +601,17 @@ async function tryEncryptedView(){
     });
   }catch(e){ return false; }
 }
+// Precios y cotizacion del dolar son datos de mercado, no personales — se publican sin encriptar
+// junto al blob encriptado, para que la vista de solo lectura pueda calcular costos en ARS.
+async function tryLoadPublicMarketData(){
+  try{
+    const [priceRes, dolarRes] = await Promise.allSettled([
+      fetch("data/precios_historicos.json"), fetch("data/dolar_historico.json")
+    ]);
+    if(priceRes.status==="fulfilled" && priceRes.value.ok) PRICES = await priceRes.value.json();
+    if(dolarRes.status==="fulfilled" && dolarRes.value.ok) DOLAR = await dolarRes.value.json();
+  }catch(e){}
+}
 
 function flashSaved(btn){
   btn.classList.add("saved");
@@ -1444,6 +1455,7 @@ async function tryAutoLoad(){
   // No hay servidor local (ej. estamos en GitHub Pages): probar la vista publica encriptada
   if(isServerMode() && !isLocalHost()){
     if(await tryEncryptedView()){
+      await tryLoadPublicMarketData();
       READ_ONLY = true;
       applyReadOnly();
       renderAll();
