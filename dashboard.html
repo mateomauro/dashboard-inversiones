@@ -4,33 +4,45 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Inversiones</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
   :root{
-    --sans:system-ui,"Segoe UI",-apple-system,Roboto,Helvetica,Arial,sans-serif;
-    --mono:"Cascadia Code",Consolas,ui-monospace,"SFMono-Regular",Menlo,monospace;
-    --page:#FAFAFA;--surface:#FFFFFF;--fg:#18181B;--muted:#71717A;--faint:#A1A1AA;
-    --line:#E4E4E7;--line-soft:#F1F1F2;--pos:#16A34A;--neg:#DC2626;
-    --accent:#2563EB;--accent-fg:#FFFFFF;
-    --c-fondo:#3F3F46;--c-acciones:#7C3AED;--c-cripto:#D97706;--c-otro:#71717A;
-    --accent-soft:#F1F1F2;
-    --shadow:0 1px 2px rgba(24,24,27,.04),0 6px 18px -10px rgba(24,24,27,.12);
+    --sans:"Hanken Grotesk",system-ui,"Segoe UI",-apple-system,Roboto,Helvetica,Arial,sans-serif;
+    --mono:var(--sans);
+    --page:#EEF1F5;--surface:#FFFFFF;--fg:#0F172A;--muted:#64748B;--faint:#94A3B8;
+    --line:rgba(15,23,42,.08);--line-soft:rgba(15,23,42,.05);--pos:#15905F;--pos-soft:rgba(21,144,95,.1);
+    --neg:#DC2626;--neg-soft:rgba(220,38,38,.1);
+    --accent:#2F6FED;--accent-fg:#FFFFFF;
+    --c-fondo:#1B3A6B;--c-acciones:#2F6FED;--c-cripto:#B6C2D4;--c-otro:#94A3B8;
+    --accent-soft:rgba(47,111,237,.08);
+    --shadow:0 1px 2px rgba(15,23,42,.04),0 6px 18px -10px rgba(15,23,42,.12);
+    --action-grad-1:#F0F5FF;--action-grad-2:#E7EFFE;--action-border:rgba(47,111,237,.2);
+    --action-title-c:#1E3A8A;--action-text-c:#334155;--action-track:#D5E2FB;
   }
   @media (prefers-color-scheme:dark){
     :root:not([data-theme="light"]){
-      --page:#09090B;--surface:#131316;--fg:#FAFAFA;--muted:#A1A1AA;--faint:#6B6B72;
-      --line:#27272C;--line-soft:#1C1C20;--pos:#4ADE80;--neg:#F87171;
-      --accent:#60A5FA;--accent-fg:#0B1220;
-      --c-fondo:#D4D4D8;--c-acciones:#A78BFA;--c-cripto:#FBBF24;--c-otro:#71717A;
-      --accent-soft:#1C1C20;
+      --page:#0A111F;--surface:#141D2E;--fg:#F4F7FC;--muted:#8B98AD;--faint:#5C6B82;
+      --line:rgba(255,255,255,.07);--line-soft:rgba(255,255,255,.045);--pos:#4ECF9B;--pos-soft:rgba(63,184,137,.16);
+      --neg:#F87171;--neg-soft:rgba(248,113,113,.14);
+      --accent:#5B93FF;--accent-fg:#0A111F;
+      --c-fondo:#2B4A80;--c-acciones:#5B93FF;--c-cripto:#4A5A76;--c-otro:#5C6B82;
+      --accent-soft:rgba(91,147,255,.12);
       --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 20px -10px rgba(0,0,0,.5);
+      --action-grad-1:#17233D;--action-grad-2:#132B4D;--action-border:rgba(91,147,255,.28);
+      --action-title-c:#BCD3FF;--action-text-c:#C3CDDA;--action-track:#22375C;
     }
   }
   :root[data-theme="dark"]{
-    --page:#09090B;--surface:#131316;--fg:#FAFAFA;--muted:#A1A1AA;--faint:#6B6B72;
-    --line:#27272C;--line-soft:#1C1C20;--pos:#4ADE80;--neg:#F87171;
-    --accent:#60A5FA;--accent-fg:#0B1220;
-    --c-fondo:#D4D4D8;--c-acciones:#60A5FA;--c-cripto:#FBBF24;--c-otro:#71717A;
-    --accent-soft:#1C1C20;
+    --page:#0A111F;--surface:#141D2E;--fg:#F4F7FC;--muted:#8B98AD;--faint:#5C6B82;
+    --line:rgba(255,255,255,.07);--line-soft:rgba(255,255,255,.045);--pos:#4ECF9B;--pos-soft:rgba(63,184,137,.16);
+    --neg:#F87171;--neg-soft:rgba(248,113,113,.14);
+    --accent:#5B93FF;--accent-fg:#0A111F;
+    --c-fondo:#2B4A80;--c-acciones:#5B93FF;--c-cripto:#4A5A76;--c-otro:#5C6B82;
+    --action-grad-1:#17233D;--action-grad-2:#132B4D;--action-border:rgba(91,147,255,.28);
+    --action-title-c:#BCD3FF;--action-text-c:#C3CDDA;--action-track:#22375C;
+    --accent-soft:rgba(91,147,255,.12);
     --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 20px -10px rgba(0,0,0,.5);
   }
   *{box-sizing:border-box}
@@ -58,23 +70,34 @@
   .status.warn{color:var(--neg)}
 
   /* nav tabs */
-  nav.tabs{display:flex;gap:2px;border-bottom:1px solid var(--line);margin-bottom:24px;overflow-x:auto}
-  nav.tabs button{font-family:var(--sans);font-size:.85rem;font-weight:600;color:var(--muted);
-    background:none;border:none;border-bottom:2px solid transparent;padding:10px 14px;cursor:pointer;white-space:nowrap;transition:color .15s,border-color .15s}
+  nav.tabs{display:flex;gap:5px;background:var(--accent-soft);border-radius:14px;padding:4px;margin-bottom:24px;overflow-x:auto}
+  nav.tabs button{font-family:var(--sans);font-size:.68rem;font-weight:700;color:var(--faint);
+    background:none;border:none;border-radius:10px;padding:8px 6px;cursor:pointer;white-space:nowrap;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;flex:1;min-height:44px;
+    transition:color .15s,background .15s,box-shadow .15s}
+  nav.tabs button svg{stroke:currentColor;flex:none}
   nav.tabs button:hover{color:var(--fg)}
-  nav.tabs button.active{color:var(--accent);border-bottom-color:var(--accent)}
+  nav.tabs button.active{color:var(--accent);background:var(--surface);box-shadow:var(--shadow)}
+  @media (min-width:640px){
+    nav.tabs{padding:4px;border-radius:12px}
+    nav.tabs button{flex-direction:row;font-size:.8rem;padding:9px 16px;gap:7px;flex:none}
+  }
 
   .view{display:none}
   .view.active{display:block}
 
   /* hero / resumen */
-  .hero{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:clamp(18px,4vw,28px);margin-bottom:20px;box-shadow:var(--shadow)}
-  .hero-label{font-size:.72rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted)}
-  .hero-total{font-family:var(--mono);font-weight:650;letter-spacing:-.02em;line-height:1;
-    font-size:clamp(2rem,7vw,2.8rem);font-variant-numeric:tabular-nums;margin:.35rem 0 .5rem}
-  .hero-total .u{color:var(--muted);font-size:.42em;font-weight:500;margin-right:.25em;vertical-align:.3em}
-  .hero-sub{font-size:.9rem;color:var(--muted);font-variant-numeric:tabular-nums}
-  .hero-sub .g{font-weight:650;font-family:var(--mono)}
+  .hero{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:clamp(20px,4vw,28px) clamp(18px,4vw,28px);box-shadow:var(--shadow)}
+  .hero-label{font-size:.82rem;font-weight:600;color:var(--muted)}
+  .hero-total{font-weight:800;letter-spacing:-.02em;line-height:1.05;
+    font-size:clamp(2.2rem,7vw,2.9rem);font-variant-numeric:tabular-nums;margin:.3rem 0 .7rem}
+  .hero-total .u{color:var(--muted);font-size:.4em;font-weight:600;margin-right:.22em;vertical-align:.38em}
+  .hero-total .dec{color:var(--faint);font-size:.56em;font-weight:700}
+  .hero-badge{display:inline-flex;align-items:center;gap:5px;padding:5px 10px;border-radius:9px;font-size:.85rem;font-weight:700;font-variant-numeric:tabular-nums}
+  .hero-badge.pos{background:var(--pos-soft);color:var(--pos)}
+  .hero-badge.neg{background:var(--neg-soft);color:var(--neg)}
+  .hero-badge svg{flex:none}
+  .hero-sub{font-size:.9rem;color:var(--muted);font-variant-numeric:tabular-nums;display:flex;align-items:center;gap:9px;flex-wrap:wrap}
   .hero-secondary{margin-top:16px;padding-top:14px;border-top:1px solid var(--line-soft)}
   .hero-highlights{display:flex;gap:20px;margin-top:10px;font-size:.8rem;flex-wrap:wrap;color:var(--muted)}
   .hero-highlights .lbl{color:var(--faint);margin-right:4px}
@@ -91,7 +114,52 @@
   .grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:18px}
   @media (max-width:640px){.grid2{grid-template-columns:1fr}}
   .metrics-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:18px}
-  .card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px;box-shadow:var(--shadow)}
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:18px;box-shadow:var(--shadow)}
+  #view-resumen.active{display:flex;flex-direction:column;gap:14px}
+  @media (min-width:900px){
+    #view-resumen.active{
+      display:grid;grid-template-columns:2fr 1fr;align-items:start;gap:16px;
+      grid-template-areas:"hero donut" "evo donut" "evo action" "label label" "detail detail";
+    }
+    .hero{grid-area:hero}
+    .resumen-evo-card{grid-area:evo;margin:0}
+    .donut-card{grid-area:donut}
+    .action-card{grid-area:action;margin:0}
+    #detailLabel{grid-area:label}
+    #detailGrid{grid-area:detail;grid-template-columns:repeat(4,1fr)}
+  }
+  .card-title{font-size:.95rem;font-weight:700;color:var(--fg);margin:0 0 12px}
+  .resumen-evo-card svg.chart{height:150px}
+
+  .donut-wrap{display:flex;align-items:center;gap:18px}
+  .donut-svg{flex:none}
+  .donut-legend{flex:1;display:flex;flex-direction:column;gap:9px;min-width:0}
+  .donut-legend-row{display:flex;align-items:center;gap:8px;cursor:pointer;padding:9px 6px;margin:-9px -6px;min-height:44px;border-radius:8px;transition:background .12s}
+  .donut-legend-row:hover{background:var(--accent-soft)}
+  .donut-legend-row .name{flex:1;font-size:.82rem;font-weight:600;color:var(--fg);min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .donut-legend-row .pct{font-size:.82rem;font-weight:700;color:var(--fg)}
+
+  .action-card{background:linear-gradient(160deg,var(--action-grad-1),var(--action-grad-2));border:1px solid var(--action-border);border-radius:20px;padding:18px;margin-bottom:14px}
+  .action-head{display:flex;align-items:center;gap:9px;margin-bottom:10px}
+  .action-icon{width:30px;height:30px;border-radius:9px;background:var(--accent);display:flex;align-items:center;justify-content:center;flex:none}
+  .action-icon svg{stroke:var(--accent-fg)}
+  .action-title{font-size:.9rem;font-weight:700;color:var(--action-title-c)}
+  .action-text{margin:0 0 13px;font-size:.83rem;line-height:1.5;color:var(--action-text-c)}
+  .action-text b{color:var(--action-title-c)}
+  .action-progress-row{display:flex;justify-content:space-between;font-size:.7rem;font-weight:600;color:var(--muted);margin-bottom:6px}
+  .action-progress{height:7px;border-radius:5px;background:var(--action-track);position:relative;overflow:hidden;margin-bottom:14px}
+  .action-progress-fill{position:absolute;top:0;bottom:0;left:0;background:var(--accent);border-radius:5px}
+  .action-progress-target{position:absolute;top:-2px;bottom:-2px;width:2px;background:var(--action-title-c)}
+  .action-cta{width:100%;height:46px;border:0;border-radius:13px;background:var(--accent);color:var(--accent-fg);
+    font-size:.88rem;font-weight:700;font-family:inherit;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:opacity .15s}
+  .action-cta:hover{opacity:.9}
+  .action-cta svg{stroke:var(--accent-fg)}
+
+  .section-label{font-size:.68rem;font-weight:700;color:var(--faint);letter-spacing:.06em;text-transform:uppercase;margin:2px 2px 4px}
+  .stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .stat-card{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:14px;box-shadow:none;margin-bottom:0}
+  .stat-label{font-size:.72rem;font-weight:600;color:var(--muted);margin-bottom:8px}
+  .stat-value{font-size:1.15rem;font-weight:800;color:var(--fg)}
   .card h3{font-size:.78rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin:0 0 10px;font-weight:650}
   .row-kv{display:flex;justify-content:space-between;align-items:center;padding:6px 0;font-size:.88rem;border-bottom:1px solid var(--line-soft)}
   .row-kv:last-child{border-bottom:none}
@@ -111,10 +179,10 @@
   .mov-row{cursor:pointer}
   .mov-row:hover td{background:var(--accent-soft)}
   td.num,th.num{text-align:right}
-  .mono{font-family:var(--mono)}
+  .mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
   .tag{display:inline-block;font-size:.68rem;font-weight:650;padding:2px 8px;border-radius:999px;background:var(--accent-soft);color:var(--muted)}
 
-  .edit-num{width:88px;font-family:var(--mono);font-size:.84rem;text-align:right;background:var(--accent-soft);
+  .edit-num{width:88px;font-family:var(--mono);font-variant-numeric:tabular-nums;font-size:.84rem;text-align:right;background:var(--accent-soft);
     border:1px solid var(--line);border-radius:7px;padding:5px 7px;color:var(--fg);transition:border-color .15s,box-shadow .15s}
   .edit-num:hover{border-color:var(--faint)}
   .edit-num:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 18%,transparent)}
@@ -153,7 +221,7 @@
   .chart-area{fill:var(--fg);opacity:.06}
   .chart-dot{fill:var(--fg)}
   .chart-dot-invested{fill:var(--faint)}
-  .chart-label{font-family:var(--mono);font-size:.68rem;fill:var(--faint)}
+  .chart-label{font-family:var(--mono);font-variant-numeric:tabular-nums;font-size:.68rem;fill:var(--faint)}
   .chart-legend{display:flex;gap:18px;font-size:.75rem;color:var(--muted);margin-bottom:8px}
   .chart-legend .ln{display:inline-block;width:14px;height:2px;background:var(--fg);vertical-align:middle;margin-right:6px}
   .chart-legend .ln.inv{background:none;border-top:1.5px dashed var(--faint)}
@@ -207,7 +275,6 @@
   /* mobile: targets tactiles mas grandes, tablas mas simples, menos columnas */
   @media (max-width:640px){
     .btn{padding:12px 16px;font-size:.85rem}
-    nav.tabs button{padding:14px 12px}
     .del{padding:9px}
     .filter-chip button{padding:8px}
     .toolbar select,.toolbar input[type=text],.toolbar input[type=date]{padding:12px 10px;font-size:.88rem}
@@ -254,10 +321,10 @@
   </header>
 
   <nav class="tabs">
-    <button class="tab-btn active" data-view="resumen">Resumen</button>
-    <button class="tab-btn" data-view="tenencias">Tenencias</button>
-    <button class="tab-btn" data-view="movimientos">Movimientos</button>
-    <button class="tab-btn" data-view="evolucion">Evolución</button>
+    <button class="tab-btn active" data-view="resumen"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>Resumen</button>
+    <button class="tab-btn" data-view="tenencias"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><circle cx="3.5" cy="6" r="1.2"/><circle cx="3.5" cy="12" r="1.2"/><circle cx="3.5" cy="18" r="1.2"/></svg>Tenencias</button>
+    <button class="tab-btn" data-view="movimientos"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h11l-3-3"/><path d="M17 17H6l3 3"/></svg>Movimientos</button>
+    <button class="tab-btn" data-view="evolucion"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 14l4-4 3 3 5-6"/></svg>Evolución</button>
   </nav>
 
   <!-- RESUMEN -->
@@ -271,29 +338,40 @@
         <div class="hero-highlights" id="heroHighlights"></div>
       </div>
     </div>
-    <div class="grid2">
-      <div class="card">
-        <h3>Por plataforma</h3>
+    <div class="card resumen-evo-card">
+      <div class="card-head">
+        <h3 class="card-title">Evolución</h3>
+      </div>
+      <svg class="chart" id="resumenEvoChart"></svg>
+    </div>
+    <div class="card donut-card">
+      <h3 class="card-title">Distribución por tipo de activo</h3>
+      <div class="donut-wrap">
+        <svg width="120" height="120" viewBox="0 0 160 160" class="donut-svg" id="groupDonut"></svg>
+        <div class="donut-legend" id="byGroup"></div>
+      </div>
+    </div>
+    <div class="action-card" id="rebalanceCard">
+      <div id="rebalanceBody"></div>
+    </div>
+    <div class="section-label" id="detailLabel">Más detalle</div>
+    <div class="stat-grid" id="detailGrid">
+      <div class="stat-card">
+        <div class="stat-label">Por plataforma</div>
         <div id="byPlatform"></div>
       </div>
-      <div class="card">
-        <h3>Por tipo de activo</h3>
-        <div class="alloc-bar" id="groupBar"></div>
-        <div id="byGroup"></div>
+      <div class="stat-card" id="benchmarkCard" style="display:none">
+        <div class="stat-label">vs. S&amp;P 500</div>
+        <div id="benchmarkBody"></div>
       </div>
-    </div>
-    <div class="card" style="margin-top:14px">
-      <h3>Ganancias adicionales</h3>
-      <div class="row-kv"><span>Realizadas (ventas)<span class="dim" id="realizedPartial" style="display:none"> (parcial)</span></span><span class="v mono" id="realizedRow">-</span></div>
-      <div class="row-kv" style="border-bottom:none"><span>Dividendos cobrados</span><span class="v mono" id="dividendsRow">-</span></div>
-    </div>
-    <div class="card" id="benchmarkCard" style="margin-top:14px;display:none">
-      <h3>¿Y si hubiera invertido todo en SPY?</h3>
-      <div id="benchmarkBody"></div>
-    </div>
-    <div class="card" style="margin-top:14px" id="rebalanceCard">
-      <h3>Próximo aporte — dónde conviene ponerlo</h3>
-      <div id="rebalanceBody"></div>
+      <div class="stat-card">
+        <div class="stat-label">Ganancias realizadas<span class="dim" id="realizedPartial" style="display:none"> (parcial)</span></div>
+        <div class="stat-value mono" id="realizedRow">-</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Dividendos cobrados</div>
+        <div class="stat-value mono" id="dividendsRow">-</div>
+      </div>
     </div>
   </section>
 
@@ -449,6 +527,15 @@ const ICON_CHEVRON = '<svg class="icon" width="9" height="9" viewBox="0 0 10 10"
 const ICON_CLOSE = '<svg class="icon" width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M2 2l8 8M10 2l-8 8"/></svg>';
 const ICON_REFRESH = '<svg class="icon" width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M13.7 8A5.7 5.7 0 1 1 12 4.1M13.7 2v3.6h-3.6"/></svg>';
 const ICON_CHECK = '<svg class="icon" width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M2 6.2l2.8 2.8L10 3"/></svg>';
+const ICON_ARROW_UP = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l7-7 7 7"/><path d="M12 19V5"/></svg>';
+const ICON_ARROW_DOWN = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12l-7 7-7-7"/><path d="M12 5v14"/></svg>';
+const ICON_TARGET = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="1" style="fill:var(--accent-fg)"/></svg>';
+const ICON_ARROW_R = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg>';
+function moneyParts(n){
+  const s = fmt.format(Math.abs(n||0));
+  const i = s.lastIndexOf(",");
+  return i===-1 ? {int:s, dec:""} : {int:s.slice(0,i), dec:s.slice(i)};
+}
 
 // ---------- tooltip propio para graficos (reemplaza el <title> nativo del navegador) ----------
 const tipEl = document.getElementById("chartTooltip");
@@ -876,11 +963,14 @@ function renderResumen(){
       if(!worst||gp<worst.gp) worst={name:h.name,gp};
     } else if(v>0){ sinCosto++; }
   });
-  document.getElementById("totalValue").innerHTML = '<span class="u">US$</span>'+fmt.format(totalValue);
+  const tp = moneyParts(totalValue);
+  document.getElementById("totalValue").innerHTML = '<span class="u">US$</span>'+tp.int+'<span class="dec">'+tp.dec+'</span>';
   const sub = document.getElementById("totalSub");
   if(perfCost>0){
     const gain=perfValue-perfCost, p=gain/perfCost*100;
-    sub.innerHTML = 'Invertiste US$ '+fmt.format(perfCost)+' · <span class="g '+cls(gain)+'">'+signed(gain)+' ('+pct(p)+')</span>'+
+    const badgeCls = cls(gain), arrow = gain>=0 ? ICON_ARROW_UP : ICON_ARROW_DOWN;
+    sub.innerHTML = '<span class="hero-badge '+badgeCls+'">'+arrow+' '+signed(gain)+' ('+pct(p)+')</span>'+
+      '<span>invertido US$ '+fmt.format(perfCost)+'</span>'+
       (sinCosto? ' <span class="dim hoverable-pt" data-tip="Todavía no sabemos cuánto pagaste por '+sinCosto+' de tus activos, así que los dejamos afuera de este porcentaje para no distorsionarlo. Su valor sí está incluido en el total de arriba.">· '+sinCosto+' '+(sinCosto===1?'activo':'activos')+' sin precio de compra cargado ⓘ</span>' : '');
     bindTooltips(sub);
   } else { sub.textContent = "Cargá el costo de tus tenencias para ver la ganancia."; }
@@ -911,89 +1001,106 @@ function renderResumen(){
     bindTooltips(goalEl);
   } else { goalEl.innerHTML = ""; }
 
+  // Por plataforma: barra apilada compacta + etiquetas
   const bp = document.getElementById("byPlatform");
-  bp.innerHTML = Object.keys(byPlat).length ? Object.keys(byPlat).map(k=>{
-    const d=byPlat[k], g=d.value-d.cost, p = totalValue>0? d.value/totalValue*100:0;
-    return '<div class="row-kv clickable" data-goto-platform="'+k+'" style="margin:0 -6px;padding:6px;border-radius:8px"><span>'+platformName(k)+'</span><span class="v">'+p.toFixed(0)+'% · US$ '+fmt.format(d.value)+
-      ' <span class="'+cls(g)+'" style="font-weight:400">('+signed(g)+')</span></span></div>';
-  }).join("") : '<div class="empty">Sin tenencias</div>';
-  bp.querySelectorAll("[data-goto-platform]").forEach(el=>{
-    el.addEventListener("click", ()=>{ tenenciasFilter={platform:el.dataset.gotoPlatform, group:null}; goToTab("tenencias"); renderTenencias(); });
-  });
+  const platKeys = Object.keys(byPlat).sort((a,b)=>byPlat[b].value-byPlat[a].value);
+  const PLAT_COLORS = ["var(--accent)","var(--c-cripto)","var(--faint)","var(--c-fondo)"];
+  if(platKeys.length){
+    let barHtml = '<div style="display:flex;height:9px;border-radius:5px;overflow:hidden;margin-bottom:8px">';
+    let rowHtml = '<div style="display:flex;flex-wrap:wrap;gap:9px;font-size:.78rem">';
+    platKeys.forEach((k,i)=>{
+      const d=byPlat[k], p = totalValue>0? d.value/totalValue*100:0;
+      const color = PLAT_COLORS[i % PLAT_COLORS.length];
+      barHtml += '<div style="width:'+p+'%;background:'+color+'"></div>';
+      rowHtml += '<span class="clickable" data-goto-platform="'+k+'" style="border-radius:6px;padding:2px 3px;margin:-2px -3px;font-weight:600;color:var(--fg)">'+platformName(k)+' <span class="dim mono">'+p.toFixed(0)+'%</span></span>';
+    });
+    bp.innerHTML = barHtml+'</div>'+rowHtml+'</div>';
+    bp.querySelectorAll("[data-goto-platform]").forEach(el=>{
+      el.addEventListener("click", ()=>{ tenenciasFilter={platform:el.dataset.gotoPlatform, group:null}; goToTab("tenencias"); renderTenencias(); });
+    });
+  } else { bp.innerHTML = '<div class="empty">Sin tenencias</div>'; }
 
+  // Distribucion por tipo de activo: donut + leyenda
   const groupKeys = Object.keys(byGroup).sort((a,b)=>byGroup[b].value-byGroup[a].value);
-  const barEl = document.getElementById("groupBar");
+  const donutSvg = document.getElementById("groupDonut");
   const legendEl = document.getElementById("byGroup");
   if(groupKeys.length){
-    let barHtml="", legendHtml="";
-    groupKeys.forEach((k,i)=>{
-      const d=byGroup[k], p = totalValue>0? d.value/totalValue*100:0;
+    const r=54, cx=80, cy=80, sw=22, circumference=2*Math.PI*r;
+    let offset=0, circles="", legendHtml="";
+    groupKeys.forEach(k=>{
+      const d=byGroup[k], frac = totalValue>0? d.value/totalValue:0, p100=frac*100;
       const color = GROUP_COLOR[k]||"var(--c-otro)";
-      const barTip = escapeHtml(k+": "+p.toFixed(0)+"% · US$ "+fmt.format(d.value));
-      barHtml += '<div class="alloc-seg hoverable-pt" data-tip="'+barTip+'" style="width:'+p+'%;background:'+color+'"></div>';
-      const target = GROUP_TARGETS[k];
-      let targetHtml = "";
-      if(target){
-        const [lo,hi] = target;
-        const within = p>=lo && p<=hi;
-        targetHtml = '<div class="dim" style="font-size:.72rem;margin-top:1px;margin-left:15px">'+
-          '<span class="hoverable-pt" data-tip="Rango que definiste para tu propia cartera: cuánto querés tener de '+k+' sobre el total, para mantenerla balanceada.">Tu meta acá: '+lo+'–'+hi+'% ⓘ</span> '+
-          (within ? '<span class="pos">✓ en línea</span>' : '<span class="neg">'+(p<lo?'tenés menos de lo planeado':'tenés más de lo planeado')+'</span>')+'</div>';
-      }
-      const borderStyle = i===groupKeys.length-1 ? "border:none" : "border:none;border-bottom:1px solid var(--line-soft)";
-      legendHtml += '<div class="clickable" data-goto-group="'+k+'" style="padding:6px;margin:0 -6px;border-radius:8px;'+borderStyle+'">'+
-        '<div class="row-kv" style="border:none;padding:0"><span><span class="dot" style="background:'+color+'"></span>'+k+'</span><span class="v">'+p.toFixed(0)+'% · US$ '+fmt.format(d.value)+'</span></div>'+
-        targetHtml+'</div>';
+      const len = frac*circumference;
+      circles += '<circle cx="'+cx+'" cy="'+cy+'" r="'+r+'" style="stroke:'+color+'" stroke-dasharray="'+len.toFixed(2)+' '+(circumference-len).toFixed(2)+'" stroke-dashoffset="'+(-offset).toFixed(2)+'"/>';
+      offset += len;
+      legendHtml += '<div class="donut-legend-row" data-goto-group="'+k+'"><span class="dot" style="background:'+color+'"></span><span class="name">'+k+'</span><span class="pct mono">'+p100.toFixed(0)+'%</span></div>';
     });
-    barEl.innerHTML = barHtml; legendEl.innerHTML = legendHtml;
-    bindTooltips(barEl);
-    bindTooltips(legendEl);
+    donutSvg.innerHTML = '<g transform="rotate(-90 '+cx+' '+cy+')" fill="none" stroke-width="'+sw+'">'+circles+'</g>'+
+      '<text x="'+cx+'" y="'+(cy-4)+'" text-anchor="middle" font-size="14" font-weight="700" style="fill:var(--faint)" font-family="Hanken Grotesk">'+groupKeys.length+' tipo'+(groupKeys.length===1?'':'s')+'</text>'+
+      '<text x="'+cx+'" y="'+(cy+14)+'" text-anchor="middle" font-size="12" font-weight="600" style="fill:var(--faint)" font-family="Hanken Grotesk">de activo</text>';
+    legendEl.innerHTML = legendHtml;
     legendEl.querySelectorAll("[data-goto-group]").forEach(el=>{
       el.addEventListener("click", ()=>{ tenenciasFilter={platform:null, group:el.dataset.gotoGroup}; goToTab("tenencias"); renderTenencias(); });
     });
-  } else { barEl.innerHTML=""; legendEl.innerHTML = '<div class="empty">Sin tenencias</div>'; }
+  } else { donutSvg.innerHTML=""; legendEl.innerHTML = '<div class="empty">Sin tenencias</div>'; }
 
   const realized = totalRealizedGainUSD();
   document.getElementById("realizedPartial").style.display = realized.complete ? "none" : "";
   const realizedEl = document.getElementById("realizedRow");
-  realizedEl.className = "v mono "+cls(realized.total);
+  realizedEl.className = "stat-value mono "+cls(realized.total);
   realizedEl.textContent = signed(realized.total);
   const dividends = totalDividendsUSD();
   const dividendsEl = document.getElementById("dividendsRow");
-  dividendsEl.className = "v mono pos";
+  dividendsEl.className = "stat-value mono pos";
   dividendsEl.textContent = (dividends>0?"+":"")+fmt.format(dividends);
 
-  // Comparacion contra SPY como benchmark simple
+  // Comparacion contra SPY como benchmark simple: diferencia en puntos de rendimiento
   const bench = benchmarkWhatIf("SPY");
   const benchCard = document.getElementById("benchmarkCard");
-  if(bench){
+  if(bench && perfCost>0 && bench.invested>0){
     benchCard.style.display = "";
-    const diff = totalValue - bench.wouldBeWorth;
+    const myPct = (perfValue-perfCost)/perfCost*100;
+    const spyPct = (bench.wouldBeWorth-bench.invested)/bench.invested*100;
+    const diffPts = myPct-spyPct;
     document.getElementById("benchmarkBody").innerHTML =
-      '<div class="row-kv"><span>Invertiste en total</span><span class="v mono">US$ '+fmt.format(bench.invested)+'</span></div>'+
-      '<div class="row-kv"><span>Tu cartera real hoy</span><span class="v mono">US$ '+fmt.format(totalValue)+'</span></div>'+
-      '<div class="row-kv"><span>Si hubiera ido todo a SPY</span><span class="v mono">US$ '+fmt.format(bench.wouldBeWorth)+'</span></div>'+
-      '<div class="row-kv" style="border:none"><span>Diferencia</span><span class="v mono '+cls(diff)+'">'+signed(diff)+'</span></div>'+
-      (bench.complete?'':'<div class="dim" style="font-size:.72rem;margin-top:4px">Estimado parcial — falta convertir algún movimiento</div>');
+      '<div class="stat-value '+cls(diffPts)+'">'+signed(diffPts)+' pts</div>'+
+      '<div class="dim mono" style="font-size:.72rem;margin-top:2px">vos '+pct(myPct)+' · SPY '+pct(spyPct)+'</div>'+
+      (bench.complete?'':'<div class="dim" style="font-size:.66rem;margin-top:2px">estimado parcial</div>');
   } else { benchCard.style.display = "none"; }
 
-  // Guia simple de rebalanceo: a donde conviene que vaya el proximo aporte
+  // Sugerencia de aporte: guia de rebalanceo con logica real (grupo mas atrasado vs. meta)
   const rebalRows = Object.keys(GROUP_TARGETS).map(g=>{
     const current = byGroup[g] ? byGroup[g].value : 0;
     const p = totalValue>0 ? current/totalValue*100 : 0;
     const [lo,hi] = GROUP_TARGETS[g];
-    return {group:g, p, lo, hi, under: p<lo?lo-p:0};
+    return {group:g, p, lo, hi, under: p<lo?lo-p:0, over: p>hi?p-hi:0};
   });
-  const priority = rebalRows.filter(r=>r.under>0).sort((a,b)=>b.under-a.under)[0];
+  const under = rebalRows.filter(r=>r.under>0).sort((a,b)=>b.under-a.under)[0];
+  const over = rebalRows.filter(r=>r.over>0).sort((a,b)=>b.over-a.over)[0];
   const rebalBody = document.getElementById("rebalanceBody");
+  const actionHead = '<div class="action-head"><div class="action-icon">'+ICON_TARGET+'</div><span class="action-title">Sugerencia de aporte</span></div>';
   if(totalValue<=0){
-    rebalBody.innerHTML = '<div class="empty">Cargá tus tenencias primero</div>';
-  } else if(priority){
-    rebalBody.innerHTML = 'Tu <b>'+priority.group+'</b> está en '+priority.p.toFixed(0)+'% (meta: '+priority.lo+'–'+priority.hi+'%). '+
-      'Convendría que tu próximo aporte vaya principalmente ahí para volver a tu plan.';
+    rebalBody.innerHTML = actionHead+'<p class="action-text">Cargá tus tenencias para ver esto.</p>';
+  } else if(under){
+    const overText = over ? 'Estás <b>sobreponderado en '+over.group+'</b> ('+over.p.toFixed(0)+'% vs. objetivo '+over.hi+'%). ' : '';
+    const fillPct = Math.min(100, under.lo>0 ? under.p/under.lo*100 : 0);
+    rebalBody.innerHTML = actionHead+
+      '<p class="action-text">'+overText+'Tu próximo aporte conviene dirigirlo a <b>'+under.group+'</b> para acercarte a tu meta.</p>'+
+      '<div class="action-progress-row"><span>'+under.group+'</span><span class="mono">'+under.p.toFixed(0)+'% → objetivo '+under.lo+'%</span></div>'+
+      '<div class="action-progress"><div class="action-progress-fill" style="width:'+fillPct.toFixed(0)+'%"></div></div>'+
+      '<button class="action-cta" id="btnRebalCta" data-goto-group="'+under.group+'">Aportar a '+under.group+' '+ICON_ARROW_R+'</button>';
+    const cta = document.getElementById("btnRebalCta");
+    if(cta) cta.addEventListener("click", ()=>{ tenenciasFilter={platform:null, group:cta.dataset.gotoGroup}; goToTab("tenencias"); renderTenencias(); });
+  } else if(over){
+    rebalBody.innerHTML = actionHead+
+      '<p class="action-text">Estás <b>sobreponderado en '+over.group+'</b> ('+over.p.toFixed(0)+'% vs. objetivo '+over.hi+'%). Tu próximo aporte podría ir a otro tipo de activo para balancear.</p>';
   } else {
-    rebalBody.innerHTML = '<span class="pos">Tu cartera está dentro de los rangos que definiste.</span> Podés repartir el próximo aporte como venís haciendo.';
+    rebalBody.innerHTML = actionHead+'<p class="action-text"><b>Tu cartera está dentro de los rangos que definiste.</b> Podés repartir el próximo aporte como venís haciendo.</p>';
   }
+
+  // Evolucion mini-chart en Resumen (mismo dibujo que la pestaña Evolucion, mas chico)
+  const snapsResumen = (STATE.snapshots||[]).slice().sort((a,b)=>a.date.localeCompare(b.date));
+  drawChart(snapsResumen, "resumenEvoChart");
 }
 
 // ---------- TENENCIAS ----------
@@ -1380,8 +1487,9 @@ function renderEvolucion(){
   });
   drawChart(snaps);
 }
-function drawChart(snaps){
-  const svg = document.getElementById("evoChart");
+function drawChart(snaps, svgId){
+  const svg = document.getElementById(svgId || "evoChart");
+  if(!svg) return;
   svg.innerHTML = "";
   if(snaps.length<1){ svg.innerHTML='<text x="10" y="100" class="chart-label">Guardá al menos una foto para ver el gráfico.</text>'; return; }
   const W=1000,H=200,pad=30;
