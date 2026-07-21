@@ -464,7 +464,9 @@ function bindTooltips(container){
     el.addEventListener("mouseenter", e=>{ tipEl.innerHTML = el.getAttribute("data-tip"); tipEl.classList.add("show"); positionTip(e); });
     el.addEventListener("mousemove", positionTip);
     el.addEventListener("mouseleave", ()=>{ tipEl.classList.remove("show"); });
+    el.addEventListener("click", e=>{ e.stopPropagation(); });
     el.addEventListener("touchstart", e=>{
+      e.stopPropagation();
       const t = e.touches[0];
       tipEl.innerHTML = el.getAttribute("data-tip");
       tipEl.classList.add("show");
@@ -879,7 +881,8 @@ function renderResumen(){
   if(perfCost>0){
     const gain=perfValue-perfCost, p=gain/perfCost*100;
     sub.innerHTML = 'Invertiste US$ '+fmt.format(perfCost)+' · <span class="g '+cls(gain)+'">'+signed(gain)+' ('+pct(p)+')</span>'+
-      (sinCosto? ' <span class="dim">· '+sinCosto+' sin costo cargado, no '+(sinCosto===1?'entra':'entran')+' en el %</span>' : '');
+      (sinCosto? ' <span class="dim hoverable-pt" data-tip="Todavía no sabemos cuánto pagaste por '+sinCosto+' de tus activos, así que los dejamos afuera de este porcentaje para no distorsionarlo. Su valor sí está incluido en el total de arriba.">· '+sinCosto+' '+(sinCosto===1?'activo':'activos')+' sin precio de compra cargado ⓘ</span>' : '');
+    bindTooltips(sub);
   } else { sub.textContent = "Cargá el costo de tus tenencias para ver la ganancia."; }
 
   const hl = document.getElementById("heroHighlights");
@@ -902,9 +905,9 @@ function renderResumen(){
     if(xr.annualized<5){ badgeCls="low"; badgeText="por debajo de tu meta"; }
     else if(xr.annualized<=15){ badgeCls="ok"; badgeText="dentro de tu meta"; }
     else { badgeCls="high"; badgeText="por encima de tu meta"; }
-    goalEl.innerHTML = 'Rendimiento anualizado (XIRR<span class="dim hoverable-pt" data-tip="Tasa que pondera cuándo y cuánto invertiste en cada momento — el número correcto para saber qué ganaste vos, no solo la estrategia">*</span>): <b class="mono">'+pct(xr.annualized)+'</b> '+
-      '<span class="badge '+badgeCls+'">'+badgeText+'</span> <span class="dim">· meta 5–15%</span>'+
-      (xr.complete?'':' <span class="dim">(parcial)</span>');
+    goalEl.innerHTML = 'Cuánto ganás por año, en promedio <span class="dim hoverable-pt" data-tip="Esto es el XIRR: pondera cuándo y cuánto invertiste en cada momento, para saber qué ganaste realmente vos, no solo si subió o bajó la cartera. Si acabás de hacer un aporte grande, este número puede quedar muy alto o muy bajo por unos días — se va acomodando solo con el tiempo.">ⓘ</span>: <b class="mono">'+pct(xr.annualized)+'</b> '+
+      '<span class="badge '+badgeCls+'">'+badgeText+'</span> <span class="dim">· tu meta: 5–15% anual</span>'+
+      (xr.complete?'':' <span class="dim hoverable-pt" data-tip="Todavía no se pudo convertir a dólares alguno de tus movimientos en pesos, así que este número es una aproximación.">(parcial ⓘ)</span>');
     bindTooltips(goalEl);
   } else { goalEl.innerHTML = ""; }
 
@@ -933,8 +936,9 @@ function renderResumen(){
       if(target){
         const [lo,hi] = target;
         const within = p>=lo && p<=hi;
-        targetHtml = '<div class="dim" style="font-size:.72rem;margin-top:1px;margin-left:15px">Meta '+lo+'–'+hi+'% '+
-          (within ? '<span class="pos">✓ en línea</span>' : '<span class="neg">'+(p<lo?'por debajo':'por encima')+'</span>')+'</div>';
+        targetHtml = '<div class="dim" style="font-size:.72rem;margin-top:1px;margin-left:15px">'+
+          '<span class="hoverable-pt" data-tip="Rango que definiste para tu propia cartera: cuánto querés tener de '+k+' sobre el total, para mantenerla balanceada.">Tu meta acá: '+lo+'–'+hi+'% ⓘ</span> '+
+          (within ? '<span class="pos">✓ en línea</span>' : '<span class="neg">'+(p<lo?'tenés menos de lo planeado':'tenés más de lo planeado')+'</span>')+'</div>';
       }
       const borderStyle = i===groupKeys.length-1 ? "border:none" : "border:none;border-bottom:1px solid var(--line-soft)";
       legendHtml += '<div class="clickable" data-goto-group="'+k+'" style="padding:6px;margin:0 -6px;border-radius:8px;'+borderStyle+'">'+
@@ -943,6 +947,7 @@ function renderResumen(){
     });
     barEl.innerHTML = barHtml; legendEl.innerHTML = legendHtml;
     bindTooltips(barEl);
+    bindTooltips(legendEl);
     legendEl.querySelectorAll("[data-goto-group]").forEach(el=>{
       el.addEventListener("click", ()=>{ tenenciasFilter={platform:null, group:el.dataset.gotoGroup}; goToTab("tenencias"); renderTenencias(); });
     });
@@ -1078,7 +1083,7 @@ function renderTenencias(){
       const cb = effectiveCostBasis(h);
       const qtyHtml = analysis.quantity!=null ? fmtInt.format(analysis.quantity) : '<span class="dim">—</span>';
       const costHtml = cb.source==="auto"
-        ? '<span title="Calculado de tus movimientos reales">'+fmt.format(cb.value)+' <span class="dim" style="font-size:.68rem">(auto)</span></span>'
+        ? '<span>'+fmt.format(cb.value)+' <span class="dim hoverable-pt" style="font-size:.68rem" data-tip="Lo calculamos solos, sumando tus compras y ventas reales de este activo. No hace falta que lo cargues a mano.">(auto) ⓘ</span></span>'
         : (READ_ONLY ? fmt.format(h.costBasisUSD||0) : '<input class="edit-num" data-field="costBasisUSD" value="'+fmt.format(h.costBasisUSD||0)+'">');
       let detail = "";
       if(open){
@@ -1130,6 +1135,7 @@ function renderTenencias(){
   tbody.querySelectorAll(".edit-num, .del").forEach(el=>{
     el.addEventListener("click", e=>e.stopPropagation());
   });
+  bindTooltips(tbody);
   tbody.querySelectorAll(".edit-num").forEach(inp=>{
     inp.addEventListener("change", function(){
       const tr = inp.closest("tr"); const plat=tr.dataset.plat, inst=tr.dataset.inst, field=inp.dataset.field;
