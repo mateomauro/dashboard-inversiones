@@ -612,8 +612,10 @@ document.getElementById("btnRefreshPrices").addEventListener("click", async func
         DOLAR = await dolarRes.json();
         try{ localStorage.setItem(DOLAR_LS_KEY, JSON.stringify(DOLAR)); }catch(e){}
       }
+      const invRes = await fetch("data/inversiones.json");
+      if(invRes.ok){ STATE = await invRes.json(); }
       renderAll();
-      setStatus("Precios y cotizaciones actualizados");
+      setStatus("Precios, cotizaciones y valores (BTC exacto, CEDEARs aproximado) actualizados");
     } else { setStatus("No se pudieron actualizar los precios", true); }
   }catch(e){ setStatus("Error actualizando precios — revisá tu conexión", true); }
   btn.innerHTML = original; btn.disabled = false;
