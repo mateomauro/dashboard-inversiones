@@ -45,3 +45,6 @@ jobs:
             git commit -m "Actualizar datos de mercado (automatico)"
             git push
           fi
+
+      - name: Chequeo de salud (falla el workflow si algo quedo desactualizado)
+        run: python3 scripts/chequeo_salud.py

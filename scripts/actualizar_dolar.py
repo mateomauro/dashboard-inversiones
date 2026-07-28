@@ -17,22 +17,30 @@ import json
 import urllib.request
 import urllib.error
 from pathlib import Path
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 
 ROOT = Path(__file__).resolve().parent.parent
 INVEST_FILE = ROOT / "data" / "inversiones.json"
 DOLAR_FILE = ROOT / "data" / "dolar_historico.json"
 HEADERS = {"User-Agent": "Mozilla/5.0 (compatible; inversiones-tracker/1.0)"}
 
+# Cuantos dias hacia atras se reintentan siempre, para autocurarse si algun
+# dia no se corrio a tiempo (o corrio antes de que se publicara la cotizacion
+# de "hoy" en UTC, que puede no coincidir con "hoy" en Argentina).
+DIAS_RECIENTES = 10
+
 
 def fechas_necesarias():
     """Fechas (AAAA-MM-DD) de movimientos en ARS que necesitan conversion,
-    mas la fecha de hoy (para mantener la cotizacion mas reciente al dia).
+    mas los ultimos DIAS_RECIENTES dias (para mantenerse al dia solo y
+    autocurar cualquier hueco, en vez de depender de que "hoy" salga bien
+    a la primera).
 
-    Siempre incluye "hoy" aunque no exista data/inversiones.json, para que
-    esto funcione tambien en la nube (GitHub Actions), donde ese archivo
-    -por ser personal- nunca se sube al repo."""
-    fechas = {datetime.now(timezone.utc).strftime("%Y-%m-%d")}
+    Siempre incluye los dias recientes aunque no exista data/inversiones.json,
+    para que esto funcione tambien en la nube (GitHub Actions), donde ese
+    archivo -por ser personal- nunca se sube al repo."""
+    hoy = datetime.now(timezone.utc)
+    fechas = {(hoy - timedelta(days=i)).strftime("%Y-%m-%d") for i in range(DIAS_RECIENTES)}
     if not INVEST_FILE.exists():
         return fechas
     with open(INVEST_FILE, "r", encoding="utf-8") as f:
