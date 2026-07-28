@@ -68,6 +68,7 @@
   input[type=file]{display:none}
   .status{font-size:.72rem;color:var(--faint)}
   .status.warn{color:var(--neg)}
+  #publishFreshness.warn{color:var(--neg)}
 
   /* nav tabs */
   nav.tabs{display:flex;gap:5px;background:var(--accent-soft);border-radius:14px;padding:4px;margin-bottom:24px;overflow-x:auto}
@@ -496,7 +497,7 @@
     <div id="bitacoraList"></div>
   </section>
 
-  <footer id="footerNote">Datos guardados localmente. Acordate de <b>Guardar cambios</b> después de editar.</footer>
+  <footer id="footerNote">Datos guardados localmente. Acordate de <b>Guardar cambios</b> después de editar.<br><span id="publishFreshness"></span></footer>
 </main>
 <div id="chartTooltip" class="chart-tooltip"></div>
 <div id="unlockModal" class="modal-overlay" style="display:none">
@@ -1805,6 +1806,24 @@ document.getElementById("btnSnap").addEventListener("click", function(){
   setStatus("Foto guardada — no olvides Guardar cambios");
 });
 
+// Recordatorio de backup: publicar (node scripts/publicar.js + git push) es,
+// de hecho, tu backup encriptado fuera de la compu — si hace mucho que no
+// publicás, un problema con esta compu te haria perder lo mas reciente.
+async function checkPublishFreshness(){
+  try{
+    const res = await fetch("data/inversiones.enc.json");
+    if(!res.ok) return;
+    const enc = await res.json();
+    if(!enc.updated) return;
+    const dias = Math.floor((Date.now() - new Date(enc.updated).getTime())/86400000);
+    const el = document.getElementById("publishFreshness");
+    if(!el) return;
+    el.textContent = dias<=0 ? "Última publicación: hoy — tu backup está al día."
+      : "Última publicación: hace "+dias+" día"+(dias===1?"":"s")+(dias>14?" — considerá publicar para tener un backup más reciente.":".");
+    el.classList.toggle("warn", dias>14);
+  }catch(e){}
+}
+
 // ---------- init ----------
 async function tryAutoLoad(){
   if(!isServerMode()) return false;
@@ -1841,6 +1860,7 @@ async function tryAutoLoad(){
     setStatus("Cargado automáticamente");
     document.getElementById("btnLoad").style.display = "none";
     document.getElementById("btnLoadPrices").style.display = "none";
+    checkPublishFreshness();
     return;
   }
   // No hay servidor local (ej. estamos en GitHub Pages): probar la vista publica encriptada
