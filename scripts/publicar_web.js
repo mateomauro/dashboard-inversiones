@@ -15,7 +15,7 @@ const { execFileSync } = require("child_process");
 const ROOT = path.join(__dirname, "..");
 const SITE = path.join(ROOT, "site");
 const ENC = path.join(ROOT, "data", "inversiones.enc.json");
-const PUBLIC_MARKET_FILES = ["precios_historicos.json", "dolar_historico.json"];
+const PUBLIC_MARKET_FILES = ["precios_historicos.json", "dolar_historico.json", "fondos_historico.json"];
 
 function main() {
   if (!fs.existsSync(ENC)) {

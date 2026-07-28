@@ -514,9 +514,11 @@
 const LS_KEY = "inversiones-local-v3";
 const PRICES_LS_KEY = "inversiones-precios-v1";
 const DOLAR_LS_KEY = "inversiones-dolar-v1";
+const FONDOS_LS_KEY = "inversiones-fondos-v1";
 let STATE = null;
 let PRICES = null;
 let DOLAR = null;
+let FONDOS = null;
 let expandedHoldings = new Set();
 let tenenciasFilter = {platform:null, group:null};
 
@@ -637,10 +639,16 @@ document.getElementById("btnRefreshPrices").addEventListener("click", async func
         DOLAR = await dolarRes.json();
         try{ localStorage.setItem(DOLAR_LS_KEY, JSON.stringify(DOLAR)); }catch(e){}
       }
+      const fondosRes = await fetch("data/fondos_historico.json");
+      if(fondosRes.ok){
+        FONDOS = await fondosRes.json();
+        try{ localStorage.setItem(FONDOS_LS_KEY, JSON.stringify(FONDOS)); }catch(e){}
+      }
       const invRes = await fetch("data/inversiones.json");
       if(invRes.ok){ STATE = await invRes.json(); }
+      recalcularValoresEnVivo();
       renderAll();
-      setStatus("Precios, cotizaciones y valores (BTC exacto, CEDEARs aproximado) actualizados");
+      setStatus("Precios, cotizaciones y valores (BTC y fondos exacto, CEDEARs aproximado) actualizados");
     } else { setStatus("No se pudieron actualizar los precios", true); }
   }catch(e){ setStatus("Error actualizando precios — revisá tu conexión", true); }
   btn.innerHTML = original; btn.disabled = false;
@@ -721,11 +729,16 @@ async function tryEncryptedView(){
 // junto al blob encriptado, para que la vista de solo lectura pueda calcular costos en ARS.
 async function tryLoadPublicMarketData(){
   try{
-    const [priceRes, dolarRes] = await Promise.allSettled([
-      fetch("data/precios_historicos.json"), fetch("data/dolar_historico.json")
+    const [priceRes, dolarRes, fondosRes] = await Promise.allSettled([
+      fetch("data/precios_historicos.json"), fetch("data/dolar_historico.json"), fetch("data/fondos_historico.json")
     ]);
     if(priceRes.status==="fulfilled" && priceRes.value.ok) PRICES = await priceRes.value.json();
     if(dolarRes.status==="fulfilled" && dolarRes.value.ok) DOLAR = await dolarRes.value.json();
+    if(fondosRes.status==="fulfilled" && fondosRes.value.ok) FONDOS = await fondosRes.value.json();
+    // Los datos de mercado se actualizan solos (GitHub Actions); recalculamos
+    // "Vale hoy" en vivo aca en vez de confiar en el valor congelado al momento
+    // de la ultima publicacion manual (node scripts/publicar.js).
+    recalcularValoresEnVivo();
   }catch(e){}
 }
 
@@ -853,6 +866,69 @@ function effectiveCostBasis(h){
   if(a.complete && a.costBasisUSD!=null) return {value:a.costBasisUSD, source:"auto"};
   if(h.costBasisUSD>0) return {value:h.costBasisUSD, source:"manual"};
   return {value:0, source:"none"};
+}
+
+// ---------- Calculo en vivo de "Vale hoy" (mismo criterio que scripts/actualizar_valores.py) ----------
+// BTC y fondos: cantidad real x precio/VCP publico = exacto. CEDEARs con ratio
+// oficial: aproximado (~95%+), el CEDEAR cotiza con una prima/descuento propio
+// del mercado argentino que ningun dato publico gratuito capta.
+const CEDEAR_RATIOS = {QQQ:20, AAPL:20, MSFT:30, GOOGL:58, NVDA:24, EFA:18, EEM:5};
+const SPY_RATIO_AFTER = 60; // split de ratio (20:1 -> 60:1) el 01/06/2026
+const COINGECKO_TICKERS = new Set(["BTC"]);
+// Fondos propios de Cocos/Uala, con la misma correccion x1000 de cantidad de
+// cuotapartes que usa actualizar_valores.py (Cocos reporta "cantidad" escalada).
+const FCI_CURRENCY = {COCOUSDPA:"USD", COCOSPPA:"ARS", FONDO_UALA:"USD"};
+
+function ratioFor(ticker){ return ticker==="SPY" ? SPY_RATIO_AFTER : CEDEAR_RATIOS[ticker]; }
+function latestSeriesPoint(series){ return series && series.length ? series[series.length-1] : null; }
+function latestDolarVenta(){
+  if(!DOLAR || !DOLAR.rates) return null;
+  const dates = Object.keys(DOLAR.rates);
+  if(!dates.length) return null;
+  const rate = DOLAR.rates[dates.sort().pop()];
+  return rate ? rate.venta : null;
+}
+function recalcularValoresEnVivo(){
+  if(!STATE || !STATE.holdings) return;
+  const hoy = new Date().toISOString().slice(0,10);
+  Object.keys(STATE.holdings).forEach(plat=>{
+    STATE.holdings[plat].forEach(h=>{
+      const ticker = h.instrument;
+      const qty = analyzeHolding(plat, ticker).quantity;
+      if(!qty || qty<=0) return;
+
+      if(FCI_CURRENCY[ticker]){
+        const last = FONDOS && FONDOS.series && latestSeriesPoint(FONDOS.series[ticker]);
+        if(!last) return;
+        const qtyCuotapartes = qty/1000;
+        if(FCI_CURRENCY[ticker]==="USD"){
+          h.valueUSD = Math.round(qtyCuotapartes*last.vcp*100)/100;
+        } else {
+          const rate = latestDolarVenta();
+          if(!rate) return;
+          h.valueUSD = Math.round(qtyCuotapartes*last.vcp/rate*100)/100;
+        }
+        h.asOf = hoy;
+        return;
+      }
+
+      if(COINGECKO_TICKERS.has(ticker)){
+        const last = PRICES && PRICES.series && latestSeriesPoint(PRICES.series[ticker]);
+        if(!last) return;
+        h.valueUSD = Math.round(qty*last.priceUSD*100)/100;
+        h.asOf = hoy;
+        return;
+      }
+
+      const ratio = ratioFor(ticker);
+      if(ratio){
+        const last = PRICES && PRICES.series && latestSeriesPoint(PRICES.series[ticker]);
+        if(!last) return;
+        h.valueUSD = Math.round(qty/ratio*last.priceUSD*100)/100;
+        h.asOf = hoy;
+      }
+    });
+  });
 }
 function totalRealizedGainUSD(){
   let total=0, complete=true;
@@ -1601,8 +1677,8 @@ document.getElementById("btnSnap").addEventListener("click", function(){
 async function tryAutoLoad(){
   if(!isServerMode()) return false;
   try{
-    const [invRes, priceRes, dolarRes] = await Promise.allSettled([
-      fetch("data/inversiones.json"), fetch("data/precios_historicos.json"), fetch("data/dolar_historico.json")
+    const [invRes, priceRes, dolarRes, fondosRes] = await Promise.allSettled([
+      fetch("data/inversiones.json"), fetch("data/precios_historicos.json"), fetch("data/dolar_historico.json"), fetch("data/fondos_historico.json")
     ]);
     let ok = false;
     if(invRes.status==="fulfilled" && invRes.value.ok){ STATE = await invRes.value.json(); ok = true; }
@@ -1614,6 +1690,11 @@ async function tryAutoLoad(){
       DOLAR = await dolarRes.value.json();
       try{ localStorage.setItem(DOLAR_LS_KEY, JSON.stringify(DOLAR)); }catch(e){}
     }
+    if(fondosRes.status==="fulfilled" && fondosRes.value.ok){
+      FONDOS = await fondosRes.value.json();
+      try{ localStorage.setItem(FONDOS_LS_KEY, JSON.stringify(FONDOS)); }catch(e){}
+    }
+    if(ok) recalcularValoresEnVivo();
     return ok;
   }catch(e){ return false; }
 }
@@ -1621,6 +1702,7 @@ async function tryAutoLoad(){
 (async function init(){
   try{ const p = localStorage.getItem(PRICES_LS_KEY); if(p) PRICES = JSON.parse(p); }catch(e){}
   try{ const d = localStorage.getItem(DOLAR_LS_KEY); if(d) DOLAR = JSON.parse(d); }catch(e){}
+  try{ const f = localStorage.getItem(FONDOS_LS_KEY); if(f) FONDOS = JSON.parse(f); }catch(e){}
   if(isLocalHost()) document.getElementById("btnRefreshPrices").style.display = "";
   if(await tryAutoLoad()){
     renderAll();

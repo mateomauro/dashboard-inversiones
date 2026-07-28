@@ -1,6 +1,14 @@
 # Datos financieros reales — NUNCA subir esto a ningun lado publico
 data/*
 !data/inversiones.enc.json
+
+# Datos de mercado publicos (precios, dolar, fondos) — sin cantidades ni
+# costos personales, se versionan para que GitHub Actions los actualice
+# solo y Netlify los sirva para el calculo en vivo del dashboard.
+!data/precios_historicos.json
+!data/dolar_historico.json
+!data/fondos_historico.json
+
 scripts/seed_manual.py
 
 # Extractos y notas personales (montos, capturas, decisiones reales)

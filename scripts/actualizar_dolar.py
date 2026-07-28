@@ -17,6 +17,7 @@ import json
 import urllib.request
 import urllib.error
 from pathlib import Path
+from datetime import datetime, timezone
 
 ROOT = Path(__file__).resolve().parent.parent
 INVEST_FILE = ROOT / "data" / "inversiones.json"
@@ -25,8 +26,13 @@ HEADERS = {"User-Agent": "Mozilla/5.0 (compatible; inversiones-tracker/1.0)"}
 
 
 def fechas_necesarias():
-    """Fechas (AAAA-MM-DD) de movimientos en ARS que necesitan conversion."""
-    fechas = set()
+    """Fechas (AAAA-MM-DD) de movimientos en ARS que necesitan conversion,
+    mas la fecha de hoy (para mantener la cotizacion mas reciente al dia).
+
+    Siempre incluye "hoy" aunque no exista data/inversiones.json, para que
+    esto funcione tambien en la nube (GitHub Actions), donde ese archivo
+    -por ser personal- nunca se sube al repo."""
+    fechas = {datetime.now(timezone.utc).strftime("%Y-%m-%d")}
     if not INVEST_FILE.exists():
         return fechas
     with open(INVEST_FILE, "r", encoding="utf-8") as f:

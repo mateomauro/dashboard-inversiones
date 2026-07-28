@@ -1,0 +1,47 @@
+name: Actualizar datos de mercado
+
+# Corre solo, todos los dias, sin depender de tu compu: baja precios de
+# acciones/cripto, cotizacion del dolar MEP y valor de cuotaparte de los
+# fondos (todo dato publico, nunca toca data/inversiones.json), y lo
+# guarda de vuelta en el repo para que el dashboard lo sirva actualizado.
+
+on:
+  schedule:
+    - cron: "0 22 * * *" # 22:00 UTC = 19:00 Argentina, despues del cierre
+  workflow_dispatch: {} # permite tambien correrlo a mano desde GitHub
+
+permissions:
+  contents: write
+
+jobs:
+  actualizar:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Actualizar precios (acciones/cripto)
+        run: python3 scripts/actualizar_precios.py
+
+      - name: Actualizar dolar MEP
+        run: python3 scripts/actualizar_dolar.py
+
+      - name: Actualizar fondos (valor de cuotaparte)
+        run: python3 scripts/actualizar_fondos.py
+
+      - name: Commit y push si hay cambios
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/precios_historicos.json data/dolar_historico.json data/fondos_historico.json
+          if git diff --cached --quiet; then
+            echo "Sin cambios, nada que subir."
+          else
+            git commit -m "Actualizar datos de mercado (automatico)"
+            git push
+          fi
