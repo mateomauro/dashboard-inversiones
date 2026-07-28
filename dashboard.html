@@ -15,7 +15,7 @@
     --line:rgba(15,23,42,.08);--line-soft:rgba(15,23,42,.05);--pos:#15905F;--pos-soft:rgba(21,144,95,.1);
     --neg:#DC2626;--neg-soft:rgba(220,38,38,.1);
     --accent:#2F6FED;--accent-fg:#FFFFFF;
-    --c-fondo:#1B3A6B;--c-acciones:#2F6FED;--c-cripto:#B6C2D4;--c-otro:#94A3B8;
+    --c-fondo:#1B3A6B;--c-acciones:#2F6FED;--c-etf:#7EA2E8;--c-cripto:#B6C2D4;--c-otro:#94A3B8;
     --accent-soft:rgba(47,111,237,.08);
     --shadow:0 1px 2px rgba(15,23,42,.04),0 6px 18px -10px rgba(15,23,42,.12);
     --action-grad-1:#F0F5FF;--action-grad-2:#E7EFFE;--action-border:rgba(47,111,237,.2);
@@ -27,7 +27,7 @@
       --line:rgba(255,255,255,.07);--line-soft:rgba(255,255,255,.045);--pos:#4ECF9B;--pos-soft:rgba(63,184,137,.16);
       --neg:#F87171;--neg-soft:rgba(248,113,113,.14);
       --accent:#5B93FF;--accent-fg:#0A111F;
-      --c-fondo:#2B4A80;--c-acciones:#5B93FF;--c-cripto:#4A5A76;--c-otro:#5C6B82;
+      --c-fondo:#2B4A80;--c-acciones:#5B93FF;--c-etf:#8FB0E8;--c-cripto:#4A5A76;--c-otro:#5C6B82;
       --accent-soft:rgba(91,147,255,.12);
       --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 20px -10px rgba(0,0,0,.5);
       --action-grad-1:#17233D;--action-grad-2:#132B4D;--action-border:rgba(91,147,255,.28);
@@ -39,7 +39,7 @@
     --line:rgba(255,255,255,.07);--line-soft:rgba(255,255,255,.045);--pos:#4ECF9B;--pos-soft:rgba(63,184,137,.16);
     --neg:#F87171;--neg-soft:rgba(248,113,113,.14);
     --accent:#5B93FF;--accent-fg:#0A111F;
-    --c-fondo:#2B4A80;--c-acciones:#5B93FF;--c-cripto:#4A5A76;--c-otro:#5C6B82;
+    --c-fondo:#2B4A80;--c-acciones:#5B93FF;--c-etf:#8FB0E8;--c-cripto:#4A5A76;--c-otro:#5C6B82;
     --action-grad-1:#17233D;--action-grad-2:#132B4D;--action-border:rgba(91,147,255,.28);
     --action-title-c:#BCD3FF;--action-text-c:#C3CDDA;--action-track:#22375C;
     --accent-soft:rgba(91,147,255,.12);
@@ -156,10 +156,28 @@
   .action-cta svg{stroke:var(--accent-fg)}
 
   .section-label{font-size:.68rem;font-weight:700;color:var(--faint);letter-spacing:.06em;text-transform:uppercase;margin:2px 2px 4px}
+  .section-label.toggle{background:none;border:none;font-family:inherit;padding:8px 2px;cursor:pointer;display:flex;align-items:center;gap:6px;width:100%;min-height:44px}
+  .section-label.toggle:hover{color:var(--muted)}
   .stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
   .stat-card{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:14px;box-shadow:none;margin-bottom:0}
   .stat-label{font-size:.72rem;font-weight:600;color:var(--muted);margin-bottom:8px}
   .stat-value{font-size:1.15rem;font-weight:800;color:var(--fg)}
+
+  .bitacora-entry{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:16px;margin-bottom:10px}
+  .bitacora-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:4px;flex-wrap:wrap}
+  .bitacora-date{font-size:.72rem;font-weight:600;color:var(--faint);text-transform:uppercase;letter-spacing:.04em}
+  .bitacora-status{font-size:.68rem;font-weight:700;padding:3px 9px;border-radius:999px;white-space:nowrap}
+  .bitacora-status.seguida{background:var(--pos-soft);color:var(--pos)}
+  .bitacora-status.ignorada{background:var(--neg-soft);color:var(--neg)}
+  .bitacora-status.pendiente{background:var(--accent-soft);color:var(--muted);border:1px solid var(--line)}
+  .bitacora-status.informativa{background:var(--accent-soft);color:var(--accent)}
+  .bitacora-title{font-size:.92rem;font-weight:700;color:var(--fg);margin-bottom:4px}
+  .bitacora-summary{font-size:.84rem;color:var(--muted);line-height:1.5;margin-bottom:10px}
+  .bitacora-indicadores{font-size:.78rem;color:var(--muted)}
+  .bitacora-indicadores-label{font-size:.68rem;font-weight:700;color:var(--faint);text-transform:uppercase;letter-spacing:.04em;margin-bottom:5px}
+  .bitacora-indicadores ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:3px}
+  .bitacora-resultado{margin-top:10px;padding-top:10px;border-top:1px solid var(--line-soft);font-size:.82rem}
+  .bitacora-resultado .lbl{font-size:.68rem;font-weight:700;color:var(--faint);text-transform:uppercase;letter-spacing:.04em;display:block;margin-bottom:4px}
   .card h3{font-size:.78rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin:0 0 10px;font-weight:650}
   .row-kv{display:flex;justify-content:space-between;align-items:center;padding:6px 0;font-size:.88rem;border-bottom:1px solid var(--line-soft)}
   .row-kv:last-child{border-bottom:none}
@@ -354,14 +372,17 @@
     <div class="action-card" id="rebalanceCard">
       <div id="rebalanceBody"></div>
     </div>
-    <div class="section-label" id="detailLabel">Más detalle</div>
-    <div class="stat-grid" id="detailGrid">
+    <button class="section-label toggle" id="detailLabel" type="button" aria-expanded="false">
+      <span class="chevron" id="detailChevron"><svg class="icon" width="9" height="9" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 1.5l4 3.5-4 3.5"/></svg></span>
+      <span>Más detalle</span>
+    </button>
+    <div class="stat-grid" id="detailGrid" style="display:none">
       <div class="stat-card">
         <div class="stat-label">Por plataforma</div>
         <div id="byPlatform"></div>
       </div>
       <div class="stat-card" id="benchmarkCard" style="display:none">
-        <div class="stat-label">vs. S&amp;P 500</div>
+        <div class="stat-label">Rendimiento vs. índice S&amp;P 500</div>
         <div id="benchmarkBody"></div>
       </div>
       <div class="stat-card">
@@ -395,7 +416,7 @@
         <div class="field"><label>Ticker</label><input type="text" id="hTicker" placeholder="ej. EFA"></div>
         <div class="field"><label>Nombre</label><input type="text" id="hName" placeholder="ej. Desarrollados"></div>
         <div class="field"><label>Grupo</label>
-          <select id="hGroup"><option>Acciones</option><option>Fondo</option><option>Cripto</option><option>Otro</option></select>
+          <select id="hGroup"><option>Acciones</option><option>ETFs Internac.</option><option>Fondo</option><option>Cripto</option><option>Otro</option></select>
         </div>
         <div class="field"><label>Invertido US$</label><input type="text" id="hCost" placeholder="0,00"></div>
         <div class="field"><label>Vale hoy US$</label><input type="text" id="hValue" placeholder="0,00"></div>
@@ -468,6 +489,10 @@
       </table>
     </div>
     <div style="margin-top:14px" id="addSnapCard"><button class="btn primary" id="btnSnap" type="button">+ Guardar foto de hoy</button></div>
+
+    <div class="section-title" style="margin-top:30px">Bitácora de decisiones</div>
+    <p class="dim" style="font-size:.82rem;margin:-4px 0 14px;line-height:1.5">Registro de en qué nos basamos cada vez que decidimos algo — para revisar con el tiempo si esos indicadores realmente sirvieron.</p>
+    <div id="bitacoraList"></div>
   </section>
 
   <footer id="footerNote">Datos guardados localmente. Acordate de <b>Guardar cambios</b> después de editar.</footer>
@@ -520,7 +545,7 @@ const TYPE_LABELS = {
   rescate_fci:"Rescate FCI", deposito:"Depósito", retiro:"Retiro", dividendo:"Dividendo",
   ajuste:"Ajuste", otro:"Otro"
 };
-const GROUP_COLOR = {Fondo:"var(--c-fondo)",Acciones:"var(--c-acciones)",Cripto:"var(--c-cripto)",Otro:"var(--c-otro)"};
+const GROUP_COLOR = {Fondo:"var(--c-fondo)",Acciones:"var(--c-acciones)","ETFs Internac.":"var(--c-etf)",Cripto:"var(--c-cripto)",Otro:"var(--c-otro)"};
 
 // ---------- iconos SVG (reemplazan caracteres de texto tipo ▸ × ↻ ✓) ----------
 const ICON_CHEVRON = '<svg class="icon" width="9" height="9" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 1.5l4 3.5-4 3.5"/></svg>';
@@ -565,7 +590,7 @@ function bindTooltips(container){
 }
 
 function emptyState(){
-  return {version:1, platforms:{}, holdings:{}, snapshots:[]};
+  return {version:1, platforms:{}, holdings:{}, snapshots:[], decisiones:[]};
 }
 
 function loadFromLocalStorage(){
@@ -733,6 +758,19 @@ document.getElementById("btnSave").addEventListener("click", async function(){
 document.querySelectorAll(".tab-btn").forEach(btn=>{
   btn.addEventListener("click", ()=> goToTab(btn.dataset.view));
 });
+
+// toggle "Mas detalle" en Resumen
+const detailLabelBtn = document.getElementById("detailLabel");
+if(detailLabelBtn){
+  detailLabelBtn.addEventListener("click", function(){
+    const grid = document.getElementById("detailGrid");
+    const chevron = document.getElementById("detailChevron");
+    const wasOpen = grid.style.display !== "none";
+    grid.style.display = wasOpen ? "none" : "";
+    chevron.classList.toggle("open", !wasOpen);
+    detailLabelBtn.setAttribute("aria-expanded", String(!wasOpen));
+  });
+}
 
 function platformKeys(){ return Object.keys(STATE.platforms||{}); }
 function platformName(key){ return (STATE.platforms[key]||{}).name || key; }
@@ -934,7 +972,7 @@ function renderAll(){
 }
 
 // ---------- RESUMEN ----------
-const GROUP_TARGETS = {Fondo:[65,70], Acciones:[25,30], Cripto:[0,5]};
+const GROUP_TARGETS = {Fondo:[65,70], Acciones:[15,20], "ETFs Internac.":[10,15], Cripto:[0,5]};
 
 function lastDepositInfo(){
   let last = null;
@@ -1468,10 +1506,33 @@ function renderEvoMetrics(snaps){
   ).join("");
 }
 
+const BITACORA_STATUS_LABELS = {seguida:"Seguida", ignorada:"No seguida", pendiente:"Pendiente", informativa:"Informativa"};
+function renderBitacora(){
+  const el = document.getElementById("bitacoraList");
+  if(!el) return;
+  const items = (STATE.decisiones||[]).slice().sort((a,b)=>(b.fecha||"").localeCompare(a.fecha||""));
+  if(!items.length){ el.innerHTML = '<div class="empty">Todavía no hay decisiones registradas.</div>'; return; }
+  el.innerHTML = items.map(d=>{
+    const statusCls = d.estado || "pendiente";
+    const statusLbl = BITACORA_STATUS_LABELS[statusCls] || statusCls;
+    const indicadoresHtml = (d.indicadores && d.indicadores.length) ?
+      '<div class="bitacora-indicadores"><div class="bitacora-indicadores-label">En qué nos basamos</div><ul>'+
+      d.indicadores.map(i=>'<li>'+escapeHtml(i)+'</li>').join("")+'</ul></div>' : '';
+    const resultadoHtml = d.resultado ?
+      '<div class="bitacora-resultado"><span class="lbl">Resultado ('+fmtDateHuman(d.resultado.fecha)+')</span>'+escapeHtml(d.resultado.comentario)+'</div>' : '';
+    return '<div class="bitacora-entry">'+
+      '<div class="bitacora-head"><span class="bitacora-date">'+fmtDateHuman(d.fecha)+'</span><span class="bitacora-status '+statusCls+'">'+statusLbl+'</span></div>'+
+      '<div class="bitacora-title">'+escapeHtml(d.titulo)+'</div>'+
+      '<div class="bitacora-summary">'+escapeHtml(d.resumen)+'</div>'+
+      indicadoresHtml + resultadoHtml +
+      '</div>';
+  }).join("");
+}
 function renderEvolucion(){
   const snaps = (STATE.snapshots||[]).slice().sort((a,b)=>a.date.localeCompare(b.date));
   renderEvoMetrics(snaps);
   renderContribChart();
+  renderBitacora();
   const tbody = document.getElementById("snapBody");
   tbody.innerHTML = snaps.length ? snaps.map((s,i)=>{
     const g = s.valueUSD-s.investedUSD, p = s.investedUSD? g/s.investedUSD*100:0;
