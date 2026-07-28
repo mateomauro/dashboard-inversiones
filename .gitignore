@@ -8,6 +8,7 @@ data/*
 !data/precios_historicos.json
 !data/dolar_historico.json
 !data/fondos_historico.json
+!data/cedears_iol.json
 
 scripts/seed_manual.py
 

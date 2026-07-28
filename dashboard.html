@@ -521,10 +521,12 @@ const LS_KEY = "inversiones-local-v3";
 const PRICES_LS_KEY = "inversiones-precios-v1";
 const DOLAR_LS_KEY = "inversiones-dolar-v1";
 const FONDOS_LS_KEY = "inversiones-fondos-v1";
+const IOL_LS_KEY = "inversiones-cedears-iol-v1";
 let STATE = null;
 let PRICES = null;
 let DOLAR = null;
 let FONDOS = null;
+let CEDEARS_IOL = null;
 let expandedHoldings = new Set();
 let tenenciasFilter = {platform:null, group:null};
 
@@ -650,6 +652,11 @@ document.getElementById("btnRefreshPrices").addEventListener("click", async func
         FONDOS = await fondosRes.json();
         try{ localStorage.setItem(FONDOS_LS_KEY, JSON.stringify(FONDOS)); }catch(e){}
       }
+      const iolRes = await fetch("data/cedears_iol.json");
+      if(iolRes.ok){
+        CEDEARS_IOL = await iolRes.json();
+        try{ localStorage.setItem(IOL_LS_KEY, JSON.stringify(CEDEARS_IOL)); }catch(e){}
+      }
       const invRes = await fetch("data/inversiones.json");
       if(invRes.ok){ STATE = await invRes.json(); }
       recalcularValoresEnVivo();
@@ -735,12 +742,13 @@ async function tryEncryptedView(){
 // junto al blob encriptado, para que la vista de solo lectura pueda calcular costos en ARS.
 async function tryLoadPublicMarketData(){
   try{
-    const [priceRes, dolarRes, fondosRes] = await Promise.allSettled([
-      fetch("data/precios_historicos.json"), fetch("data/dolar_historico.json"), fetch("data/fondos_historico.json")
+    const [priceRes, dolarRes, fondosRes, iolRes] = await Promise.allSettled([
+      fetch("data/precios_historicos.json"), fetch("data/dolar_historico.json"), fetch("data/fondos_historico.json"), fetch("data/cedears_iol.json")
     ]);
     if(priceRes.status==="fulfilled" && priceRes.value.ok) PRICES = await priceRes.value.json();
     if(dolarRes.status==="fulfilled" && dolarRes.value.ok) DOLAR = await dolarRes.value.json();
     if(fondosRes.status==="fulfilled" && fondosRes.value.ok) FONDOS = await fondosRes.value.json();
+    if(iolRes.status==="fulfilled" && iolRes.value.ok) CEDEARS_IOL = await iolRes.value.json();
     // Los datos de mercado se actualizan solos (GitHub Actions); recalculamos
     // "Vale hoy" en vivo aca en vez de confiar en el valor congelado al momento
     // de la ultima publicacion manual (node scripts/publicar.js).
@@ -894,6 +902,15 @@ function latestDolarVenta(){
   const rate = DOLAR.rates[dates.sort().pop()];
   return rate ? rate.venta : null;
 }
+const MAX_DIAS_PRECIO_IOL = 5; // si el precio de IOL es mas viejo que esto, se prefiere el ratio
+function iolPriceArs(ticker){
+  if(!CEDEARS_IOL || !CEDEARS_IOL.precios) return null;
+  const entry = CEDEARS_IOL.precios[ticker];
+  if(!entry || !entry.fechaHora) return null;
+  const dias = (Date.now() - new Date(entry.fechaHora).getTime())/86400000;
+  if(dias > MAX_DIAS_PRECIO_IOL) return null;
+  return entry.precioARS;
+}
 function recalcularValoresEnVivo(){
   if(!STATE || !STATE.holdings) return;
   const hoy = new Date().toISOString().slice(0,10);
@@ -928,6 +945,13 @@ function recalcularValoresEnVivo(){
 
       const ratio = ratioFor(ticker);
       if(ratio){
+        const precioArs = iolPriceArs(ticker);
+        const rate = latestDolarVenta();
+        if(precioArs!=null && rate){
+          h.valueUSD = Math.round(qty*precioArs/rate*100)/100;
+          h.asOf = hoy;
+          return;
+        }
         const last = PRICES && PRICES.series && latestSeriesPoint(PRICES.series[ticker]);
         if(!last) return;
         h.valueUSD = Math.round(qty/ratio*last.priceUSD*100)/100;
@@ -1851,8 +1875,8 @@ async function checkPublishFreshness(){
 async function tryAutoLoad(){
   if(!isServerMode()) return false;
   try{
-    const [invRes, priceRes, dolarRes, fondosRes] = await Promise.allSettled([
-      fetch("data/inversiones.json"), fetch("data/precios_historicos.json"), fetch("data/dolar_historico.json"), fetch("data/fondos_historico.json")
+    const [invRes, priceRes, dolarRes, fondosRes, iolRes] = await Promise.allSettled([
+      fetch("data/inversiones.json"), fetch("data/precios_historicos.json"), fetch("data/dolar_historico.json"), fetch("data/fondos_historico.json"), fetch("data/cedears_iol.json")
     ]);
     let ok = false;
     if(invRes.status==="fulfilled" && invRes.value.ok){ STATE = await invRes.value.json(); ok = true; }
@@ -1868,6 +1892,10 @@ async function tryAutoLoad(){
       FONDOS = await fondosRes.value.json();
       try{ localStorage.setItem(FONDOS_LS_KEY, JSON.stringify(FONDOS)); }catch(e){}
     }
+    if(iolRes.status==="fulfilled" && iolRes.value.ok){
+      CEDEARS_IOL = await iolRes.value.json();
+      try{ localStorage.setItem(IOL_LS_KEY, JSON.stringify(CEDEARS_IOL)); }catch(e){}
+    }
     if(ok) recalcularValoresEnVivo();
     return ok;
   }catch(e){ return false; }
@@ -1877,6 +1905,7 @@ async function tryAutoLoad(){
   try{ const p = localStorage.getItem(PRICES_LS_KEY); if(p) PRICES = JSON.parse(p); }catch(e){}
   try{ const d = localStorage.getItem(DOLAR_LS_KEY); if(d) DOLAR = JSON.parse(d); }catch(e){}
   try{ const f = localStorage.getItem(FONDOS_LS_KEY); if(f) FONDOS = JSON.parse(f); }catch(e){}
+  try{ const i = localStorage.getItem(IOL_LS_KEY); if(i) CEDEARS_IOL = JSON.parse(i); }catch(e){}
   if(isLocalHost()) document.getElementById("btnRefreshPrices").style.display = "";
   if(await tryAutoLoad()){
     renderAll();

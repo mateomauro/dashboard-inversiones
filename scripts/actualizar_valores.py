@@ -32,7 +32,9 @@ ROOT = Path(__file__).resolve().parent.parent
 INVEST_FILE = ROOT / "data" / "inversiones.json"
 PRICES_FILE = ROOT / "data" / "precios_historicos.json"
 DOLAR_FILE = ROOT / "data" / "dolar_historico.json"
+IOL_FILE = ROOT / "data" / "cedears_iol.json"
 HEADERS = {"User-Agent": "Mozilla/5.0 (compatible; inversiones-tracker/1.0)"}
+MAX_DIAS_PRECIO_IOL = 5  # si es mas viejo que esto, se prefiere el ratio en vez de confiar en el dato
 
 BUY_TYPES = {"compra", "suscripcion_fci"}
 SELL_TYPES = {"venta", "rescate_fci"}
@@ -120,6 +122,28 @@ def latest_dolar_rate():
     return rates[latest_date].get("venta"), latest_date
 
 
+def iol_price_ars(ticker):
+    """Precio real del CEDEAR en pesos (API oficial de IOL), si esta cargado
+    y no tiene mas de MAX_DIAS_PRECIO_IOL dias. None si no hay dato fresco."""
+    if not IOL_FILE.exists():
+        return None, None
+    with open(IOL_FILE, "r", encoding="utf-8") as f:
+        data = json.load(f)
+    entry = data.get("precios", {}).get(ticker)
+    if not entry or not entry.get("fechaHora"):
+        return None, None
+    try:
+        fecha = datetime.fromisoformat(entry["fechaHora"])
+        if fecha.tzinfo:
+            fecha = fecha.astimezone(timezone.utc).replace(tzinfo=None)
+    except ValueError:
+        return None, None
+    dias = (datetime.now(timezone.utc).replace(tzinfo=None) - fecha).days
+    if dias > MAX_DIAS_PRECIO_IOL:
+        return None, None
+    return entry["precioARS"], entry["fechaHora"]
+
+
 def actualizar_valores():
     if not INVEST_FILE.exists():
         return {"actualizados": [], "error": "no existe data/inversiones.json"}
@@ -185,6 +209,14 @@ def actualizar_valores():
 
             ratio = ratio_for(ticker)
             if ratio:
+                precio_ars, fecha_iol = iol_price_ars(ticker)
+                rate, rate_date = latest_dolar_rate()
+                if precio_ars is not None and rate:
+                    new_value = round(qty * precio_ars / rate, 2)
+                    h["valueUSD"] = new_value
+                    h["asOf"] = today
+                    actualizados.append({"ticker": ticker, "valueUSD": new_value, "metodo": "exacto (API IOL, precio real BYMA)", "precioFuente": fecha_iol, "ok": True})
+                    continue
                 price, price_date = latest_price(series_by_ticker, ticker)
                 if price is None:
                     continue

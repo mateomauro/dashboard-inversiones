@@ -20,12 +20,14 @@ ROOT = Path(__file__).resolve().parent.parent
 PRICES_FILE = ROOT / "data" / "precios_historicos.json"
 DOLAR_FILE = ROOT / "data" / "dolar_historico.json"
 FONDOS_FILE = ROOT / "data" / "fondos_historico.json"
+IOL_FILE = ROOT / "data" / "cedears_iol.json"
 
 # Cuantos dias de atraso se toleran antes de considerarlo un problema real
 # (no solo un fin de semana largo o un feriado).
 MAX_DIAS_PRECIOS = 5
 MAX_DIAS_DOLAR = 6
 MAX_DIAS_FONDOS = 12
+MAX_DIAS_IOL = 10
 MIN_PROPORCION_TICKERS_OK = 0.7  # al menos 70% de los tickers deben estar frescos
 
 
@@ -97,9 +99,35 @@ def chequear_fondos(hoy):
     return problemas
 
 
+def chequear_iol(hoy):
+    """Precio exacto de CEDEARs via API de IOL. Si esta viejo o falta, la app
+    cae sola al metodo por ratio (~95%) — no es critico, asi que esto es un
+    aviso, no hace fallar el workflow."""
+    if not IOL_FILE.exists():
+        return ["data/cedears_iol.json no existe todavia (usando ratio como respaldo)"]
+    with open(IOL_FILE, "r", encoding="utf-8") as f:
+        precios = json.load(f).get("precios", {})
+    if not precios:
+        return ["data/cedears_iol.json no tiene ningun precio (usando ratio como respaldo)"]
+    avisos = []
+    for ticker, entry in precios.items():
+        fecha_hora = entry.get("fechaHora")
+        if not fecha_hora:
+            continue
+        atraso = dias_desde(fecha_hora[:10], hoy)
+        if atraso > MAX_DIAS_IOL:
+            avisos.append(f"{ticker}: ultimo precio de IOL hace {atraso} dias (usando ratio como respaldo)")
+    return avisos
+
+
 def main():
     hoy = datetime.now(timezone.utc).replace(tzinfo=None)
     problemas = chequear_precios(hoy) + chequear_dolar(hoy) + chequear_fondos(hoy)
+    avisos = chequear_iol(hoy)
+    if avisos:
+        print("Chequeo de salud: avisos (no criticos, hay respaldo automatico)")
+        for a in avisos:
+            print("  - " + a)
     if problemas:
         print("Chequeo de salud: ENCONTRE PROBLEMAS")
         for p in problemas:
