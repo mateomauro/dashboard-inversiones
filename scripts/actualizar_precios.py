@@ -32,6 +32,7 @@ YAHOO_SYMBOLS = {
     "SPY": "SPY", "QQQ": "QQQ", "AAPL": "AAPL",
     "MSFT": "MSFT", "GOOGL": "GOOGL", "NVDA": "NVDA",
     "EFA": "EFA", "EEM": "EEM", "EWZ": "EWZ",
+    "BIL": "BIL",  # T-Bills EE.UU., proxy de referencia para el grupo Fondo (renta fija en USD)
 }
 COINGECKO_IDS = {"BTC": "bitcoin"}
 
