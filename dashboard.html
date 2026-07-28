@@ -409,6 +409,9 @@
   <!-- TENENCIAS -->
   <section id="view-tenencias" class="view">
     <div id="tenenciasFilterBar"></div>
+    <div style="display:flex;justify-content:flex-end;margin-bottom:8px">
+      <button class="btn ghost" id="btnExportHoldings" type="button">Exportar CSV</button>
+    </div>
     <div class="tbl-wrap">
       <table>
         <thead><tr>
@@ -450,6 +453,7 @@
       </label>
       <span class="spacer"></span>
       <span class="status" id="movCount"></span>
+      <button class="btn ghost" id="btnExportMov" type="button">Exportar CSV</button>
     </div>
     <div class="tbl-wrap">
       <table>
@@ -581,6 +585,25 @@ function moneyParts(n){
 // ---------- tooltip propio para graficos (reemplaza el <title> nativo del navegador) ----------
 const tipEl = document.getElementById("chartTooltip");
 function escapeHtml(s){ return String(s).replace(/[&<>"]/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c])); }
+
+// ---------- Exportar a CSV ----------
+function csvEscape(v){
+  const s = v==null ? "" : String(v);
+  return /[",\n]/.test(s) ? '"'+s.replace(/"/g,'""')+'"' : s;
+}
+function toCsv(headers, rows){
+  const lines = [headers.map(csvEscape).join(",")];
+  rows.forEach(r=> lines.push(r.map(csvEscape).join(",")));
+  return lines.join("\r\n");
+}
+function downloadCsv(filename, csvText){
+  const blob = new Blob([String.fromCharCode(0xFEFF)+csvText], {type:"text/csv;charset=utf-8"}); // BOM: que Excel abra bien los acentos
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url; a.download = filename;
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
 function positionTip(e){
   const pad=12, w=tipEl.offsetWidth||120;
   let x = e.clientX, y = e.clientY;
@@ -1540,7 +1563,21 @@ function renderTenencias(){
 
   const sel = document.getElementById("hPlatform");
   sel.innerHTML = platformKeys().map(k=>'<option value="'+k+'">'+platformName(k)+'</option>').join("");
+  lastFilteredHoldings = holdings;
 }
+let lastFilteredHoldings = [];
+document.getElementById("btnExportHoldings").addEventListener("click", function(){
+  const csv = toCsv(
+    ["Instrumento","Nombre","Plataforma","Grupo","Cantidad","Invertido US$","Vale hoy US$","Ganancia US$","Actualizado"],
+    lastFilteredHoldings.map(h=>{
+      const analysis = analyzeHolding(h.platform, h.instrument);
+      const cost = effectiveCostBasis(h).value;
+      return [h.instrument, h.name||"", platformName(h.platform), h.group||"Otro",
+        analysis.quantity!=null?analysis.quantity:"", cost||0, h.valueUSD||0, h._gain!=null?h._gain:"", h.asOf||""];
+    })
+  );
+  downloadCsv("tenencias-"+new Date().toISOString().slice(0,10)+".csv", csv);
+});
 document.getElementById("btnAddHolding").addEventListener("click", function(){
   if(!STATE) return;
   const plat = document.getElementById("hPlatform").value;
@@ -1642,7 +1679,17 @@ function renderMovimientos(){
   });
   document.getElementById("commArs").textContent = "$ "+fmt.format(Math.abs(commArs));
   document.getElementById("commUsd").textContent = "US$ "+fmt.format(Math.abs(commUsd));
+  lastFilteredMovs = filtered;
 }
+let lastFilteredMovs = [];
+document.getElementById("btnExportMov").addEventListener("click", function(){
+  const csv = toCsv(
+    ["Fecha","Plataforma","Tipo","Instrumento","Cantidad","Precio","Moneda","Comisión","Total"],
+    lastFilteredMovs.map(m=>[m.date||"", platformName(m.platform), TYPE_LABELS[m.type]||m.type, m.instrument||"",
+      m.quantity!=null?m.quantity:"", m.price!=null?m.price:"", m.currency||"", m.commission!=null?m.commission:"", m.total!=null?m.total:""])
+  );
+  downloadCsv("movimientos-"+new Date().toISOString().slice(0,10)+".csv", csv);
+});
 ["fltPlatform","fltType","fltSearch"].forEach(id=>{
   document.getElementById(id).addEventListener("input", renderMovimientos);
 });
