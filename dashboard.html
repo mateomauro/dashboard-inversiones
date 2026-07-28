@@ -1708,6 +1708,26 @@ function renderContribChart(){
 }
 
 // ---------- EVOLUCION ----------
+// Volatilidad y peor caida, usando "valor por cada dolar invertido" (valueUSD/investedUSD)
+// como indice de rendimiento acumulado — asi los aportes nuevos no se confunden con
+// ganancia/perdida de mercado. Es una aproximacion (no retorno ponderado por tiempo
+// exacto), pero razonable para una cartera personal.
+function computeVolatilityAndDrawdown(withGp){
+  const puntos = withGp.filter(s=>s.investedUSD>0).map(s=>({date:s.date, idx:s.valueUSD/s.investedUSD}));
+  if(puntos.length<3) return null;
+  let peak = puntos[0].idx, maxDD = 0, maxDDDate = puntos[0].date;
+  puntos.forEach(p=>{
+    if(p.idx>peak) peak = p.idx;
+    const dd = (p.idx/peak-1)*100;
+    if(dd<maxDD){ maxDD=dd; maxDDDate=p.date; }
+  });
+  const rets = [];
+  for(let i=1;i<puntos.length;i++) rets.push(puntos[i].idx/puntos[i-1].idx-1);
+  const mean = rets.reduce((a,b)=>a+b,0)/rets.length;
+  const variance = rets.reduce((a,b)=>a+(b-mean)*(b-mean),0)/rets.length;
+  const annualizedVol = Math.sqrt(variance)*Math.sqrt(52)*100; // fotos semanales -> anualizado
+  return {maxDD, maxDDDate, annualizedVol};
+}
 function renderEvoMetrics(snaps){
   const box = document.getElementById("evoMetrics");
   if(!snaps.length){ box.innerHTML=""; return; }
@@ -1738,6 +1758,11 @@ function renderEvoMetrics(snaps){
     {label:"Peor momento", value: pct(worst.gp), sub: fmtDateHuman(worst.date), c: cls(worst.gp)},
     {label:"Seguimiento", value: days+" días", sub: "desde "+fmtDateHuman(first.date), c:""}
   ];
+  const vd = computeVolatilityAndDrawdown(withGp);
+  if(vd){
+    cards.push({label:"Volatilidad", value: vd.annualizedVol.toFixed(1)+"%", sub:"anualizada, aproximada", c:""});
+    cards.push({label:"Peor caída", value: vd.maxDD.toFixed(1)+"%", sub:"punta a punta, "+fmtDateHuman(vd.maxDDDate), c: vd.maxDD<0?"neg":""});
+  }
   box.innerHTML = cards.map(c=>
     '<div class="card"><h3>'+c.label+'</h3>'+
     '<div class="row-kv" style="border:none;padding:0"><span class="v mono '+(c.c||"")+'" style="font-size:1.05rem">'+c.value+'</span></div>'+
