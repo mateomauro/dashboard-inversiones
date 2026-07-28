@@ -1,7 +1,847 @@
 {
-  "updated": "2026-07-28T01:53:23Z",
+  "updated": "2026-07-28T02:07:47Z",
   "series": {
     "COCOUSDPA": [
+      {
+        "date": "2025-08-01",
+        "vcp": 1005.425,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-08-04",
+        "vcp": 1006.42,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-08-05",
+        "vcp": 1006.857,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-08-06",
+        "vcp": 1007.21,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-08-07",
+        "vcp": 1005.961,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-08-08",
+        "vcp": 1006.682,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-08-11",
+        "vcp": 1008.108,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-08-12",
+        "vcp": 1008.47,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-08-13",
+        "vcp": 1009.093,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-08-14",
+        "vcp": 1009.129,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-08-18",
+        "vcp": 1008.502,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-08-19",
+        "vcp": 1009.62,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-08-20",
+        "vcp": 1008.89,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-08-21",
+        "vcp": 1008.214,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-08-22",
+        "vcp": 1008.114,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-08-25",
+        "vcp": 1007.446,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-08-26",
+        "vcp": 1008.514,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-08-27",
+        "vcp": 1007.931,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-08-28",
+        "vcp": 1007.67,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-08-29",
+        "vcp": 1008.423,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-09-01",
+        "vcp": 1007.244,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-09-02",
+        "vcp": 1007.32,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-09-03",
+        "vcp": 1006.959,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-09-04",
+        "vcp": 1007.031,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-09-05",
+        "vcp": 1007.051,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-09-08",
+        "vcp": 1006.363,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-09-09",
+        "vcp": 1006.618,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-09-10",
+        "vcp": 1007.118,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-09-11",
+        "vcp": 1007.068,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-09-12",
+        "vcp": 1006.818,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-09-15",
+        "vcp": 1007.72,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-09-16",
+        "vcp": 1008.018,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-09-17",
+        "vcp": 1008.434,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-09-18",
+        "vcp": 1007.965,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-09-19",
+        "vcp": 1007.154,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-09-22",
+        "vcp": 1008.38,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-09-23",
+        "vcp": 1009.39,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-09-24",
+        "vcp": 1010.58,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-09-25",
+        "vcp": 1010.68,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-09-26",
+        "vcp": 1010.169,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-09-29",
+        "vcp": 1010.353,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-10-01",
+        "vcp": 1010.748,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-10-02",
+        "vcp": 1011.239,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-10-03",
+        "vcp": 1011.37,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-10-06",
+        "vcp": 1011.875,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-10-07",
+        "vcp": 1011.575,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-10-08",
+        "vcp": 1011.052,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-10-09",
+        "vcp": 1013.769,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-10-13",
+        "vcp": 1014.87,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-10-14",
+        "vcp": 1013.778,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-10-16",
+        "vcp": 1013.442,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-10-17",
+        "vcp": 1013.573,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-10-20",
+        "vcp": 1013.859,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-10-21",
+        "vcp": 1014.209,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-10-22",
+        "vcp": 1014.23,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-10-23",
+        "vcp": 1014.433,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-10-24",
+        "vcp": 1014.29,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-10-27",
+        "vcp": 1017.173,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-10-28",
+        "vcp": 1017.589,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-10-29",
+        "vcp": 1018.522,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-10-30",
+        "vcp": 1019.267,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-10-31",
+        "vcp": 1019.313,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-11-03",
+        "vcp": 1019.645,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-11-04",
+        "vcp": 1019.971,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-11-05",
+        "vcp": 1020.314,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-11-07",
+        "vcp": 1021.085,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-11-10",
+        "vcp": 1021.812,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-11-11",
+        "vcp": 1022.386,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-11-12",
+        "vcp": 1023.245,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-11-13",
+        "vcp": 1023.71,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-11-14",
+        "vcp": 1024.272,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-11-17",
+        "vcp": 1024.588,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-11-18",
+        "vcp": 1025.413,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-11-19",
+        "vcp": 1026.147,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-11-20",
+        "vcp": 1027.724,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-11-26",
+        "vcp": 1028.616,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-11-27",
+        "vcp": 1030.065,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-11-28",
+        "vcp": 1030.497,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-12-01",
+        "vcp": 1030.892,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-12-02",
+        "vcp": 1031.158,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-12-03",
+        "vcp": 1032.213,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-12-04",
+        "vcp": 1035.332,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-12-05",
+        "vcp": 1036.172,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-12-09",
+        "vcp": 1037.782,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-12-10",
+        "vcp": 1038.288,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-12-11",
+        "vcp": 1037.478,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-12-15",
+        "vcp": 1035.362,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-12-16",
+        "vcp": 1037.502,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-12-17",
+        "vcp": 1037.857,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-12-18",
+        "vcp": 1038.855,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-12-19",
+        "vcp": 1039.133,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-12-26",
+        "vcp": 1040.623,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-12-29",
+        "vcp": 1041.021,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-01-05",
+        "vcp": 1040.63,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-01-06",
+        "vcp": 1041.617,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-01-09",
+        "vcp": 1041.679,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-01-12",
+        "vcp": 1041.889,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-01-13",
+        "vcp": 1042.538,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-01-14",
+        "vcp": 1042.637,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-01-15",
+        "vcp": 1042.914,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-01-16",
+        "vcp": 1042.732,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-01-19",
+        "vcp": 1042.797,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-01-20",
+        "vcp": 1043.837,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-01-21",
+        "vcp": 1044.375,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-01-22",
+        "vcp": 1044.444,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-01-23",
+        "vcp": 1045.484,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-01-26",
+        "vcp": 1045.774,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-01-27",
+        "vcp": 1046.01,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-01-28",
+        "vcp": 1046.222,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-01-29",
+        "vcp": 1046.447,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-01-30",
+        "vcp": 1046.786,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-02-02",
+        "vcp": 1046.969,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-02-03",
+        "vcp": 1045.964,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-02-04",
+        "vcp": 1046.011,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-02-05",
+        "vcp": 1045.985,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-02-09",
+        "vcp": 1046.314,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-02-10",
+        "vcp": 1046.638,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-02-11",
+        "vcp": 1048.076,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-02-12",
+        "vcp": 1047.349,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-02-13",
+        "vcp": 1048.407,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-02-19",
+        "vcp": 1048.249,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-02-20",
+        "vcp": 1048.54,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-02-23",
+        "vcp": 1048.581,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-02-24",
+        "vcp": 1048.499,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-02-26",
+        "vcp": 1047.719,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-02-27",
+        "vcp": 1047.915,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-03-02",
+        "vcp": 1048.649,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-03-03",
+        "vcp": 1048.65,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-03-04",
+        "vcp": 1049.198,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-03-05",
+        "vcp": 1049.156,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-03-06",
+        "vcp": 1050.789,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-03-11",
+        "vcp": 1051.459,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-03-12",
+        "vcp": 1051.465,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-03-16",
+        "vcp": 1052.694,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-03-18",
+        "vcp": 1052.276,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-03-19",
+        "vcp": 1052.426,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-03-20",
+        "vcp": 1051.693,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-03-25",
+        "vcp": 1051.877,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-03-26",
+        "vcp": 1051.929,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-03-27",
+        "vcp": 1051.05,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-03-31",
+        "vcp": 1051.256,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-04-01",
+        "vcp": 1053.011,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-04-06",
+        "vcp": 1054.255,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-04-07",
+        "vcp": 1054.271,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-04-08",
+        "vcp": 1055.048,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-04-09",
+        "vcp": 1055.471,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-04-10",
+        "vcp": 1056.902,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-04-13",
+        "vcp": 1057.076,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-04-14",
+        "vcp": 1056.597,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-04-15",
+        "vcp": 1056.965,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-04-16",
+        "vcp": 1055.948,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-04-17",
+        "vcp": 1056.408,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-04-20",
+        "vcp": 1057.192,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-04-21",
+        "vcp": 1056.962,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-04-22",
+        "vcp": 1056.779,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-04-23",
+        "vcp": 1055.6,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-04-24",
+        "vcp": 1055.732,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-04-27",
+        "vcp": 1055.847,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-04-28",
+        "vcp": 1055.728,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-05-13",
+        "vcp": 1056.026,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-05-21",
+        "vcp": 1055.789,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-05-27",
+        "vcp": 1056.883,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-06-09",
+        "vcp": 1060.876,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-06-11",
+        "vcp": 1061.174,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-06-19",
+        "vcp": 1063.649,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-06-25",
+        "vcp": 1063.44,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-07-06",
+        "vcp": 1066.485,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-07-16",
+        "vcp": 1067.233,
+        "currency": "USD"
+      },
       {
         "date": "2026-07-21",
         "vcp": 1068.65,
@@ -10,12 +850,1177 @@
     ],
     "COCOSPPA": [
       {
+        "date": "2026-03-02",
+        "vcp": 1287.454,
+        "currency": "ARS"
+      },
+      {
+        "date": "2026-03-03",
+        "vcp": 1287.949,
+        "currency": "ARS"
+      },
+      {
+        "date": "2026-03-04",
+        "vcp": 1289.25,
+        "currency": "ARS"
+      },
+      {
+        "date": "2026-03-05",
+        "vcp": 1289.873,
+        "currency": "ARS"
+      },
+      {
+        "date": "2026-03-06",
+        "vcp": 1291.164,
+        "currency": "ARS"
+      },
+      {
+        "date": "2026-03-09",
+        "vcp": 1293.026,
+        "currency": "ARS"
+      },
+      {
+        "date": "2026-03-10",
+        "vcp": 1294.48,
+        "currency": "ARS"
+      },
+      {
+        "date": "2026-03-11",
+        "vcp": 1295.21,
+        "currency": "ARS"
+      },
+      {
+        "date": "2026-03-12",
+        "vcp": 1297.146,
+        "currency": "ARS"
+      },
+      {
+        "date": "2026-03-13",
+        "vcp": 1300.972,
+        "currency": "ARS"
+      },
+      {
+        "date": "2026-03-16",
+        "vcp": 1304.981,
+        "currency": "ARS"
+      },
+      {
+        "date": "2026-03-17",
+        "vcp": 1306.714,
+        "currency": "ARS"
+      },
+      {
+        "date": "2026-03-18",
+        "vcp": 1307.487,
+        "currency": "ARS"
+      },
+      {
+        "date": "2026-03-19",
+        "vcp": 1309.239,
+        "currency": "ARS"
+      },
+      {
+        "date": "2026-03-20",
+        "vcp": 1312.102,
+        "currency": "ARS"
+      },
+      {
+        "date": "2026-03-25",
+        "vcp": 1314.832,
+        "currency": "ARS"
+      },
+      {
+        "date": "2026-03-26",
+        "vcp": 1316.697,
+        "currency": "ARS"
+      },
+      {
+        "date": "2026-03-27",
+        "vcp": 1318.392,
+        "currency": "ARS"
+      },
+      {
+        "date": "2026-03-30",
+        "vcp": 1319.474,
+        "currency": "ARS"
+      },
+      {
+        "date": "2026-03-31",
+        "vcp": 1320.813,
+        "currency": "ARS"
+      },
+      {
+        "date": "2026-04-01",
+        "vcp": 1322.919,
+        "currency": "ARS"
+      },
+      {
+        "date": "2026-04-06",
+        "vcp": 1326.235,
+        "currency": "ARS"
+      },
+      {
+        "date": "2026-04-07",
+        "vcp": 1326.843,
+        "currency": "ARS"
+      },
+      {
+        "date": "2026-04-08",
+        "vcp": 1327.749,
+        "currency": "ARS"
+      },
+      {
+        "date": "2026-04-09",
+        "vcp": 1329.351,
+        "currency": "ARS"
+      },
+      {
+        "date": "2026-04-10",
+        "vcp": 1330.832,
+        "currency": "ARS"
+      },
+      {
+        "date": "2026-04-13",
+        "vcp": 1332.111,
+        "currency": "ARS"
+      },
+      {
+        "date": "2026-04-14",
+        "vcp": 1333.771,
+        "currency": "ARS"
+      },
+      {
+        "date": "2026-04-15",
+        "vcp": 1334.752,
+        "currency": "ARS"
+      },
+      {
+        "date": "2026-04-16",
+        "vcp": 1336.386,
+        "currency": "ARS"
+      },
+      {
+        "date": "2026-04-17",
+        "vcp": 1337.954,
+        "currency": "ARS"
+      },
+      {
+        "date": "2026-04-20",
+        "vcp": 1339.644,
+        "currency": "ARS"
+      },
+      {
+        "date": "2026-04-21",
+        "vcp": 1340.193,
+        "currency": "ARS"
+      },
+      {
+        "date": "2026-04-22",
+        "vcp": 1340.232,
+        "currency": "ARS"
+      },
+      {
+        "date": "2026-04-23",
+        "vcp": 1340.235,
+        "currency": "ARS"
+      },
+      {
+        "date": "2026-04-24",
+        "vcp": 1341.09,
+        "currency": "ARS"
+      },
+      {
+        "date": "2026-04-27",
+        "vcp": 1341.794,
+        "currency": "ARS"
+      },
+      {
+        "date": "2026-04-28",
+        "vcp": 1342.535,
+        "currency": "ARS"
+      },
+      {
+        "date": "2026-05-13",
+        "vcp": 1357.035,
+        "currency": "ARS"
+      },
+      {
+        "date": "2026-05-14",
+        "vcp": 1357.984,
+        "currency": "ARS"
+      },
+      {
+        "date": "2026-05-15",
+        "vcp": 1361.214,
+        "currency": "ARS"
+      },
+      {
+        "date": "2026-05-19",
+        "vcp": 1362.92,
+        "currency": "ARS"
+      },
+      {
+        "date": "2026-05-21",
+        "vcp": 1364.214,
+        "currency": "ARS"
+      },
+      {
+        "date": "2026-05-26",
+        "vcp": 1368.302,
+        "currency": "ARS"
+      },
+      {
+        "date": "2026-05-27",
+        "vcp": 1368.754,
+        "currency": "ARS"
+      },
+      {
+        "date": "2026-05-28",
+        "vcp": 1370.132,
+        "currency": "ARS"
+      },
+      {
+        "date": "2026-05-29",
+        "vcp": 1372.085,
+        "currency": "ARS"
+      },
+      {
+        "date": "2026-06-01",
+        "vcp": 1373.631,
+        "currency": "ARS"
+      },
+      {
+        "date": "2026-06-02",
+        "vcp": 1374.043,
+        "currency": "ARS"
+      },
+      {
+        "date": "2026-06-03",
+        "vcp": 1374.443,
+        "currency": "ARS"
+      },
+      {
+        "date": "2026-06-04",
+        "vcp": 1375.222,
+        "currency": "ARS"
+      },
+      {
+        "date": "2026-06-05",
+        "vcp": 1377.079,
+        "currency": "ARS"
+      },
+      {
+        "date": "2026-06-09",
+        "vcp": 1380.002,
+        "currency": "ARS"
+      },
+      {
+        "date": "2026-06-10",
+        "vcp": 1380.623,
+        "currency": "ARS"
+      },
+      {
+        "date": "2026-06-12",
+        "vcp": 1384.726,
+        "currency": "ARS"
+      },
+      {
+        "date": "2026-06-16",
+        "vcp": 1386.666,
+        "currency": "ARS"
+      },
+      {
+        "date": "2026-06-17",
+        "vcp": 1387.075,
+        "currency": "ARS"
+      },
+      {
+        "date": "2026-06-18",
+        "vcp": 1387.664,
+        "currency": "ARS"
+      },
+      {
+        "date": "2026-06-22",
+        "vcp": 1390.592,
+        "currency": "ARS"
+      },
+      {
+        "date": "2026-06-23",
+        "vcp": 1391.331,
+        "currency": "ARS"
+      },
+      {
+        "date": "2026-06-24",
+        "vcp": 1392.153,
+        "currency": "ARS"
+      },
+      {
+        "date": "2026-07-01",
+        "vcp": 1399.419,
+        "currency": "ARS"
+      },
+      {
+        "date": "2026-07-03",
+        "vcp": 1402.501,
+        "currency": "ARS"
+      },
+      {
+        "date": "2026-07-16",
+        "vcp": 1410.756,
+        "currency": "ARS"
+      },
+      {
+        "date": "2026-07-17",
+        "vcp": 1412.432,
+        "currency": "ARS"
+      },
+      {
         "date": "2026-07-21",
         "vcp": 1414.547,
         "currency": "ARS"
       }
     ],
     "FONDO_UALA": [
+      {
+        "date": "2025-08-01",
+        "vcp": 1059.181,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-08-04",
+        "vcp": 1060.371,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-08-05",
+        "vcp": 1063.275,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-08-06",
+        "vcp": 1065.191,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-08-07",
+        "vcp": 1065.38,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-08-08",
+        "vcp": 1071.803,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-08-11",
+        "vcp": 1072.643,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-08-12",
+        "vcp": 1074.485,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-08-13",
+        "vcp": 1078.471,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-08-14",
+        "vcp": 1076.109,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-08-18",
+        "vcp": 1074.424,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-08-19",
+        "vcp": 1075.267,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-08-20",
+        "vcp": 1071.9,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-08-21",
+        "vcp": 1070.036,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-08-22",
+        "vcp": 1065.204,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-08-25",
+        "vcp": 1049.723,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-08-26",
+        "vcp": 1052.456,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-08-27",
+        "vcp": 1051.49,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-08-28",
+        "vcp": 1058.024,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-08-29",
+        "vcp": 1058.56,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-09-01",
+        "vcp": 1048.785,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-09-02",
+        "vcp": 1049.781,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-09-03",
+        "vcp": 1046.28,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-09-04",
+        "vcp": 1041.495,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-09-05",
+        "vcp": 1041.706,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-09-08",
+        "vcp": 1003.633,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-09-09",
+        "vcp": 1015.369,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-09-10",
+        "vcp": 1022.236,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-09-11",
+        "vcp": 1016.195,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-09-12",
+        "vcp": 999.345,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-09-15",
+        "vcp": 973.322,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-09-16",
+        "vcp": 989.937,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-09-17",
+        "vcp": 976.107,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-09-18",
+        "vcp": 934.946,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-09-19",
+        "vcp": 920.091,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-09-22",
+        "vcp": 969.354,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-09-23",
+        "vcp": 989.877,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-09-24",
+        "vcp": 1006.45,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-09-25",
+        "vcp": 1008.036,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-09-26",
+        "vcp": 1003.913,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-09-29",
+        "vcp": 991.978,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-10-01",
+        "vcp": 978.22,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-10-02",
+        "vcp": 987.437,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-10-03",
+        "vcp": 994.96,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-10-06",
+        "vcp": 1000.291,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-10-07",
+        "vcp": 1001.744,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-10-08",
+        "vcp": 1002.559,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-10-09",
+        "vcp": 1024.153,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-10-13",
+        "vcp": 1029.912,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-10-14",
+        "vcp": 1015.615,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-10-16",
+        "vcp": 1018.728,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-10-17",
+        "vcp": 1002.441,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-10-20",
+        "vcp": 1012.841,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-10-21",
+        "vcp": 1001.478,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-10-22",
+        "vcp": 993.975,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-10-23",
+        "vcp": 994.783,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-10-24",
+        "vcp": 991.798,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-10-27",
+        "vcp": 1064.747,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-10-28",
+        "vcp": 1070.547,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-10-29",
+        "vcp": 1076.445,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-10-30",
+        "vcp": 1081.266,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-10-31",
+        "vcp": 1082.805,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-11-03",
+        "vcp": 1083.072,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-11-04",
+        "vcp": 1083.332,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-11-05",
+        "vcp": 1084.729,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-11-07",
+        "vcp": 1086.473,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-11-10",
+        "vcp": 1087.038,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-11-11",
+        "vcp": 1088.054,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-11-12",
+        "vcp": 1090.32,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-11-13",
+        "vcp": 1093.123,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-11-14",
+        "vcp": 1093.929,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-11-17",
+        "vcp": 1093.594,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-11-18",
+        "vcp": 1094.682,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-11-19",
+        "vcp": 1095.019,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-11-20",
+        "vcp": 1098.492,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-11-26",
+        "vcp": 1099.323,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-11-27",
+        "vcp": 1099.717,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-11-28",
+        "vcp": 1100.67,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-12-01",
+        "vcp": 1100.807,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-12-02",
+        "vcp": 1101.357,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-12-03",
+        "vcp": 1103.751,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-12-04",
+        "vcp": 1103.97,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-12-05",
+        "vcp": 1104.571,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-12-09",
+        "vcp": 1105.227,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-12-10",
+        "vcp": 1108.029,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-12-11",
+        "vcp": 1108.123,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-12-15",
+        "vcp": 1110.118,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-12-16",
+        "vcp": 1117.019,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-12-17",
+        "vcp": 1117.424,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-12-18",
+        "vcp": 1119.399,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-12-19",
+        "vcp": 1119.531,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-12-26",
+        "vcp": 1122.997,
+        "currency": "USD"
+      },
+      {
+        "date": "2025-12-29",
+        "vcp": 1125.283,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-01-05",
+        "vcp": 1125.602,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-01-06",
+        "vcp": 1125.433,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-01-09",
+        "vcp": 1130.354,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-01-12",
+        "vcp": 1130.339,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-01-13",
+        "vcp": 1127.796,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-01-14",
+        "vcp": 1128.195,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-01-15",
+        "vcp": 1128.822,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-01-16",
+        "vcp": 1129.667,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-01-19",
+        "vcp": 1129.541,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-01-20",
+        "vcp": 1135.577,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-01-21",
+        "vcp": 1136.152,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-01-22",
+        "vcp": 1141.072,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-01-23",
+        "vcp": 1145.043,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-01-26",
+        "vcp": 1145.467,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-01-27",
+        "vcp": 1151.964,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-01-28",
+        "vcp": 1152.573,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-01-29",
+        "vcp": 1152.326,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-01-30",
+        "vcp": 1152.545,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-02-02",
+        "vcp": 1150.744,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-02-03",
+        "vcp": 1142.793,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-02-04",
+        "vcp": 1144.722,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-02-05",
+        "vcp": 1145.225,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-02-09",
+        "vcp": 1150.453,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-02-10",
+        "vcp": 1152.779,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-02-11",
+        "vcp": 1157.282,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-02-12",
+        "vcp": 1157.27,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-02-13",
+        "vcp": 1159.075,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-02-19",
+        "vcp": 1157.37,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-02-20",
+        "vcp": 1157.84,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-02-23",
+        "vcp": 1159.271,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-02-24",
+        "vcp": 1153.342,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-02-26",
+        "vcp": 1153.441,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-02-27",
+        "vcp": 1149.775,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-03-02",
+        "vcp": 1147.894,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-03-03",
+        "vcp": 1146.541,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-03-04",
+        "vcp": 1151.077,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-03-05",
+        "vcp": 1149.919,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-03-06",
+        "vcp": 1150.838,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-03-11",
+        "vcp": 1144.388,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-03-12",
+        "vcp": 1145.108,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-03-16",
+        "vcp": 1148.48,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-03-18",
+        "vcp": 1146.135,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-03-19",
+        "vcp": 1146.866,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-03-20",
+        "vcp": 1147.121,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-03-25",
+        "vcp": 1148.635,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-03-26",
+        "vcp": 1148.663,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-03-27",
+        "vcp": 1142.355,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-03-31",
+        "vcp": 1141.283,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-04-01",
+        "vcp": 1144.741,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-04-06",
+        "vcp": 1145.879,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-04-07",
+        "vcp": 1148.261,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-04-08",
+        "vcp": 1153.322,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-04-09",
+        "vcp": 1156.374,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-04-10",
+        "vcp": 1158.98,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-04-13",
+        "vcp": 1172.584,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-04-14",
+        "vcp": 1176.244,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-04-15",
+        "vcp": 1176.624,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-04-16",
+        "vcp": 1176.751,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-04-17",
+        "vcp": 1176.926,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-04-20",
+        "vcp": 1177.469,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-04-21",
+        "vcp": 1177.883,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-04-22",
+        "vcp": 1178.289,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-04-23",
+        "vcp": 1178.804,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-04-24",
+        "vcp": 1178.388,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-04-27",
+        "vcp": 1176.619,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-04-28",
+        "vcp": 1176.803,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-05-13",
+        "vcp": 1189.082,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-05-21",
+        "vcp": 1185.387,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-05-27",
+        "vcp": 1187.718,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-06-09",
+        "vcp": 1192.452,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-06-11",
+        "vcp": 1193.985,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-06-18",
+        "vcp": 1199.027,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-06-25",
+        "vcp": 1202.176,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-07-06",
+        "vcp": 1207.063,
+        "currency": "USD"
+      },
+      {
+        "date": "2026-07-16",
+        "vcp": 1215.01,
+        "currency": "USD"
+      },
       {
         "date": "2026-07-21",
         "vcp": 1216.474,

@@ -482,6 +482,7 @@
     </div>
     <div class="section-title">Aportes por mes</div>
     <div class="chart-box" id="contribBox"></div>
+    <p class="dim" id="evoLiveNote" style="font-size:.78rem;margin:-4px 0 10px"></p>
     <div class="tbl-wrap">
       <table>
         <thead><tr><th>Fecha</th><th class="num">Invertido (US$)</th><th class="num">Valor (US$)</th><th class="num">Ganancia</th><th></th></tr></thead>
@@ -930,6 +931,128 @@ function recalcularValoresEnVivo(){
     });
   });
 }
+
+// ---------- Reconstruccion en vivo de Evolucion (mismo criterio que scripts/reconstruir_historial.py) ----------
+// En vez de depender de "fotos" guardadas a mano, recalcula el historial
+// completo de valor/invertido semana a semana, en el navegador, con los
+// mismos datos publicos (precios, dolar, VCP de fondos) que ya se
+// actualizan solos todos los dias.
+function priceOnOrBefore(series, dateStr){
+  if(!series || !series.length) return null;
+  let found = null;
+  for(const p of series){ if(p.date<=dateStr) found=p; else break; }
+  return found ? found.priceUSD : series[0].priceUSD;
+}
+function vcpOnOrBefore(series, dateStr){
+  if(!series || !series.length) return null;
+  let found = null;
+  for(const p of series){ if(p.date<=dateStr) found=p; else break; }
+  return found ? found.vcp : null;
+}
+function dolarVentaOnOrBefore(dateStr){
+  if(!DOLAR || !DOLAR.rates) return null;
+  if(DOLAR.rates[dateStr]) return DOLAR.rates[dateStr].venta;
+  const anteriores = Object.keys(DOLAR.rates).filter(d=>d<=dateStr).sort();
+  if(!anteriores.length) return null;
+  return DOLAR.rates[anteriores[anteriores.length-1]].venta;
+}
+function quantityAndCostAsOf(movements, ticker, dateStr){
+  const relevant = movements
+    .filter(m=>instrumentMatchesTicker(m.instrument, ticker) && (m.date||"")<=dateStr)
+    .sort((a,b)=>(a.date||"").localeCompare(b.date||""));
+  let qty=0, costUsd=0;
+  relevant.forEach(m=>{
+    const isBuy = BUY_TYPES.has(m.type), isSell = SELL_TYPES.has(m.type);
+    if(!isBuy && !isSell) return;
+    let amountUsd = null;
+    if(m.total!=null){
+      if(m.currency==="USD") amountUsd = Math.abs(m.total);
+      else if(m.currency==="ARS"){
+        const rate = dolarVentaOnOrBefore(m.date);
+        if(rate) amountUsd = Math.abs(m.total)/rate;
+      }
+    }
+    const q = m.quantity!=null ? Math.abs(m.quantity) : null;
+    if(isBuy){
+      if(amountUsd!=null) costUsd += amountUsd;
+      if(q!=null) qty += q;
+    } else if(isSell && q!=null && qty>0){
+      const avg = costUsd/qty;
+      const sold = Math.min(q, qty);
+      costUsd -= avg*sold;
+      qty -= sold;
+    }
+  });
+  return {qty, costUsd};
+}
+function reconstruirEvolucionEnVivo(){
+  if(!STATE || !PRICES || !DOLAR || !FONDOS) return null;
+  let startDate = null;
+  Object.keys(STATE.platforms||{}).forEach(plat=>{
+    (STATE.platforms[plat].movements||[]).forEach(m=>{
+      if(m.date && (!startDate || m.date<startDate)) startDate = m.date;
+    });
+  });
+  if(!startDate) return null;
+
+  const start = new Date(startDate+"T00:00:00");
+  const today = new Date();
+  const todayStr = today.toISOString().slice(0,10);
+  const fechas = [];
+  for(let cur=new Date(start); cur<=today; cur.setDate(cur.getDate()+7)) fechas.push(cur.toISOString().slice(0,10));
+  if(fechas[fechas.length-1]!==todayStr) fechas.push(todayStr);
+
+  const resultados = [];
+  fechas.forEach(dateStr=>{
+    let totalValue=0, totalCost=0;
+    Object.keys(STATE.holdings||{}).forEach(plat=>{
+      const movements = (STATE.platforms[plat] && STATE.platforms[plat].movements) || [];
+      (STATE.holdings[plat]||[]).forEach(h=>{
+        const ticker = h.instrument;
+
+        if(FCI_CURRENCY[ticker]){
+          const {qty:qtyRaw, costUsd} = quantityAndCostAsOf(movements, ticker, dateStr);
+          if(qtyRaw<=0) return;
+          const vcp = FONDOS.series && vcpOnOrBefore(FONDOS.series[ticker], dateStr);
+          if(vcp==null) return;
+          const qty = qtyRaw/1000;
+          if(FCI_CURRENCY[ticker]==="USD"){
+            totalValue += qty*vcp;
+          } else {
+            const rate = dolarVentaOnOrBefore(dateStr);
+            if(!rate) return;
+            totalValue += qty*vcp/rate;
+          }
+          totalCost += costUsd;
+          return;
+        }
+
+        if(COINGECKO_TICKERS.has(ticker)){
+          const {qty, costUsd} = quantityAndCostAsOf(movements, ticker, dateStr);
+          if(qty<=0) return;
+          const price = priceOnOrBefore(PRICES.series && PRICES.series[ticker], dateStr);
+          if(price==null) return;
+          totalValue += qty*price;
+          totalCost += costUsd;
+          return;
+        }
+
+        const ratio = ratioFor(ticker);
+        if(ratio){
+          const {qty, costUsd} = quantityAndCostAsOf(movements, ticker, dateStr);
+          if(qty<=0) return;
+          const price = priceOnOrBefore(PRICES.series && PRICES.series[ticker], dateStr);
+          if(price==null) return;
+          totalValue += qty/ratio*price;
+          totalCost += costUsd;
+        }
+      });
+    });
+    if(totalValue<=0 && totalCost<=0) return;
+    resultados.push({date:dateStr, valueUSD:Math.round(totalValue*100)/100, investedUSD:Math.round(totalCost*100)/100});
+  });
+  return resultados;
+}
 function totalRealizedGainUSD(){
   let total=0, complete=true;
   allHoldings().forEach(h=>{
@@ -1215,7 +1338,8 @@ function renderResumen(){
   }
 
   // Evolucion mini-chart en Resumen (mismo dibujo que la pestaña Evolucion, mas chico)
-  const snapsResumen = (STATE.snapshots||[]).slice().sort((a,b)=>a.date.localeCompare(b.date));
+  const liveResumen = reconstruirEvolucionEnVivo();
+  const snapsResumen = (liveResumen && liveResumen.length) ? liveResumen : (STATE.snapshots||[]).slice().sort((a,b)=>a.date.localeCompare(b.date));
   drawChart(snapsResumen, "resumenEvoChart");
 }
 
@@ -1605,25 +1729,33 @@ function renderBitacora(){
   }).join("");
 }
 function renderEvolucion(){
-  const snaps = (STATE.snapshots||[]).slice().sort((a,b)=>a.date.localeCompare(b.date));
+  const live = reconstruirEvolucionEnVivo();
+  const usingLive = !!(live && live.length);
+  const snaps = usingLive ? live : (STATE.snapshots||[]).slice().sort((a,b)=>a.date.localeCompare(b.date));
   renderEvoMetrics(snaps);
   renderContribChart();
   renderBitacora();
+  const addSnapCard = document.getElementById("addSnapCard");
+  if(addSnapCard) addSnapCard.style.display = usingLive ? "none" : "";
+  const liveNote = document.getElementById("evoLiveNote");
+  if(liveNote) liveNote.textContent = usingLive ? "Calculado en vivo con precios actualizados — no hace falta guardar nada." : "";
   const tbody = document.getElementById("snapBody");
   tbody.innerHTML = snaps.length ? snaps.map((s,i)=>{
     const g = s.valueUSD-s.investedUSD, p = s.investedUSD? g/s.investedUSD*100:0;
     return '<tr><td class="mono">'+s.date+'</td><td class="num mono">'+fmt.format(s.investedUSD)+'</td>'+
       '<td class="num mono">'+fmt.format(s.valueUSD)+'</td>'+
       '<td class="num mono '+cls(g)+'">'+signed(g)+' ('+pct(p)+')</td>'+
-      '<td>'+(READ_ONLY?'':'<button class="del" data-idx="'+i+'" aria-label="Quitar foto">'+ICON_CLOSE+'</button>')+'</td></tr>';
+      '<td>'+((usingLive||READ_ONLY)?'':'<button class="del" data-idx="'+i+'" aria-label="Quitar foto">'+ICON_CLOSE+'</button>')+'</td></tr>';
   }).join("") : '<tr><td colspan="5" class="empty">Sin fotos guardadas todavía</td></tr>';
-  tbody.querySelectorAll(".del").forEach(btn=>{
-    btn.addEventListener("click", function(){
-      snaps.splice(parseInt(btn.dataset.idx,10),1);
-      STATE.snapshots = snaps;
-      renderAll();
+  if(!usingLive){
+    tbody.querySelectorAll(".del").forEach(btn=>{
+      btn.addEventListener("click", function(){
+        snaps.splice(parseInt(btn.dataset.idx,10),1);
+        STATE.snapshots = snaps;
+        renderAll();
+      });
     });
-  });
+  }
   drawChart(snaps);
 }
 function drawChart(snaps, svgId){
