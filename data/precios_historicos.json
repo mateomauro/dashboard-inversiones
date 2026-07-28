@@ -1,5 +1,5 @@
 {
-  "updated": "2026-07-28T01:21:31Z",
+  "updated": "2026-07-28T01:53:18Z",
   "series": {
     "AAPL": [
       {
@@ -994,1451 +994,1451 @@
     "BTC": [
       {
         "date": "2025-08-01",
-        "priceUSD": 115700.0
+        "priceUSD": 115744.99
       },
       {
         "date": "2025-08-02",
-        "priceUSD": 113234.61
+        "priceUSD": 113275.14
       },
       {
         "date": "2025-08-03",
-        "priceUSD": 112554.9
+        "priceUSD": 112572.13
       },
       {
         "date": "2025-08-04",
-        "priceUSD": 114199.11
+        "priceUSD": 114235.1
       },
       {
         "date": "2025-08-05",
-        "priceUSD": 115138.69
+        "priceUSD": 115084.65
       },
       {
         "date": "2025-08-06",
-        "priceUSD": 114128.35
+        "priceUSD": 114097.76
       },
       {
         "date": "2025-08-07",
-        "priceUSD": 115022.1
+        "priceUSD": 115013.39
       },
       {
         "date": "2025-08-08",
-        "priceUSD": 117463.47
+        "priceUSD": 117482.6
       },
       {
         "date": "2025-08-09",
-        "priceUSD": 116688.37
+        "priceUSD": 116686.72
       },
       {
         "date": "2025-08-10",
-        "priceUSD": 116510.08
+        "priceUSD": 116500.75
       },
       {
         "date": "2025-08-11",
-        "priceUSD": 119266.93
+        "priceUSD": 119296.66
       },
       {
         "date": "2025-08-12",
-        "priceUSD": 118773.8
+        "priceUSD": 118726.76
       },
       {
         "date": "2025-08-13",
-        "priceUSD": 120202.53
+        "priceUSD": 120106.26
       },
       {
         "date": "2025-08-14",
-        "priceUSD": 123560.99
+        "priceUSD": 123419.33
       },
       {
         "date": "2025-08-15",
-        "priceUSD": 118405.6
+        "priceUSD": 118387.77
       },
       {
         "date": "2025-08-16",
-        "priceUSD": 117339.79
+        "priceUSD": 117396.52
       },
       {
         "date": "2025-08-17",
-        "priceUSD": 117501.22
+        "priceUSD": 117397.54
       },
       {
         "date": "2025-08-18",
-        "priceUSD": 117542.84
+        "priceUSD": 117519.36
       },
       {
         "date": "2025-08-19",
-        "priceUSD": 116256.41
+        "priceUSD": 116315.12
       },
       {
         "date": "2025-08-20",
-        "priceUSD": 112778.34
+        "priceUSD": 112896.33
       },
       {
         "date": "2025-08-21",
-        "priceUSD": 114252.4
+        "priceUSD": 114250.43
       },
       {
         "date": "2025-08-22",
-        "priceUSD": 112414.4
+        "priceUSD": 112510.27
       },
       {
         "date": "2025-08-23",
-        "priceUSD": 116834.25
+        "priceUSD": 116897.54
       },
       {
         "date": "2025-08-24",
-        "priceUSD": 115359.98
+        "priceUSD": 115332.83
       },
       {
         "date": "2025-08-25",
-        "priceUSD": 113399.55
+        "priceUSD": 113422.51
       },
       {
         "date": "2025-08-26",
-        "priceUSD": 110185.35
+        "priceUSD": 110100.28
       },
       {
         "date": "2025-08-27",
-        "priceUSD": 111842.71
+        "priceUSD": 111712.87
       },
       {
         "date": "2025-08-28",
-        "priceUSD": 111216.08
+        "priceUSD": 111241.29
       },
       {
         "date": "2025-08-29",
-        "priceUSD": 112525.6
+        "priceUSD": 112512.68
       },
       {
         "date": "2025-08-30",
-        "priceUSD": 108480.31
+        "priceUSD": 108335.63
       },
       {
         "date": "2025-08-31",
-        "priceUSD": 108781.96
+        "priceUSD": 108836.24
       },
       {
         "date": "2025-09-01",
-        "priceUSD": 108253.36
+        "priceUSD": 108225.66
       },
       {
         "date": "2025-09-02",
-        "priceUSD": 109162.69
+        "priceUSD": 109229.01
       },
       {
         "date": "2025-09-03",
-        "priceUSD": 111190.18
+        "priceUSD": 111348.1
       },
       {
         "date": "2025-09-04",
-        "priceUSD": 111711.52
+        "priceUSD": 111751.65
       },
       {
         "date": "2025-09-05",
-        "priceUSD": 110724.74
+        "priceUSD": 110752.04
       },
       {
         "date": "2025-09-06",
-        "priceUSD": 110662.18
+        "priceUSD": 110656.31
       },
       {
         "date": "2025-09-07",
-        "priceUSD": 110209.19
+        "priceUSD": 110223.83
       },
       {
         "date": "2025-09-08",
-        "priceUSD": 111131.99
+        "priceUSD": 111133.09
       },
       {
         "date": "2025-09-09",
-        "priceUSD": 112025.13
+        "priceUSD": 112079.6
       },
       {
         "date": "2025-09-10",
-        "priceUSD": 111547.44
+        "priceUSD": 111521.54
       },
       {
         "date": "2025-09-11",
-        "priceUSD": 113975.32
+        "priceUSD": 114000.12
       },
       {
         "date": "2025-09-12",
-        "priceUSD": 115503.17
+        "priceUSD": 115553.49
       },
       {
         "date": "2025-09-13",
-        "priceUSD": 116160.14
+        "priceUSD": 116091.81
       },
       {
         "date": "2025-09-14",
-        "priceUSD": 115970.58
+        "priceUSD": 115974.89
       },
       {
         "date": "2025-09-15",
-        "priceUSD": 115373.56
+        "priceUSD": 115278.55
       },
       {
         "date": "2025-09-16",
-        "priceUSD": 115397.25
+        "priceUSD": 115356.68
       },
       {
         "date": "2025-09-17",
-        "priceUSD": 116762.85
+        "priceUSD": 116797.0
       },
       {
         "date": "2025-09-18",
-        "priceUSD": 116455.95
+        "priceUSD": 116430.93
       },
       {
         "date": "2025-09-19",
-        "priceUSD": 117145.5
+        "priceUSD": 117169.12
       },
       {
         "date": "2025-09-20",
-        "priceUSD": 115655.81
+        "priceUSD": 115656.95
       },
       {
         "date": "2025-09-21",
-        "priceUSD": 115715.52
+        "priceUSD": 115722.9
       },
       {
         "date": "2025-09-22",
-        "priceUSD": 115304.48
+        "priceUSD": 115255.85
       },
       {
         "date": "2025-09-23",
-        "priceUSD": 112696.74
+        "priceUSD": 112692.5
       },
       {
         "date": "2025-09-24",
-        "priceUSD": 112022.17
+        "priceUSD": 112002.46
       },
       {
         "date": "2025-09-25",
-        "priceUSD": 113320.57
+        "priceUSD": 113317.16
       },
       {
         "date": "2025-09-26",
-        "priceUSD": 108963.53
+        "priceUSD": 109233.05
       },
       {
         "date": "2025-09-27",
-        "priceUSD": 109710.21
+        "priceUSD": 109660.37
       },
       {
         "date": "2025-09-28",
-        "priceUSD": 109654.81
+        "priceUSD": 109675.14
       },
       {
         "date": "2025-09-29",
-        "priceUSD": 112142.57
+        "priceUSD": 112179.4
       },
       {
         "date": "2025-09-30",
-        "priceUSD": 114309.15
+        "priceUSD": 114327.17
       },
       {
         "date": "2025-10-01",
-        "priceUSD": 114024.23
+        "priceUSD": 114087.51
       },
       {
         "date": "2025-10-02",
-        "priceUSD": 118503.24
+        "priceUSD": 118930.96
       },
       {
         "date": "2025-10-03",
-        "priceUSD": 120611.72
+        "priceUSD": 120514.58
       },
       {
         "date": "2025-10-04",
-        "priceUSD": 122250.15
+        "priceUSD": 122294.92
       },
       {
         "date": "2025-10-05",
-        "priceUSD": 122380.94
+        "priceUSD": 122428.89
       },
       {
         "date": "2025-10-06",
-        "priceUSD": 123506.19
+        "priceUSD": 123488.73
       },
       {
         "date": "2025-10-07",
-        "priceUSD": 124773.51
+        "priceUSD": 124739.81
       },
       {
         "date": "2025-10-08",
-        "priceUSD": 121518.76
+        "priceUSD": 121463.12
       },
       {
         "date": "2025-10-09",
-        "priceUSD": 123352.5
+        "priceUSD": 123342.98
       },
       {
         "date": "2025-10-10",
-        "priceUSD": 121698.03
+        "priceUSD": 121718.67
       },
       {
         "date": "2025-10-11",
-        "priceUSD": 113201.74
+        "priceUSD": 113043.68
       },
       {
         "date": "2025-10-12",
-        "priceUSD": 110853.12
+        "priceUSD": 110655.27
       },
       {
         "date": "2025-10-13",
-        "priceUSD": 115189.57
+        "priceUSD": 115060.88
       },
       {
         "date": "2025-10-14",
-        "priceUSD": 115222.28
+        "priceUSD": 115226.58
       },
       {
         "date": "2025-10-15",
-        "priceUSD": 113156.57
+        "priceUSD": 113066.35
       },
       {
         "date": "2025-10-16",
-        "priceUSD": 110708.67
+        "priceUSD": 110844.4
       },
       {
         "date": "2025-10-17",
-        "priceUSD": 108076.73
+        "priceUSD": 108168.17
       },
       {
         "date": "2025-10-18",
-        "priceUSD": 106443.61
+        "priceUSD": 106483.89
       },
       {
         "date": "2025-10-19",
-        "priceUSD": 107156.0
+        "priceUSD": 107210.1
       },
       {
         "date": "2025-10-20",
-        "priceUSD": 108621.13
+        "priceUSD": 108655.51
       },
       {
         "date": "2025-10-21",
-        "priceUSD": 110608.57
+        "priceUSD": 110535.86
       },
       {
         "date": "2025-10-22",
-        "priceUSD": 108486.1
+        "priceUSD": 108301.75
       },
       {
         "date": "2025-10-23",
-        "priceUSD": 107618.43
+        "priceUSD": 107591.46
       },
       {
         "date": "2025-10-24",
-        "priceUSD": 110048.52
+        "priceUSD": 110109.31
       },
       {
         "date": "2025-10-25",
-        "priceUSD": 110997.8
+        "priceUSD": 111030.18
       },
       {
         "date": "2025-10-26",
-        "priceUSD": 111620.31
+        "priceUSD": 111631.64
       },
       {
         "date": "2025-10-27",
-        "priceUSD": 114476.01
+        "priceUSD": 114419.22
       },
       {
         "date": "2025-10-28",
-        "priceUSD": 114182.79
+        "priceUSD": 114085.33
       },
       {
         "date": "2025-10-29",
-        "priceUSD": 112950.35
+        "priceUSD": 112893.85
       },
       {
         "date": "2025-10-30",
-        "priceUSD": 110046.67
+        "priceUSD": 110026.09
       },
       {
         "date": "2025-10-31",
-        "priceUSD": 108240.77
+        "priceUSD": 108409.38
       },
       {
         "date": "2025-11-01",
-        "priceUSD": 109573.91
+        "priceUSD": 109566.61
       },
       {
         "date": "2025-11-02",
-        "priceUSD": 110014.14
+        "priceUSD": 110066.94
       },
       {
         "date": "2025-11-03",
-        "priceUSD": 110650.21
+        "priceUSD": 110499.52
       },
       {
         "date": "2025-11-04",
-        "priceUSD": 106521.09
+        "priceUSD": 106451.71
       },
       {
         "date": "2025-11-05",
-        "priceUSD": 101635.27
+        "priceUSD": 101480.77
       },
       {
         "date": "2025-11-06",
-        "priceUSD": 103877.96
+        "priceUSD": 103878.93
       },
       {
         "date": "2025-11-07",
-        "priceUSD": 101322.64
+        "priceUSD": 101261.65
       },
       {
         "date": "2025-11-08",
-        "priceUSD": 103396.08
+        "priceUSD": 103191.76
       },
       {
         "date": "2025-11-09",
-        "priceUSD": 102290.14
+        "priceUSD": 102286.83
       },
       {
         "date": "2025-11-10",
-        "priceUSD": 104709.68
+        "priceUSD": 104610.23
       },
       {
         "date": "2025-11-11",
-        "priceUSD": 105909.07
+        "priceUSD": 105951.5
       },
       {
         "date": "2025-11-12",
-        "priceUSD": 102960.78
+        "priceUSD": 103112.21
       },
       {
         "date": "2025-11-13",
-        "priceUSD": 101521.71
+        "priceUSD": 101633.69
       },
       {
         "date": "2025-11-14",
-        "priceUSD": 99730.45
+        "priceUSD": 99480.31
       },
       {
         "date": "2025-11-15",
-        "priceUSD": 94456.39
+        "priceUSD": 94772.61
       },
       {
         "date": "2025-11-16",
-        "priceUSD": 95508.31
+        "priceUSD": 95380.13
       },
       {
         "date": "2025-11-17",
-        "priceUSD": 94411.33
+        "priceUSD": 94188.28
       },
       {
         "date": "2025-11-18",
-        "priceUSD": 92036.73
+        "priceUSD": 92100.36
       },
       {
         "date": "2025-11-19",
-        "priceUSD": 92819.76
+        "priceUSD": 92903.18
       },
       {
         "date": "2025-11-20",
-        "priceUSD": 91363.28
+        "priceUSD": 91408.36
       },
       {
         "date": "2025-11-21",
-        "priceUSD": 86649.97
+        "priceUSD": 86618.47
       },
       {
         "date": "2025-11-22",
-        "priceUSD": 85051.8
+        "priceUSD": 85087.95
       },
       {
         "date": "2025-11-23",
-        "priceUSD": 84682.62
+        "priceUSD": 84675.51
       },
       {
         "date": "2025-11-24",
-        "priceUSD": 86783.85
+        "priceUSD": 86740.12
       },
       {
         "date": "2025-11-25",
-        "priceUSD": 88229.36
+        "priceUSD": 88256.04
       },
       {
         "date": "2025-11-26",
-        "priceUSD": 87310.33
+        "priceUSD": 87317.0
       },
       {
         "date": "2025-11-27",
-        "priceUSD": 90474.23
+        "priceUSD": 90515.94
       },
       {
         "date": "2025-11-28",
-        "priceUSD": 91279.06
+        "priceUSD": 91323.63
       },
       {
         "date": "2025-11-29",
-        "priceUSD": 90950.38
+        "priceUSD": 90904.87
       },
       {
         "date": "2025-11-30",
-        "priceUSD": 90841.45
+        "priceUSD": 90832.19
       },
       {
         "date": "2025-12-01",
-        "priceUSD": 90406.28
+        "priceUSD": 90359.87
       },
       {
         "date": "2025-12-02",
-        "priceUSD": 86281.5
+        "priceUSD": 86303.9
       },
       {
         "date": "2025-12-03",
-        "priceUSD": 91344.73
+        "priceUSD": 91320.08
       },
       {
         "date": "2025-12-04",
-        "priceUSD": 93619.44
+        "priceUSD": 93428.59
       },
       {
         "date": "2025-12-05",
-        "priceUSD": 92140.7
+        "priceUSD": 92119.19
       },
       {
         "date": "2025-12-06",
-        "priceUSD": 89307.09
+        "priceUSD": 89264.23
       },
       {
         "date": "2025-12-07",
-        "priceUSD": 89244.76
+        "priceUSD": 89227.45
       },
       {
         "date": "2025-12-08",
-        "priceUSD": 90162.91
+        "priceUSD": 90398.45
       },
       {
         "date": "2025-12-09",
-        "priceUSD": 90618.05
+        "priceUSD": 90626.04
       },
       {
         "date": "2025-12-10",
-        "priceUSD": 92723.21
+        "priceUSD": 92686.1
       },
       {
         "date": "2025-12-11",
-        "priceUSD": 92005.14
+        "priceUSD": 91986.58
       },
       {
         "date": "2025-12-12",
-        "priceUSD": 92494.18
+        "priceUSD": 92525.87
       },
       {
         "date": "2025-12-13",
-        "priceUSD": 90307.26
+        "priceUSD": 90260.54
       },
       {
         "date": "2025-12-14",
-        "priceUSD": 90257.43
+        "priceUSD": 90253.12
       },
       {
         "date": "2025-12-15",
-        "priceUSD": 88230.77
+        "priceUSD": 88184.41
       },
       {
         "date": "2025-12-16",
-        "priceUSD": 86413.92
+        "priceUSD": 86413.22
       },
       {
         "date": "2025-12-17",
-        "priceUSD": 87821.89
+        "priceUSD": 87719.68
       },
       {
         "date": "2025-12-18",
-        "priceUSD": 86064.95
+        "priceUSD": 86196.82
       },
       {
         "date": "2025-12-19",
-        "priceUSD": 85450.33
+        "priceUSD": 85450.18
       },
       {
         "date": "2025-12-20",
-        "priceUSD": 88103.86
+        "priceUSD": 88091.7
       },
       {
         "date": "2025-12-21",
-        "priceUSD": 88347.94
+        "priceUSD": 88348.28
       },
       {
         "date": "2025-12-22",
-        "priceUSD": 88577.42
+        "priceUSD": 88672.33
       },
       {
         "date": "2025-12-23",
-        "priceUSD": 88491.12
+        "priceUSD": 88489.72
       },
       {
         "date": "2025-12-24",
-        "priceUSD": 87406.44
+        "priceUSD": 87496.15
       },
       {
         "date": "2025-12-25",
-        "priceUSD": 87642.61
+        "priceUSD": 87589.02
       },
       {
         "date": "2025-12-26",
-        "priceUSD": 87229.78
+        "priceUSD": 87192.23
       },
       {
         "date": "2025-12-27",
-        "priceUSD": 87305.96
+        "priceUSD": 87303.04
       },
       {
         "date": "2025-12-28",
-        "priceUSD": 87807.0
+        "priceUSD": 87852.99
       },
       {
         "date": "2025-12-29",
-        "priceUSD": 87822.91
+        "priceUSD": 87867.04
       },
       {
         "date": "2025-12-30",
-        "priceUSD": 87156.56
+        "priceUSD": 87154.68
       },
       {
         "date": "2025-12-31",
-        "priceUSD": 88414.63
+        "priceUSD": 88363.72
       },
       {
         "date": "2026-01-01",
-        "priceUSD": 87520.18
+        "priceUSD": 87575.05
       },
       {
         "date": "2026-01-02",
-        "priceUSD": 88727.67
+        "priceUSD": 88764.13
       },
       {
         "date": "2026-01-03",
-        "priceUSD": 89926.28
+        "priceUSD": 89978.92
       },
       {
         "date": "2026-01-04",
-        "priceUSD": 90593.85
+        "priceUSD": 90614.41
       },
       {
         "date": "2026-01-05",
-        "priceUSD": 91373.22
+        "priceUSD": 91879.58
       },
       {
         "date": "2026-01-06",
-        "priceUSD": 93926.8
+        "priceUSD": 93879.95
       },
       {
         "date": "2026-01-07",
-        "priceUSD": 93666.86
+        "priceUSD": 93649.63
       },
       {
         "date": "2026-01-08",
-        "priceUSD": 91257.16
+        "priceUSD": 91286.03
       },
       {
         "date": "2026-01-09",
-        "priceUSD": 90983.52
+        "priceUSD": 91027.67
       },
       {
         "date": "2026-01-10",
-        "priceUSD": 90504.9
+        "priceUSD": 90551.71
       },
       {
         "date": "2026-01-11",
-        "priceUSD": 90442.02
+        "priceUSD": 90420.3
       },
       {
         "date": "2026-01-12",
-        "priceUSD": 90819.37
+        "priceUSD": 90856.56
       },
       {
         "date": "2026-01-13",
-        "priceUSD": 91134.97
+        "priceUSD": 91200.63
       },
       {
         "date": "2026-01-14",
-        "priceUSD": 95260.44
+        "priceUSD": 95429.16
       },
       {
         "date": "2026-01-15",
-        "priceUSD": 97007.78
+        "priceUSD": 96898.76
       },
       {
         "date": "2026-01-16",
-        "priceUSD": 95584.83
+        "priceUSD": 95593.31
       },
       {
         "date": "2026-01-17",
-        "priceUSD": 95516.08
+        "priceUSD": 95523.19
       },
       {
         "date": "2026-01-18",
-        "priceUSD": 95099.53
+        "priceUSD": 94802.88
       },
       {
         "date": "2026-01-19",
-        "priceUSD": 93752.71
+        "priceUSD": 93344.22
       },
       {
         "date": "2026-01-20",
-        "priceUSD": 92558.46
+        "priceUSD": 92566.01
       },
       {
         "date": "2026-01-21",
-        "priceUSD": 88312.84
+        "priceUSD": 88416.89
       },
       {
         "date": "2026-01-22",
-        "priceUSD": 89354.34
+        "priceUSD": 89453.9
       },
       {
         "date": "2026-01-23",
-        "priceUSD": 89443.4
+        "priceUSD": 89483.65
       },
       {
         "date": "2026-01-24",
-        "priceUSD": 89412.4
+        "priceUSD": 89524.85
       },
       {
         "date": "2026-01-25",
-        "priceUSD": 89170.87
+        "priceUSD": 89149.96
       },
       {
         "date": "2026-01-26",
-        "priceUSD": 86548.32
+        "priceUSD": 86625.33
       },
       {
         "date": "2026-01-27",
-        "priceUSD": 88307.86
+        "priceUSD": 88249.9
       },
       {
         "date": "2026-01-28",
-        "priceUSD": 89204.22
+        "priceUSD": 89141.65
       },
       {
         "date": "2026-01-29",
-        "priceUSD": 89162.1
+        "priceUSD": 89212.21
       },
       {
         "date": "2026-01-30",
-        "priceUSD": 84570.41
+        "priceUSD": 84630.42
       },
       {
         "date": "2026-01-31",
-        "priceUSD": 84141.78
+        "priceUSD": 84091.63
       },
       {
         "date": "2026-02-01",
-        "priceUSD": 78725.86
+        "priceUSD": 78647.03
       },
       {
         "date": "2026-02-02",
-        "priceUSD": 76937.06
+        "priceUSD": 76895.59
       },
       {
         "date": "2026-02-03",
-        "priceUSD": 78767.66
+        "priceUSD": 78670.59
       },
       {
         "date": "2026-02-04",
-        "priceUSD": 75638.96
+        "priceUSD": 75628.04
       },
       {
         "date": "2026-02-05",
-        "priceUSD": 73172.29
+        "priceUSD": 73059.18
       },
       {
         "date": "2026-02-06",
-        "priceUSD": 62853.69
+        "priceUSD": 62778.22
       },
       {
         "date": "2026-02-07",
-        "priceUSD": 70523.95
+        "priceUSD": 70272.52
       },
       {
         "date": "2026-02-08",
-        "priceUSD": 69296.81
+        "priceUSD": 69245.78
       },
       {
         "date": "2026-02-09",
-        "priceUSD": 70542.37
+        "priceUSD": 70398.09
       },
       {
         "date": "2026-02-10",
-        "priceUSD": 70096.41
+        "priceUSD": 70175.15
       },
       {
         "date": "2026-02-11",
-        "priceUSD": 68779.91
+        "priceUSD": 68841.87
       },
       {
         "date": "2026-02-12",
-        "priceUSD": 66937.58
+        "priceUSD": 67090.58
       },
       {
         "date": "2026-02-13",
-        "priceUSD": 66184.58
+        "priceUSD": 66258.53
       },
       {
         "date": "2026-02-14",
-        "priceUSD": 68838.87
+        "priceUSD": 68837.58
       },
       {
         "date": "2026-02-15",
-        "priceUSD": 69765.6
+        "priceUSD": 69799.55
       },
       {
         "date": "2026-02-16",
-        "priceUSD": 68716.58
+        "priceUSD": 68778.84
       },
       {
         "date": "2026-02-17",
-        "priceUSD": 68907.78
+        "priceUSD": 68859.78
       },
       {
         "date": "2026-02-18",
-        "priceUSD": 67489.46
+        "priceUSD": 67559.3
       },
       {
         "date": "2026-02-19",
-        "priceUSD": 66456.35
+        "priceUSD": 66426.62
       },
       {
         "date": "2026-02-20",
-        "priceUSD": 66918.68
+        "priceUSD": 66976.03
       },
       {
         "date": "2026-02-21",
-        "priceUSD": 67970.29
+        "priceUSD": 68002.94
       },
       {
         "date": "2026-02-22",
-        "priceUSD": 67977.91
+        "priceUSD": 68026.03
       },
       {
         "date": "2026-02-23",
-        "priceUSD": 67585.12
+        "priceUSD": 65192.19
       },
       {
         "date": "2026-02-24",
-        "priceUSD": 64577.55
+        "priceUSD": 64737.9
       },
       {
         "date": "2026-02-25",
-        "priceUSD": 64074.11
+        "priceUSD": 64073.55
       },
       {
         "date": "2026-02-26",
-        "priceUSD": 67947.39
+        "priceUSD": 67850.11
       },
       {
         "date": "2026-02-27",
-        "priceUSD": 67469.06
+        "priceUSD": 67496.84
       },
       {
         "date": "2026-02-28",
-        "priceUSD": 65883.99
+        "priceUSD": 65891.22
       },
       {
         "date": "2026-03-01",
-        "priceUSD": 67008.45
+        "priceUSD": 67017.08
       },
       {
         "date": "2026-03-02",
-        "priceUSD": 65713.5
+        "priceUSD": 65824.42
       },
       {
         "date": "2026-03-03",
-        "priceUSD": 68864.04
+        "priceUSD": 68815.94
       },
       {
         "date": "2026-03-04",
-        "priceUSD": 68321.62
+        "priceUSD": 68287.46
       },
       {
         "date": "2026-03-05",
-        "priceUSD": 72669.77
+        "priceUSD": 72752.3
       },
       {
         "date": "2026-03-06",
-        "priceUSD": 70874.99
+        "priceUSD": 70868.22
       },
       {
         "date": "2026-03-07",
-        "priceUSD": 68148.28
+        "priceUSD": 68142.88
       },
       {
         "date": "2026-03-08",
-        "priceUSD": 67271.19
+        "priceUSD": 67339.67
       },
       {
         "date": "2026-03-09",
-        "priceUSD": 66036.16
+        "priceUSD": 66042.75
       },
       {
         "date": "2026-03-10",
-        "priceUSD": 68459.32
+        "priceUSD": 68430.61
       },
       {
         "date": "2026-03-11",
-        "priceUSD": 69883.01
+        "priceUSD": 69849.2
       },
       {
         "date": "2026-03-12",
-        "priceUSD": 70226.82
+        "priceUSD": 70028.96
       },
       {
         "date": "2026-03-13",
-        "priceUSD": 70544.43
+        "priceUSD": 70417.19
       },
       {
         "date": "2026-03-14",
-        "priceUSD": 70965.28
+        "priceUSD": 70838.93
       },
       {
         "date": "2026-03-15",
-        "priceUSD": 71217.1
+        "priceUSD": 71149.28
       },
       {
         "date": "2026-03-16",
-        "priceUSD": 72681.91
+        "priceUSD": 72934.29
       },
       {
         "date": "2026-03-17",
-        "priceUSD": 74858.15
+        "priceUSD": 74679.37
       },
       {
         "date": "2026-03-18",
-        "priceUSD": 73926.28
+        "priceUSD": 74004.69
       },
       {
         "date": "2026-03-19",
-        "priceUSD": 71255.86
+        "priceUSD": 71220.05
       },
       {
         "date": "2026-03-20",
-        "priceUSD": 69871.45
+        "priceUSD": 69936.2
       },
       {
         "date": "2026-03-21",
-        "priceUSD": 70552.63
+        "priceUSD": 70526.29
       },
       {
         "date": "2026-03-22",
-        "priceUSD": 68733.55
+        "priceUSD": 68424.08
       },
       {
         "date": "2026-03-23",
-        "priceUSD": 67848.88
+        "priceUSD": 67933.43
       },
       {
         "date": "2026-03-24",
-        "priceUSD": 70892.83
+        "priceUSD": 70987.25
       },
       {
         "date": "2026-03-25",
-        "priceUSD": 70524.51
+        "priceUSD": 70528.86
       },
       {
         "date": "2026-03-26",
-        "priceUSD": 71309.26
+        "priceUSD": 71303.59
       },
       {
         "date": "2026-03-27",
-        "priceUSD": 68791.11
+        "priceUSD": 68727.21
       },
       {
         "date": "2026-03-28",
-        "priceUSD": 66321.02
+        "priceUSD": 66329.88
       },
       {
         "date": "2026-03-29",
-        "priceUSD": 66321.07
+        "priceUSD": 66388.84
       },
       {
         "date": "2026-03-30",
-        "priceUSD": 65970.43
+        "priceUSD": 65947.03
       },
       {
         "date": "2026-03-31",
-        "priceUSD": 66699.27
+        "priceUSD": 66691.27
       },
       {
         "date": "2026-04-01",
-        "priceUSD": 68231.83
+        "priceUSD": 68107.47
       },
       {
         "date": "2026-04-02",
-        "priceUSD": 68089.06
+        "priceUSD": 67959.88
       },
       {
         "date": "2026-04-03",
-        "priceUSD": 66891.66
+        "priceUSD": 66887.51
       },
       {
         "date": "2026-04-04",
-        "priceUSD": 66939.69
+        "priceUSD": 66822.55
       },
       {
         "date": "2026-04-05",
-        "priceUSD": 67304.25
+        "priceUSD": 67077.15
       },
       {
         "date": "2026-04-06",
-        "priceUSD": 68985.53
+        "priceUSD": 69002.04
       },
       {
         "date": "2026-04-07",
-        "priceUSD": 68864.23
+        "priceUSD": 68672.25
       },
       {
         "date": "2026-04-08",
-        "priceUSD": 71975.62
+        "priceUSD": 71661.76
       },
       {
         "date": "2026-04-09",
-        "priceUSD": 71117.08
+        "priceUSD": 70644.79
       },
       {
         "date": "2026-04-10",
-        "priceUSD": 71770.75
+        "priceUSD": 71367.8
       },
       {
         "date": "2026-04-11",
-        "priceUSD": 72972.71
+        "priceUSD": 72920.25
       },
       {
         "date": "2026-04-12",
-        "priceUSD": 73053.89
+        "priceUSD": 73021.86
       },
       {
         "date": "2026-04-13",
-        "priceUSD": 70756.75
+        "priceUSD": 70660.64
       },
       {
         "date": "2026-04-14",
-        "priceUSD": 74514.63
+        "priceUSD": 74481.64
       },
       {
         "date": "2026-04-15",
-        "priceUSD": 74181.11
+        "priceUSD": 74297.35
       },
       {
         "date": "2026-04-16",
-        "priceUSD": 74833.51
+        "priceUSD": 74826.31
       },
       {
         "date": "2026-04-17",
-        "priceUSD": 75149.19
+        "priceUSD": 75111.96
       },
       {
         "date": "2026-04-18",
-        "priceUSD": 77128.44
+        "priceUSD": 77125.73
       },
       {
         "date": "2026-04-19",
-        "priceUSD": 75728.46
+        "priceUSD": 75716.15
       },
       {
         "date": "2026-04-20",
-        "priceUSD": 73856.06
+        "priceUSD": 73841.02
       },
       {
         "date": "2026-04-21",
-        "priceUSD": 75874.55
+        "priceUSD": 75858.04
       },
       {
         "date": "2026-04-22",
-        "priceUSD": 76350.25
+        "priceUSD": 76326.19
       },
       {
         "date": "2026-04-23",
-        "priceUSD": 78194.78
+        "priceUSD": 78238.82
       },
       {
         "date": "2026-04-24",
-        "priceUSD": 78260.62
+        "priceUSD": 78275.33
       },
       {
         "date": "2026-04-25",
-        "priceUSD": 77444.8
+        "priceUSD": 77447.62
       },
       {
         "date": "2026-04-26",
-        "priceUSD": 77619.14
+        "priceUSD": 77634.52
       },
       {
         "date": "2026-04-27",
-        "priceUSD": 78645.13
+        "priceUSD": 78637.74
       },
       {
         "date": "2026-04-28",
-        "priceUSD": 77361.3
+        "priceUSD": 77366.78
       },
       {
         "date": "2026-04-29",
-        "priceUSD": 76345.23
+        "priceUSD": 76331.86
       },
       {
         "date": "2026-04-30",
-        "priceUSD": 75774.89
+        "priceUSD": 75784.96
       },
       {
         "date": "2026-05-01",
-        "priceUSD": 76286.58
+        "priceUSD": 76296.8
       },
       {
         "date": "2026-05-02",
-        "priceUSD": 78172.07
+        "priceUSD": 78207.76
       },
       {
         "date": "2026-05-03",
-        "priceUSD": 78655.35
+        "priceUSD": 78677.42
       },
       {
         "date": "2026-05-04",
-        "priceUSD": 78562.55
+        "priceUSD": 78512.09
       },
       {
         "date": "2026-05-05",
-        "priceUSD": 79823.89
+        "priceUSD": 79825.88
       },
       {
         "date": "2026-05-06",
-        "priceUSD": 80925.09
+        "priceUSD": 80913.96
       },
       {
         "date": "2026-05-07",
-        "priceUSD": 81425.0
+        "priceUSD": 81436.86
       },
       {
         "date": "2026-05-08",
-        "priceUSD": 80022.04
+        "priceUSD": 80024.91
       },
       {
         "date": "2026-05-09",
-        "priceUSD": 80189.07
+        "priceUSD": 80197.27
       },
       {
         "date": "2026-05-10",
-        "priceUSD": 80678.03
+        "priceUSD": 80677.65
       },
       {
         "date": "2026-05-11",
-        "priceUSD": 82145.66
+        "priceUSD": 82018.37
       },
       {
         "date": "2026-05-12",
-        "priceUSD": 81725.21
+        "priceUSD": 81627.57
       },
       {
         "date": "2026-05-13",
-        "priceUSD": 80480.89
+        "priceUSD": 80482.14
       },
       {
         "date": "2026-05-14",
-        "priceUSD": 79277.8
+        "priceUSD": 79288.84
       },
       {
         "date": "2026-05-15",
-        "priceUSD": 81051.98
+        "priceUSD": 81059.12
       },
       {
         "date": "2026-05-16",
-        "priceUSD": 79068.82
+        "priceUSD": 79068.67
       },
       {
         "date": "2026-05-17",
-        "priceUSD": 78135.01
+        "priceUSD": 78132.75
       },
       {
         "date": "2026-05-18",
-        "priceUSD": 77425.72
+        "priceUSD": 77428.52
       },
       {
         "date": "2026-05-19",
-        "priceUSD": 76952.21
+        "priceUSD": 76959.41
       },
       {
         "date": "2026-05-20",
-        "priceUSD": 76808.81
+        "priceUSD": 76758.73
       },
       {
         "date": "2026-05-21",
-        "priceUSD": 77459.94
+        "priceUSD": 77470.4
       },
       {
         "date": "2026-05-22",
-        "priceUSD": 77546.34
+        "priceUSD": 77550.38
       },
       {
         "date": "2026-05-23",
-        "priceUSD": 75482.52
+        "priceUSD": 75478.38
       },
       {
         "date": "2026-05-24",
-        "priceUSD": 76672.79
+        "priceUSD": 76684.37
       },
       {
         "date": "2026-05-25",
-        "priceUSD": 76988.16
+        "priceUSD": 77016.07
       },
       {
         "date": "2026-05-26",
-        "priceUSD": 77274.4
+        "priceUSD": 77258.4
       },
       {
         "date": "2026-05-27",
-        "priceUSD": 75824.06
+        "priceUSD": 75851.1
       },
       {
         "date": "2026-05-28",
-        "priceUSD": 74352.7
+        "priceUSD": 74339.62
       },
       {
         "date": "2026-05-29",
-        "priceUSD": 73539.84
+        "priceUSD": 73651.64
       },
       {
         "date": "2026-05-30",
-        "priceUSD": 73382.72
+        "priceUSD": 73500.92
       },
       {
         "date": "2026-05-31",
-        "priceUSD": 73751.07
+        "priceUSD": 73820.3
       },
       {
         "date": "2026-06-01",
-        "priceUSD": 73593.37
+        "priceUSD": 73598.67
       },
       {
         "date": "2026-06-02",
-        "priceUSD": 71360.33
+        "priceUSD": 71320.29
       },
       {
         "date": "2026-06-03",
-        "priceUSD": 66649.86
+        "priceUSD": 66727.26
       },
       {
         "date": "2026-06-04",
-        "priceUSD": 64021.89
+        "priceUSD": 64046.61
       },
       {
         "date": "2026-06-05",
-        "priceUSD": 63796.25
+        "priceUSD": 63810.66
       },
       {
         "date": "2026-06-06",
-        "priceUSD": 60921.79
+        "priceUSD": 60960.1
       },
       {
         "date": "2026-06-07",
-        "priceUSD": 60861.88
+        "priceUSD": 60855.25
       },
       {
         "date": "2026-06-08",
-        "priceUSD": 63254.57
+        "priceUSD": 63273.54
       },
       {
         "date": "2026-06-09",
-        "priceUSD": 63078.44
+        "priceUSD": 63069.15
       },
       {
         "date": "2026-06-10",
-        "priceUSD": 61658.31
+        "priceUSD": 61669.76
       },
       {
         "date": "2026-06-11",
-        "priceUSD": 61492.51
+        "priceUSD": 61480.14
       },
       {
         "date": "2026-06-12",
-        "priceUSD": 63552.3
+        "priceUSD": 63555.66
       },
       {
         "date": "2026-06-13",
-        "priceUSD": 63537.74
+        "priceUSD": 63532.28
       },
       {
         "date": "2026-06-14",
-        "priceUSD": 64377.58
+        "priceUSD": 64408.81
       },
       {
         "date": "2026-06-15",
-        "priceUSD": 65713.62
+        "priceUSD": 65709.31
       },
       {
         "date": "2026-06-16",
-        "priceUSD": 66300.96
+        "priceUSD": 66292.5
       },
       {
         "date": "2026-06-17",
-        "priceUSD": 65598.94
+        "priceUSD": 65619.28
       },
       {
         "date": "2026-06-18",
-        "priceUSD": 64422.57
+        "priceUSD": 64444.55
       },
       {
         "date": "2026-06-19",
-        "priceUSD": 62900.23
+        "priceUSD": 62897.24
       },
       {
         "date": "2026-06-20",
-        "priceUSD": 63513.66
+        "priceUSD": 63489.81
       },
       {
         "date": "2026-06-21",
-        "priceUSD": 64240.23
+        "priceUSD": 64253.4
       },
       {
         "date": "2026-06-22",
-        "priceUSD": 63231.87
+        "priceUSD": 63255.49
       },
       {
         "date": "2026-06-23",
-        "priceUSD": 63957.2
+        "priceUSD": 63937.29
       },
       {
         "date": "2026-06-24",
-        "priceUSD": 62651.93
+        "priceUSD": 62662.29
       },
       {
         "date": "2026-06-25",
-        "priceUSD": 60909.0
+        "priceUSD": 60989.57
       },
       {
         "date": "2026-06-26",
-        "priceUSD": 59712.62
+        "priceUSD": 59726.74
       },
       {
         "date": "2026-06-27",
-        "priceUSD": 59981.83
+        "priceUSD": 60022.33
       },
       {
         "date": "2026-06-28",
-        "priceUSD": 59943.11
+        "priceUSD": 59953.44
       },
       {
         "date": "2026-06-29",
-        "priceUSD": 59612.29
+        "priceUSD": 59494.61
       },
       {
         "date": "2026-06-30",
-        "priceUSD": 60159.63
+        "priceUSD": 60152.36
       },
       {
         "date": "2026-07-01",
-        "priceUSD": 58550.75
+        "priceUSD": 58566.09
       },
       {
         "date": "2026-07-02",
-        "priceUSD": 59979.9
+        "priceUSD": 59967.69
       },
       {
         "date": "2026-07-03",
-        "priceUSD": 61487.3
+        "priceUSD": 61490.21
       },
       {
         "date": "2026-07-04",
-        "priceUSD": 62537.44
+        "priceUSD": 62553.61
       },
       {
         "date": "2026-07-05",
-        "priceUSD": 63094.24
+        "priceUSD": 63088.41
       },
       {
         "date": "2026-07-06",
-        "priceUSD": 63546.43
+        "priceUSD": 63586.1
       },
       {
         "date": "2026-07-07",
-        "priceUSD": 64072.3
+        "priceUSD": 64001.24
       },
       {
         "date": "2026-07-08",
-        "priceUSD": 63351.37
+        "priceUSD": 63335.31
       },
       {
         "date": "2026-07-09",
-        "priceUSD": 62248.93
+        "priceUSD": 62247.13
       },
       {
         "date": "2026-07-10",
-        "priceUSD": 63220.69
+        "priceUSD": 63192.88
       },
       {
         "date": "2026-07-11",
-        "priceUSD": 64082.04
+        "priceUSD": 64110.97
       },
       {
         "date": "2026-07-12",
-        "priceUSD": 63892.79
+        "priceUSD": 63791.35
       },
       {
         "date": "2026-07-13",
-        "priceUSD": 63746.44
+        "priceUSD": 63746.66
       },
       {
         "date": "2026-07-14",
-        "priceUSD": 62242.25
+        "priceUSD": 62278.96
       },
       {
         "date": "2026-07-15",
-        "priceUSD": 64977.36
+        "priceUSD": 64983.52
       },
       {
         "date": "2026-07-16",
-        "priceUSD": 64722.06
+        "priceUSD": 64717.17
       },
       {
         "date": "2026-07-17",
-        "priceUSD": 63788.93
+        "priceUSD": 63792.29
       },
       {
         "date": "2026-07-18",
-        "priceUSD": 63925.51
+        "priceUSD": 63904.95
       },
       {
         "date": "2026-07-19",
-        "priceUSD": 64793.26
+        "priceUSD": 64795.7
       },
       {
         "date": "2026-07-20",
-        "priceUSD": 64679.77
+        "priceUSD": 64670.4
       },
       {
         "date": "2026-07-21",
-        "priceUSD": 65199.44
+        "priceUSD": 65184.92
       },
       {
         "date": "2026-07-22",
-        "priceUSD": 66506.89
+        "priceUSD": 66520.98
       },
       {
         "date": "2026-07-23",
-        "priceUSD": 66083.46
+        "priceUSD": 66077.06
       },
       {
         "date": "2026-07-24",
-        "priceUSD": 65043.65
+        "priceUSD": 65033.02
       },
       {
         "date": "2026-07-25",
-        "priceUSD": 64093.2
+        "priceUSD": 64099.0
       },
       {
         "date": "2026-07-26",
-        "priceUSD": 64309.44
+        "priceUSD": 64316.36
       },
       {
         "date": "2026-07-27",
-        "priceUSD": 65329.54
+        "priceUSD": 65310.39
       },
       {
         "date": "2026-07-28",
-        "priceUSD": 63711.96
+        "priceUSD": 63701.35
       }
     ],
     "EEM": [
