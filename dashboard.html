@@ -179,6 +179,9 @@
   .bitacora-indicadores ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:3px}
   .bitacora-resultado{margin-top:10px;padding-top:10px;border-top:1px solid var(--line-soft);font-size:.82rem}
   .bitacora-resultado .lbl{font-size:.68rem;font-weight:700;color:var(--faint);text-transform:uppercase;letter-spacing:.04em;display:block;margin-bottom:4px}
+  .bitacora-nudge{background:var(--neg-soft);color:var(--neg);border-radius:12px;padding:11px 14px;font-size:.82rem;margin-bottom:12px;line-height:1.4}
+  .bitacora-entry.pendiente-revision{border-color:var(--neg)}
+  .bitacora-revisar-tag{display:inline-block;margin-top:10px;font-size:.72rem;font-weight:700;color:var(--neg);background:var(--neg-soft);padding:3px 9px;border-radius:999px}
   .card h3{font-size:.78rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin:0 0 10px;font-weight:650}
   .row-kv{display:flex;justify-content:space-between;align-items:center;padding:6px 0;font-size:.88rem;border-bottom:1px solid var(--line-soft)}
   .row-kv:last-child{border-bottom:none}
@@ -494,6 +497,7 @@
 
     <div class="section-title" style="margin-top:30px">Bitácora de decisiones</div>
     <p class="dim" style="font-size:.82rem;margin:-4px 0 14px;line-height:1.5">Registro de en qué nos basamos cada vez que decidimos algo — para revisar con el tiempo si esos indicadores realmente sirvieron.</p>
+    <div id="bitacoraNudge"></div>
     <div id="bitacoraList"></div>
   </section>
 
@@ -1708,20 +1712,39 @@ function renderEvoMetrics(snaps){
 }
 
 const BITACORA_STATUS_LABELS = {seguida:"Seguida", ignorada:"No seguida", pendiente:"Pendiente", informativa:"Informativa"};
+const BITACORA_DIAS_PARA_REVISAR = 30;
+function diasDesde(fechaStr){
+  if(!fechaStr) return null;
+  return Math.floor((Date.now() - new Date(fechaStr+"T00:00:00").getTime())/86400000);
+}
 function renderBitacora(){
   const el = document.getElementById("bitacoraList");
+  const nudgeEl = document.getElementById("bitacoraNudge");
   if(!el) return;
   const items = (STATE.decisiones||[]).slice().sort((a,b)=>(b.fecha||"").localeCompare(a.fecha||""));
-  if(!items.length){ el.innerHTML = '<div class="empty">Todavía no hay decisiones registradas.</div>'; return; }
+  if(!items.length){ el.innerHTML = '<div class="empty">Todavía no hay decisiones registradas.</div>'; if(nudgeEl) nudgeEl.innerHTML=""; return; }
+
+  const pendientesRevision = items.filter(d=>{
+    if(d.resultado || d.estado==="informativa") return false;
+    const dias = diasDesde(d.fecha);
+    return dias!=null && dias>=BITACORA_DIAS_PARA_REVISAR;
+  });
+  if(nudgeEl){
+    nudgeEl.innerHTML = pendientesRevision.length ?
+      '<div class="bitacora-nudge">'+pendientesRevision.length+' decisión'+(pendientesRevision.length===1?"":"es")+' de hace más de '+BITACORA_DIAS_PARA_REVISAR+' días todavía sin revisar el resultado. ¿Tuvimos razón?</div>' : "";
+  }
+
   el.innerHTML = items.map(d=>{
     const statusCls = d.estado || "pendiente";
     const statusLbl = BITACORA_STATUS_LABELS[statusCls] || statusCls;
+    const necesitaRevision = pendientesRevision.includes(d);
     const indicadoresHtml = (d.indicadores && d.indicadores.length) ?
       '<div class="bitacora-indicadores"><div class="bitacora-indicadores-label">En qué nos basamos</div><ul>'+
       d.indicadores.map(i=>'<li>'+escapeHtml(i)+'</li>').join("")+'</ul></div>' : '';
     const resultadoHtml = d.resultado ?
-      '<div class="bitacora-resultado"><span class="lbl">Resultado ('+fmtDateHuman(d.resultado.fecha)+')</span>'+escapeHtml(d.resultado.comentario)+'</div>' : '';
-    return '<div class="bitacora-entry">'+
+      '<div class="bitacora-resultado"><span class="lbl">Resultado ('+fmtDateHuman(d.resultado.fecha)+')</span>'+escapeHtml(d.resultado.comentario)+'</div>' :
+      (necesitaRevision ? '<div class="bitacora-revisar-tag">Pendiente de revisión — hace '+diasDesde(d.fecha)+' días</div>' : '');
+    return '<div class="bitacora-entry'+(necesitaRevision?" pendiente-revision":"")+'">'+
       '<div class="bitacora-head"><span class="bitacora-date">'+fmtDateHuman(d.fecha)+'</span><span class="bitacora-status '+statusCls+'">'+statusLbl+'</span></div>'+
       '<div class="bitacora-title">'+escapeHtml(d.titulo)+'</div>'+
       '<div class="bitacora-summary">'+escapeHtml(d.resumen)+'</div>'+
