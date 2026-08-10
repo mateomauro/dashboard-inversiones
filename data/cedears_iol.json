@@ -1,44 +1,44 @@
 {
-  "updated": "2026-08-09T22:33:31Z",
+  "updated": "2026-08-10T22:39:59Z",
   "precios": {
     "QQQ": {
-      "precioARS": 57275.0,
-      "fechaHora": "2026-08-07T16:59:38.717",
+      "precioARS": 57125.0,
+      "fechaHora": "2026-08-10T16:59:35.5529452-03:00",
       "moneda": "peso_Argentino"
     },
     "SPY": {
-      "precioARS": 20410.0,
-      "fechaHora": "2026-08-07T16:59:56.233",
+      "precioARS": 20450.0,
+      "fechaHora": "2026-08-10T16:59:59.575577-03:00",
       "moneda": "peso_Argentino"
     },
     "AAPL": {
-      "precioARS": 24800.0,
-      "fechaHora": "2026-08-07T16:59:47.347",
+      "precioARS": 24400.0,
+      "fechaHora": "2026-08-10T16:59:54.5342309-03:00",
       "moneda": "peso_Argentino"
     },
     "MSFT": {
-      "precioARS": 26380.0,
-      "fechaHora": "2026-08-07T17:12:55.02",
+      "precioARS": 26640.0,
+      "fechaHora": "2026-08-10T17:12:50.7799404-03:00",
       "moneda": "peso_Argentino"
     },
     "GOOGL": {
-      "precioARS": 9685.0,
-      "fechaHora": "2026-08-07T16:59:55.237",
+      "precioARS": 9770.0,
+      "fechaHora": "2026-08-10T16:59:57.6807725-03:00",
       "moneda": "peso_Argentino"
     },
     "NVDA": {
-      "precioARS": 14730.0,
-      "fechaHora": "2026-08-07T16:59:55.25",
+      "precioARS": 14380.0,
+      "fechaHora": "2026-08-10T16:59:48.3086407-03:00",
       "moneda": "peso_Argentino"
     },
     "EFA": {
-      "precioARS": 9555.0,
-      "fechaHora": "2026-08-07T16:53:46.237",
+      "precioARS": 9515.0,
+      "fechaHora": "2026-08-10T16:56:25.9614385-03:00",
       "moneda": "peso_Argentino"
     },
     "EEM": {
-      "precioARS": 20810.0,
-      "fechaHora": "2026-08-07T16:59:58.373",
+      "precioARS": 20630.0,
+      "fechaHora": "2026-08-10T16:59:21.5808081-03:00",
       "moneda": "peso_Argentino"
     }
   }
