@@ -126,11 +126,12 @@
   @media (min-width:900px){
     #view-resumen.active{
       display:grid;grid-template-columns:2fr 1fr;align-items:start;gap:16px;
-      grid-template-areas:"hero donut" "evo donut" "label label" "detail detail";
+      grid-template-areas:"hero donut" "plat targets" "label label" "detail detail";
     }
     .hero{grid-area:hero}
-    .resumen-evo-card{grid-area:evo;margin:0}
     .donut-card{grid-area:donut}
+    .plat-card{grid-area:plat;margin:0}
+    .targets-card{grid-area:targets;margin:0}
     #detailLabel{grid-area:label}
     #detailGrid{grid-area:detail;grid-template-columns:repeat(4,1fr)}
   }
@@ -169,6 +170,16 @@
   .stat-label{font-size:.72rem;font-weight:600;color:var(--muted);margin-bottom:8px}
   .stat-value{font-size:1.15rem;font-weight:800;color:var(--fg)}
 
+  .target-row{margin-bottom:13px}
+  .target-row:last-child{margin-bottom:0}
+  .target-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:5px;font-size:.82rem}
+  .target-name{font-weight:600;color:var(--fg)}
+  .target-nums{font-variant-numeric:tabular-nums;color:var(--muted);font-size:.78rem}
+  .target-bar{position:relative;height:8px;background:var(--line-soft);border-radius:5px;overflow:hidden}
+  .target-zone{position:absolute;top:0;bottom:0;background:var(--line);border-radius:2px}
+  .target-fill{position:absolute;top:0;bottom:0;left:0;border-radius:5px}
+  .target-nums .ok{color:var(--pos)}
+  .target-nums .off{color:var(--neg)}
   .bitacora-entry{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:16px;margin-bottom:10px}
   .bitacora-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:4px;flex-wrap:wrap}
   .bitacora-date{font-size:.72rem;font-weight:600;color:var(--faint);text-transform:uppercase;letter-spacing:.04em}
@@ -363,12 +374,6 @@
       <div class="hero-secondary">
       </div>
     </div>
-    <div class="card resumen-evo-card">
-      <div class="card-head">
-        <h3 class="card-title">Evolución</h3>
-      </div>
-      <svg class="chart" id="resumenEvoChart"></svg>
-    </div>
     <div class="card donut-card">
       <h3 class="card-title">Distribución por tipo de activo</h3>
       <div class="donut-wrap">
@@ -376,15 +381,19 @@
         <div class="donut-legend" id="byGroup"></div>
       </div>
     </div>
+    <div class="card plat-card">
+      <h3 class="card-title">Dónde está</h3>
+      <div id="byPlatform"></div>
+    </div>
+    <div class="card targets-card">
+      <h3 class="card-title">Objetivo por tipo de activo</h3>
+      <div id="targetsBody"></div>
+    </div>
     <button class="section-label toggle" id="detailLabel" type="button" aria-expanded="false">
       <span class="chevron" id="detailChevron"><svg class="icon" width="9" height="9" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 1.5l4 3.5-4 3.5"/></svg></span>
       <span>Más detalle</span>
     </button>
     <div class="stat-grid" id="detailGrid" style="display:none">
-      <div class="stat-card">
-        <div class="stat-label">Por plataforma</div>
-        <div id="byPlatform"></div>
-      </div>
       <div class="stat-card" id="benchmarkCard" style="display:none">
         <div class="stat-label">Rendimiento vs. benchmark <span class="dim hoverable-pt" data-tip="Compara cada peso que invertiste con un índice de referencia del mismo tipo de activo — fondos de renta fija vs. Letras del Tesoro de EE.UU. (BIL), acciones vs. S&amp;P 500 (SPY), ETFs internacionales vs. EFA — en vez de comparar todo contra el S&amp;P 500 como si fuera 100% acciones.">ⓘ</span></div>
         <div id="benchmarkBody"></div>
@@ -1320,6 +1329,29 @@ function renderResumen(){
     });
   } else { donutSvg.innerHTML=""; legendEl.innerHTML = '<div class="empty">Sin tenencias</div>'; }
 
+  // Objetivo por tipo de activo: barra con la zona meta marcada y donde estas parado
+  const targetsBody = document.getElementById("targetsBody");
+  if(targetsBody){
+    const escala = Math.max(100, ...Object.keys(GROUP_TARGETS).map(k=>{
+      const v = byGroup[k] ? byGroup[k].value : 0;
+      return totalValue>0 ? v/totalValue*100 : 0;
+    }));
+    targetsBody.innerHTML = Object.keys(GROUP_TARGETS).map(k=>{
+      const v = byGroup[k] ? byGroup[k].value : 0;
+      const p = totalValue>0 ? v/totalValue*100 : 0;
+      const [lo,hi] = GROUP_TARGETS[k];
+      const dentro = p>=lo && p<=hi;
+      const color = GROUP_COLOR[k] || "var(--c-otro)";
+      return '<div class="target-row">'+
+        '<div class="target-head"><span class="target-name">'+k+'</span>'+
+        '<span class="target-nums"><b class="'+(dentro?"ok":"off")+'">'+p.toFixed(1)+'%</b> / '+lo+'–'+hi+'%</span></div>'+
+        '<div class="target-bar">'+
+          '<div class="target-zone" style="left:'+(lo/escala*100)+'%;width:'+((hi-lo)/escala*100)+'%"></div>'+
+          '<div class="target-fill" style="width:'+Math.min(100,p/escala*100)+'%;background:'+color+'"></div>'+
+        '</div></div>';
+    }).join("");
+  }
+
   const realized = totalRealizedGainUSD();
   document.getElementById("realizedPartial").style.display = realized.complete ? "none" : "";
   const realizedEl = document.getElementById("realizedRow");
@@ -1344,10 +1376,6 @@ function renderResumen(){
       (bench.complete?'':'<div class="dim" style="font-size:.66rem;margin-top:2px">estimado parcial</div>');
   } else { benchCard.style.display = "none"; }
 
-  // Evolucion mini-chart en Resumen (mismo dibujo que la pestaña Evolucion, mas chico)
-  const liveResumen = reconstruirEvolucionEnVivo();
-  const snapsResumen = (liveResumen && liveResumen.length) ? liveResumen : (STATE.snapshots||[]).slice().sort((a,b)=>a.date.localeCompare(b.date));
-  drawChart(snapsResumen, "resumenEvoChart");
 }
 
 // ---------- TENENCIAS ----------
