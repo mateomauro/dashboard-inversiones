@@ -126,14 +126,12 @@
   @media (min-width:900px){
     #view-resumen.active{
       display:grid;grid-template-columns:2fr 1fr;align-items:start;gap:16px;
-      grid-template-areas:"hero donut" "plat targets" "label label" "detail detail";
+      grid-template-areas:"hero donut" "plat targets";
     }
     .hero{grid-area:hero}
     .donut-card{grid-area:donut}
     .plat-card{grid-area:plat;margin:0}
     .targets-card{grid-area:targets;margin:0}
-    #detailLabel{grid-area:label}
-    #detailGrid{grid-area:detail;grid-template-columns:repeat(4,1fr)}
   }
   .card-title{font-size:.95rem;font-weight:700;color:var(--fg);margin:0 0 12px}
   .resumen-evo-card svg.chart{height:150px}
@@ -389,24 +387,6 @@
       <h3 class="card-title">Objetivo por tipo de activo</h3>
       <div id="targetsBody"></div>
     </div>
-    <button class="section-label toggle" id="detailLabel" type="button" aria-expanded="false">
-      <span class="chevron" id="detailChevron"><svg class="icon" width="9" height="9" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 1.5l4 3.5-4 3.5"/></svg></span>
-      <span>Más detalle</span>
-    </button>
-    <div class="stat-grid" id="detailGrid" style="display:none">
-      <div class="stat-card" id="benchmarkCard" style="display:none">
-        <div class="stat-label">Rendimiento vs. benchmark <span class="dim hoverable-pt" data-tip="Compara cada peso que invertiste con un índice de referencia del mismo tipo de activo — fondos de renta fija vs. Letras del Tesoro de EE.UU. (BIL), acciones vs. S&amp;P 500 (SPY), ETFs internacionales vs. EFA — en vez de comparar todo contra el S&amp;P 500 como si fuera 100% acciones.">ⓘ</span></div>
-        <div id="benchmarkBody"></div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-label">Ganancias realizadas<span class="dim" id="realizedPartial" style="display:none"> (parcial)</span></div>
-        <div class="stat-value mono" id="realizedRow">-</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-label">Dividendos cobrados</div>
-        <div class="stat-value mono" id="dividendsRow">-</div>
-      </div>
-    </div>
   </section>
 
   <!-- TENENCIAS -->
@@ -647,8 +627,6 @@ function setStatus(msg, warn){
   el.textContent = msg; el.className = "status"+(warn?" warn":"");
 }
 
-bindTooltips(document.getElementById("benchmarkCard")); // etiqueta estatica, se ata una sola vez (no se re-genera en cada render)
-
 document.getElementById("btnLoad").addEventListener("click", ()=>document.getElementById("fileInput").click());
 document.getElementById("fileInput").addEventListener("change", function(e){
   const file = e.target.files[0]; if(!file) return;
@@ -821,17 +799,6 @@ document.querySelectorAll(".tab-btn").forEach(btn=>{
 });
 
 // toggle "Mas detalle" en Resumen
-const detailLabelBtn = document.getElementById("detailLabel");
-if(detailLabelBtn){
-  detailLabelBtn.addEventListener("click", function(){
-    const grid = document.getElementById("detailGrid");
-    const chevron = document.getElementById("detailChevron");
-    const wasOpen = grid.style.display !== "none";
-    grid.style.display = wasOpen ? "none" : "";
-    chevron.classList.toggle("open", !wasOpen);
-    detailLabelBtn.setAttribute("aria-expanded", String(!wasOpen));
-  });
-}
 
 function platformKeys(){ return Object.keys(STATE.platforms||{}); }
 function platformName(key){ return (STATE.platforms[key]||{}).name || key; }
@@ -1124,15 +1091,6 @@ function reconstruirEvolucionEnVivo(){
   });
   return resultados;
 }
-function totalRealizedGainUSD(){
-  let total=0, complete=true;
-  allHoldings().forEach(h=>{
-    const a = analyzeHolding(h.platform, h.instrument);
-    total += a.realizedGainUSD;
-    if(!a.complete) complete=false;
-  });
-  return {total, complete};
-}
 // ---------- XIRR: rendimiento ponderado por dinero (el correcto para "cuanto gane YO") ----------
 function xnpv(rate, flows){
   const t0 = new Date(flows[0].date+"T00:00:00").getTime();
@@ -1180,39 +1138,7 @@ function computeXirr(){
   return {annualized: rate*100, complete};
 }
 
-// ---------- Comparacion contra un benchmark "justo": un indice de referencia
-// por CADA tipo de activo (no 100% acciones para una cartera mayormente en
-// fondos de renta fija) — "que hubiera pasado si, en vez de elegir donde
-// invertir dentro de cada grupo, hubiese comprado el indice de ese grupo".
-const BENCHMARK_TICKERS = {Fondo:"BIL", Acciones:"SPY", "ETFs Internac.":"EFA"};
-function blendedBenchmarkWhatIf(){
-  let wouldBeWorth=0, invested=0, complete=true, anyGroup=false;
-  allHoldings().forEach(h=>{
-    const benchTicker = BENCHMARK_TICKERS[h.group];
-    if(!benchTicker) return; // Cripto/Otro: sin un indice de referencia claro, se omiten
-    const series = PRICES && PRICES.series && PRICES.series[benchTicker];
-    if(!series || !series.length){ complete=false; return; }
-    anyGroup = true;
-    const lastPrice = series[series.length-1].priceUSD;
-    movementsForHolding(h.platform, h.instrument).forEach(m=>{
-      if(!BUY_TYPES.has(m.type)) return;
-      const amountUSD = movementAmountUSD(m);
-      if(amountUSD==null || !m.date){ complete=false; return; }
-      const price = priceOnOrBefore(series, m.date);
-      if(!price){ complete=false; return; }
-      wouldBeWorth += (amountUSD/price)*lastPrice; invested += amountUSD;
-    });
-  });
-  if(!anyGroup || !invested) return null;
-  return {wouldBeWorth, invested, complete};
-}
 
-function totalDividendsUSD(){
-  // Los dividendos de Cocos llegan "en especie" como dólares: la cantidad ya esta en USD.
-  let total=0;
-  allMovements().forEach(m=>{ if(m.type==="dividendo" && m.quantity) total += m.quantity; });
-  return total;
-}
 function allHoldings(){
   const out=[];
   for(const key of Object.keys(STATE.holdings||{})){
@@ -1352,29 +1278,6 @@ function renderResumen(){
     }).join("");
   }
 
-  const realized = totalRealizedGainUSD();
-  document.getElementById("realizedPartial").style.display = realized.complete ? "none" : "";
-  const realizedEl = document.getElementById("realizedRow");
-  realizedEl.className = "stat-value mono "+cls(realized.total);
-  realizedEl.textContent = signed(realized.total);
-  const dividends = totalDividendsUSD();
-  const dividendsEl = document.getElementById("dividendsRow");
-  dividendsEl.className = "stat-value mono pos";
-  dividendsEl.textContent = (dividends>0?"+":"")+fmt.format(dividends);
-
-  // Comparacion contra un benchmark por tipo de activo (no 100% acciones)
-  const bench = blendedBenchmarkWhatIf();
-  const benchCard = document.getElementById("benchmarkCard");
-  if(bench && perfCost>0 && bench.invested>0){
-    benchCard.style.display = "";
-    const myPct = (perfValue-perfCost)/perfCost*100;
-    const benchPct = (bench.wouldBeWorth-bench.invested)/bench.invested*100;
-    const diffPts = myPct-benchPct;
-    document.getElementById("benchmarkBody").innerHTML =
-      '<div class="stat-value '+cls(diffPts)+'">'+signed(diffPts)+' pts</div>'+
-      '<div class="dim mono" style="font-size:.72rem;margin-top:2px">vos '+pct(myPct)+' · benchmark '+pct(benchPct)+'</div>'+
-      (bench.complete?'':'<div class="dim" style="font-size:.66rem;margin-top:2px">estimado parcial</div>');
-  } else { benchCard.style.display = "none"; }
 
 }
 
