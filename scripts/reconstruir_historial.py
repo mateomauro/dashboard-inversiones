@@ -33,7 +33,7 @@ from datetime import datetime, timedelta, timezone
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from actualizar_valores import (  # noqa: E402
     instrument_matches_ticker, BUY_TYPES, SELL_TYPES,
-    CEDEAR_RATIOS, SPY_RATIO_AFTER, COINGECKO_TICKERS, FCI_FUNDS, HEADERS,
+    CEDEAR_RATIOS, SPY_RATIO_AFTER, SPY_RATIO_BEFORE, COINGECKO_TICKERS, FCI_FUNDS, HEADERS,
 )
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -97,7 +97,10 @@ def quantity_and_cost_as_of(movements, ticker, date_str, dolar_rate_fn, ratio_fo
 
 def ratio_for(ticker, date_str):
     if ticker == "SPY":
-        return SPY_RATIO_AFTER  # cantidad ya viene corregida por el split en el ledger
+        # El ratio del CEDEAR de SPY cambio de 20:1 a 60:1 el 01/06/2026. Para
+        # fechas anteriores hay que usar el ratio viejo, si no se subvalua la
+        # posicion 3 veces (el ajuste de cantidad del split tampoco existia aun).
+        return SPY_RATIO_AFTER if date_str >= SPY_SPLIT_DATE else SPY_RATIO_BEFORE
     return CEDEAR_RATIOS.get(ticker)
 
 

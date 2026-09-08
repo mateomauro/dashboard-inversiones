@@ -50,6 +50,7 @@ CEDEAR_RATIOS = {
 # la cantidad ya viene corregida en tus movimientos via el ajuste manual
 # "Split CEDEAR SPY" agregado una vez.
 SPY_RATIO_AFTER = 60
+SPY_RATIO_BEFORE = 20  # ratio vigente antes del split; lo usa la reconstruccion historica
 
 COINGECKO_TICKERS = {"BTC"}
 

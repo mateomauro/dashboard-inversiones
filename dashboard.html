@@ -924,7 +924,15 @@ const COINGECKO_TICKERS = new Set(["BTC"]);
 // cuotapartes que usa actualizar_valores.py (Cocos reporta "cantidad" escalada).
 const FCI_CURRENCY = {COCOUSDPA:"USD", COCOSPPA:"ARS", FONDO_UALA:"USD"};
 
-function ratioFor(ticker){ return ticker==="SPY" ? SPY_RATIO_AFTER : CEDEAR_RATIOS[ticker]; }
+// El ratio del CEDEAR de SPY cambio de 20:1 a 60:1 el 01/06/2026. Para valuar
+// fechas anteriores (reconstruccion de Evolucion) hay que usar el ratio viejo,
+// si no la posicion queda subvaluada 3 veces en toda la historia previa.
+const SPY_RATIO_BEFORE = 20;
+const SPY_SPLIT_DATE = "2026-06-01";
+function ratioFor(ticker, dateStr){
+  if(ticker!=="SPY") return CEDEAR_RATIOS[ticker];
+  return (!dateStr || dateStr>=SPY_SPLIT_DATE) ? SPY_RATIO_AFTER : SPY_RATIO_BEFORE;
+}
 function latestSeriesPoint(series){ return series && series.length ? series[series.length-1] : null; }
 function latestDolarVenta(){
   if(!DOLAR || !DOLAR.rates) return null;
@@ -1097,7 +1105,7 @@ function reconstruirEvolucionEnVivo(){
           return;
         }
 
-        const ratio = ratioFor(ticker);
+        const ratio = ratioFor(ticker, dateStr); // ratio vigente a ESA fecha (ver split de SPY)
         if(ratio){
           const {qty, costUsd} = quantityAndCostAsOf(movements, ticker, dateStr);
           if(qty<=0) return;
