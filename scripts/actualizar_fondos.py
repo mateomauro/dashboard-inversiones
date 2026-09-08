@@ -27,7 +27,10 @@ HEADERS = {"User-Agent": "Mozilla/5.0 (compatible; inversiones-tracker/1.0)"}
 # ticker -> {categoria CAFCI, nombre exacto del fondo, moneda}
 FCI_FUNDS = {
     "COCOUSDPA": {"categoria": "rentaFija", "nombre": "Cocos Dólares Plus - Clase A", "currency": "USD"},
-    "COCOSPPA": {"categoria": "retornoTotal", "nombre": "Cocos Pesos Plus - Clase A", "currency": "ARS"},
+    # CAFCI reclasifico este fondo de "retornoTotal" a "mercadoDinero" (detectado 04/09/2026,
+    # habia quedado sin actualizar desde el 21/07). Si algun dia deja de encontrarse, revisar
+    # en que categoria quedo: curl api.argentinadatos.com/v1/finanzas/fci/<categoria>/ultimo
+    "COCOSPPA": {"categoria": "mercadoDinero", "nombre": "Cocos Pesos Plus - Clase A", "currency": "ARS"},
     "FONDO_UALA": {"categoria": "rentaFija", "nombre": "Ualintec Renta Dólares - Clase A", "currency": "USD"},
 }
 

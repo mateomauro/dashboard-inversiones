@@ -57,7 +57,8 @@ COINGECKO_TICKERS = {"BTC"}
 # buscarlos en api.argentinadatos.com/v1/finanzas/fci/{categoria}/ultimo
 FCI_FUNDS = {
     "COCOUSDPA": {"categoria": "rentaFija", "nombre": "Cocos Dólares Plus - Clase A", "currency": "USD"},
-    "COCOSPPA": {"categoria": "retornoTotal", "nombre": "Cocos Pesos Plus - Clase A", "currency": "ARS"},
+    # CAFCI reclasifico este fondo de "retornoTotal" a "mercadoDinero" (detectado 04/09/2026).
+    "COCOSPPA": {"categoria": "mercadoDinero", "nombre": "Cocos Pesos Plus - Clase A", "currency": "ARS"},
     "FONDO_UALA": {"categoria": "rentaFija", "nombre": "Ualintec Renta Dólares - Clase A", "currency": "USD"},
 }
 
@@ -165,6 +166,12 @@ def actualizar_valores():
             ticker = h["instrument"]
             qty = quantity_held(movements, ticker)
             if qty <= 0:
+                # Posicion cerrada (vendida/rescatada): hay que poner el valor en cero,
+                # si no queda el ultimo valor conocido inflando el total para siempre.
+                if h.get("valueUSD"):
+                    h["valueUSD"] = 0
+                    h["asOf"] = today
+                    actualizados.append({"ticker": ticker, "valueUSD": 0, "metodo": "posicion cerrada", "precioFuente": None, "ok": True})
                 continue
 
             if ticker in FCI_FUNDS:
