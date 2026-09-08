@@ -126,7 +126,7 @@
   @media (min-width:900px){
     #view-resumen.active{
       display:grid;grid-template-columns:2fr 1fr;align-items:start;gap:16px;
-      grid-template-areas:"hero donut" "plat targets";
+      grid-template-areas:"hero hero" "donut targets" "plat plat";
     }
     .hero{grid-area:hero}
     .donut-card{grid-area:donut}
@@ -168,16 +168,6 @@
   .stat-label{font-size:.72rem;font-weight:600;color:var(--muted);margin-bottom:8px}
   .stat-value{font-size:1.15rem;font-weight:800;color:var(--fg)}
 
-  .target-row{margin-bottom:13px}
-  .target-row:last-child{margin-bottom:0}
-  .target-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:5px;font-size:.82rem}
-  .target-name{font-weight:600;color:var(--fg)}
-  .target-nums{font-variant-numeric:tabular-nums;color:var(--muted);font-size:.78rem}
-  .target-bar{position:relative;height:8px;background:var(--line-soft);border-radius:5px;overflow:hidden}
-  .target-zone{position:absolute;top:0;bottom:0;background:var(--line);border-radius:2px}
-  .target-fill{position:absolute;top:0;bottom:0;left:0;border-radius:5px}
-  .target-nums .ok{color:var(--pos)}
-  .target-nums .off{color:var(--neg)}
   .bitacora-entry{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:16px;margin-bottom:10px}
   .bitacora-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:4px;flex-wrap:wrap}
   .bitacora-date{font-size:.72rem;font-weight:600;color:var(--faint);text-transform:uppercase;letter-spacing:.04em}
@@ -379,13 +369,19 @@
         <div class="donut-legend" id="byGroup"></div>
       </div>
     </div>
+    <div class="card targets-card">
+      <h3 class="card-title">Objetivo</h3>
+      <div class="donut-wrap">
+        <svg width="120" height="120" viewBox="0 0 160 160" class="donut-svg" id="targetDonut"></svg>
+        <div class="donut-legend" id="targetLegend"></div>
+      </div>
+    </div>
     <div class="card plat-card">
       <h3 class="card-title">Dónde está</h3>
-      <div id="byPlatform"></div>
-    </div>
-    <div class="card targets-card">
-      <h3 class="card-title">Objetivo por tipo de activo</h3>
-      <div id="targetsBody"></div>
+      <div class="donut-wrap">
+        <svg width="120" height="120" viewBox="0 0 160 160" class="donut-svg" id="platDonut"></svg>
+        <div class="donut-legend" id="byPlatform"></div>
+      </div>
     </div>
   </section>
 
@@ -1182,6 +1178,29 @@ function lastDepositInfo(){
   return {date:last, days: Math.max(0, Math.round((Date.now()-new Date(last+"T00:00:00").getTime())/86400000))};
 }
 
+// ---------- Donut reutilizable: recibe [{label, value, color}] y dibuja anillo + leyenda ----------
+function drawDonut(svgId, legendId, items, centroArriba, centroAbajo, onClick){
+  const svg = document.getElementById(svgId), legend = document.getElementById(legendId);
+  if(!svg || !legend) return;
+  const total = items.reduce((a,b)=>a+b.value,0);
+  if(!items.length || total<=0){ svg.innerHTML=""; legend.innerHTML='<div class="empty">Sin datos</div>'; return; }
+  const r=54, cx=80, cy=80, sw=22, circ=2*Math.PI*r;
+  let offset=0, circles="", legendHtml="";
+  items.forEach(it=>{
+    const frac = it.value/total, len = frac*circ;
+    circles += '<circle cx="'+cx+'" cy="'+cy+'" r="'+r+'" style="stroke:'+it.color+'" stroke-dasharray="'+len.toFixed(2)+' '+(circ-len).toFixed(2)+'" stroke-dashoffset="'+(-offset).toFixed(2)+'"/>';
+    offset += len;
+    legendHtml += '<div class="donut-legend-row"'+(onClick?' data-donut-key="'+escapeHtml(it.key||it.label)+'"':'')+'>'+
+      '<span class="dot" style="background:'+it.color+'"></span><span class="name">'+escapeHtml(it.label)+'</span>'+
+      '<span class="pct mono">'+(frac*100).toFixed(0)+'%</span></div>';
+  });
+  svg.innerHTML = '<g transform="rotate(-90 '+cx+' '+cy+')" fill="none" stroke-width="'+sw+'">'+circles+'</g>'+
+    (centroArriba?'<text x="'+cx+'" y="'+(cy-4)+'" text-anchor="middle" font-size="14" font-weight="700" style="fill:var(--faint)" font-family="Hanken Grotesk">'+centroArriba+'</text>':'')+
+    (centroAbajo?'<text x="'+cx+'" y="'+(cy+14)+'" text-anchor="middle" font-size="12" font-weight="600" style="fill:var(--faint)" font-family="Hanken Grotesk">'+centroAbajo+'</text>':'');
+  legend.innerHTML = legendHtml;
+  if(onClick) legend.querySelectorAll("[data-donut-key]").forEach(el=>el.addEventListener("click",()=>onClick(el.dataset.donutKey)));
+}
+
 function renderResumen(){
   const holdings = allHoldings();
   let totalValue=0, totalCost=0;   // "Tenés hoy": TODA la plata, tenga costo cargado o no
@@ -1212,71 +1231,29 @@ function renderResumen(){
   } else { sub.textContent = "Cargá el costo de tus tenencias para ver la ganancia."; }
 
 
-  // Por plataforma: barra apilada compacta + etiquetas
-  const bp = document.getElementById("byPlatform");
-  const platKeys = Object.keys(byPlat).sort((a,b)=>byPlat[b].value-byPlat[a].value);
-  const PLAT_COLORS = ["var(--accent)","var(--c-cripto)","var(--faint)","var(--c-fondo)"];
-  if(platKeys.length){
-    let barHtml = '<div style="display:flex;height:9px;border-radius:5px;overflow:hidden;margin-bottom:8px">';
-    let rowHtml = '<div style="display:flex;flex-wrap:wrap;gap:9px;font-size:.78rem">';
-    platKeys.forEach((k,i)=>{
-      const d=byPlat[k], p = totalValue>0? d.value/totalValue*100:0;
-      const color = PLAT_COLORS[i % PLAT_COLORS.length];
-      barHtml += '<div style="width:'+p+'%;background:'+color+'"></div>';
-      rowHtml += '<span class="clickable" data-goto-platform="'+k+'" style="border-radius:6px;padding:2px 3px;margin:-2px -3px;font-weight:600;color:var(--fg)">'+platformName(k)+' <span class="dim mono">'+p.toFixed(0)+'%</span></span>';
-    });
-    bp.innerHTML = barHtml+'</div>'+rowHtml+'</div>';
-    bp.querySelectorAll("[data-goto-platform]").forEach(el=>{
-      el.addEventListener("click", ()=>{ tenenciasFilter={platform:el.dataset.gotoPlatform, group:null}; goToTab("tenencias"); renderTenencias(); });
-    });
-  } else { bp.innerHTML = '<div class="empty">Sin tenencias</div>'; }
-
-  // Distribucion por tipo de activo: donut + leyenda
+  // 1) Distribucion real por tipo de activo
   const groupKeys = Object.keys(byGroup).sort((a,b)=>byGroup[b].value-byGroup[a].value);
-  const donutSvg = document.getElementById("groupDonut");
-  const legendEl = document.getElementById("byGroup");
-  if(groupKeys.length){
-    const r=54, cx=80, cy=80, sw=22, circumference=2*Math.PI*r;
-    let offset=0, circles="", legendHtml="";
-    groupKeys.forEach(k=>{
-      const d=byGroup[k], frac = totalValue>0? d.value/totalValue:0, p100=frac*100;
-      const color = GROUP_COLOR[k]||"var(--c-otro)";
-      const len = frac*circumference;
-      circles += '<circle cx="'+cx+'" cy="'+cy+'" r="'+r+'" style="stroke:'+color+'" stroke-dasharray="'+len.toFixed(2)+' '+(circumference-len).toFixed(2)+'" stroke-dashoffset="'+(-offset).toFixed(2)+'"/>';
-      offset += len;
-      legendHtml += '<div class="donut-legend-row" data-goto-group="'+k+'"><span class="dot" style="background:'+color+'"></span><span class="name">'+k+'</span><span class="pct mono">'+p100.toFixed(0)+'%</span></div>';
-    });
-    donutSvg.innerHTML = '<g transform="rotate(-90 '+cx+' '+cy+')" fill="none" stroke-width="'+sw+'">'+circles+'</g>'+
-      '<text x="'+cx+'" y="'+(cy-4)+'" text-anchor="middle" font-size="14" font-weight="700" style="fill:var(--faint)" font-family="Hanken Grotesk">'+groupKeys.length+' tipo'+(groupKeys.length===1?'':'s')+'</text>'+
-      '<text x="'+cx+'" y="'+(cy+14)+'" text-anchor="middle" font-size="12" font-weight="600" style="fill:var(--faint)" font-family="Hanken Grotesk">de activo</text>';
-    legendEl.innerHTML = legendHtml;
-    legendEl.querySelectorAll("[data-goto-group]").forEach(el=>{
-      el.addEventListener("click", ()=>{ tenenciasFilter={platform:null, group:el.dataset.gotoGroup}; goToTab("tenencias"); renderTenencias(); });
-    });
-  } else { donutSvg.innerHTML=""; legendEl.innerHTML = '<div class="empty">Sin tenencias</div>'; }
+  drawDonut("groupDonut","byGroup",
+    groupKeys.map(k=>({key:k, label:k, value:byGroup[k].value, color:GROUP_COLOR[k]||"var(--c-otro)"})),
+    groupKeys.length+" tipo"+(groupKeys.length===1?"":"s"), "de activo",
+    k=>{ tenenciasFilter={platform:null, group:k}; goToTab("tenencias"); renderTenencias(); });
 
-  // Objetivo por tipo de activo: barra con la zona meta marcada y donde estas parado
-  const targetsBody = document.getElementById("targetsBody");
-  if(targetsBody){
-    const escala = Math.max(100, ...Object.keys(GROUP_TARGETS).map(k=>{
-      const v = byGroup[k] ? byGroup[k].value : 0;
-      return totalValue>0 ? v/totalValue*100 : 0;
-    }));
-    targetsBody.innerHTML = Object.keys(GROUP_TARGETS).map(k=>{
-      const v = byGroup[k] ? byGroup[k].value : 0;
-      const p = totalValue>0 ? v/totalValue*100 : 0;
-      const [lo,hi] = GROUP_TARGETS[k];
-      const dentro = p>=lo && p<=hi;
-      const color = GROUP_COLOR[k] || "var(--c-otro)";
-      return '<div class="target-row">'+
-        '<div class="target-head"><span class="target-name">'+k+'</span>'+
-        '<span class="target-nums"><b class="'+(dentro?"ok":"off")+'">'+p.toFixed(1)+'%</b> / '+lo+'–'+hi+'%</span></div>'+
-        '<div class="target-bar">'+
-          '<div class="target-zone" style="left:'+(lo/escala*100)+'%;width:'+((hi-lo)/escala*100)+'%"></div>'+
-          '<div class="target-fill" style="width:'+Math.min(100,p/escala*100)+'%;background:'+color+'"></div>'+
-        '</div></div>';
-    }).join("");
-  }
+  // 2) Objetivo: mismo formato que el de arriba para poder compararlos de un vistazo.
+  //    Uso el punto medio de cada rango (ej. 20-25% -> 22,5%).
+  const objItems = Object.keys(GROUP_TARGETS).map(k=>{
+    const [lo,hi] = GROUP_TARGETS[k];
+    return {key:k, label:k, value:(lo+hi)/2, color:GROUP_COLOR[k]||"var(--c-otro)"};
+  }).sort((a,b)=>b.value-a.value);
+  drawDonut("targetDonut","targetLegend", objItems, "meta", "");
+
+  // 3) Donde esta la plata (por plataforma)
+  const platKeys = Object.keys(byPlat).sort((a,b)=>byPlat[b].value-byPlat[a].value);
+  const PLAT_COLORS = ["var(--accent)","var(--c-fondo)","var(--c-etf)","var(--c-cripto)"];
+  drawDonut("platDonut","byPlatform",
+    platKeys.map((k,i)=>({key:k, label:platformName(k), value:byPlat[k].value, color:PLAT_COLORS[i%PLAT_COLORS.length]})),
+    String(platKeys.length), platKeys.length===1?"plataforma":"plataformas",
+    k=>{ const real = platKeys.find(x=>platformName(x)===k) || k;
+         tenenciasFilter={platform:real, group:null}; goToTab("tenencias"); renderTenencias(); });
 
 
 }
