@@ -126,12 +126,11 @@
   @media (min-width:900px){
     #view-resumen.active{
       display:grid;grid-template-columns:2fr 1fr;align-items:start;gap:16px;
-      grid-template-areas:"hero donut" "evo donut" "evo action" "label label" "detail detail";
+      grid-template-areas:"hero donut" "evo donut" "label label" "detail detail";
     }
     .hero{grid-area:hero}
     .resumen-evo-card{grid-area:evo;margin:0}
     .donut-card{grid-area:donut}
-    .action-card{grid-area:action;margin:0}
     #detailLabel{grid-area:label}
     #detailGrid{grid-area:detail;grid-template-columns:repeat(4,1fr)}
   }
@@ -362,8 +361,6 @@
       <div class="hero-total" id="totalValue"><span class="u">US$</span>0</div>
       <div class="hero-sub" id="totalSub"></div>
       <div class="hero-secondary">
-        <div class="hero-goal" id="heroGoal"></div>
-        <div class="hero-highlights" id="heroHighlights"></div>
       </div>
     </div>
     <div class="card resumen-evo-card">
@@ -378,9 +375,6 @@
         <svg width="120" height="120" viewBox="0 0 160 160" class="donut-svg" id="groupDonut"></svg>
         <div class="donut-legend" id="byGroup"></div>
       </div>
-    </div>
-    <div class="action-card" id="rebalanceCard">
-      <div id="rebalanceBody"></div>
     </div>
     <button class="section-label toggle" id="detailLabel" type="button" aria-expanded="false">
       <span class="chevron" id="detailChevron"><svg class="icon" width="9" height="9" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 1.5l4 3.5-4 3.5"/></svg></span>
@@ -1258,7 +1252,6 @@ function renderResumen(){
   let totalValue=0, totalCost=0;   // "Tenés hoy": TODA la plata, tenga costo cargado o no
   let perfValue=0, perfCost=0;     // solo tenencias con costo real cargado, para % de ganancia
   const byPlat={}, byGroup={};
-  let best=null, worst=null;
   let sinCosto = 0;
   holdings.forEach(h=>{
     const v=h.valueUSD||0, c=effectiveCostBasis(h).value;
@@ -1268,12 +1261,8 @@ function renderResumen(){
     const g=h.group||"Otro";
     byGroup[g]=byGroup[g]||{value:0,cost:0};
     byGroup[g].value+=v; byGroup[g].cost+=c;
-    if(c>0){
-      perfValue+=v; perfCost+=c;
-      const gp=(v-c)/c*100;
-      if(!best||gp>best.gp) best={name:h.name,gp};
-      if(!worst||gp<worst.gp) worst={name:h.name,gp};
-    } else if(v>0){ sinCosto++; }
+    if(c>0){ perfValue+=v; perfCost+=c; }
+    else if(v>0){ sinCosto++; }
   });
   const tp = moneyParts(totalValue);
   document.getElementById("totalValue").innerHTML = '<span class="u">US$</span>'+tp.int+'<span class="dec">'+tp.dec+'</span>';
@@ -1287,31 +1276,6 @@ function renderResumen(){
     bindTooltips(sub);
   } else { sub.textContent = "Cargá el costo de tus tenencias para ver la ganancia."; }
 
-  const hl = document.getElementById("heroHighlights");
-  let hlParts = [];
-  if(best && worst && best.name!==worst.name){
-    hlParts.push('<span><span class="lbl">Mejor</span>'+best.name+' <b class="pos">'+pct(best.gp)+'</b></span>');
-    hlParts.push('<span><span class="lbl">Peor</span>'+worst.name+' <b class="neg">'+pct(worst.gp)+'</b></span>');
-  }
-  const dep = lastDepositInfo();
-  if(dep){
-    const warn = dep.days>35;
-    hlParts.push('<span><span class="lbl">Último aporte</span>'+relativeLabel(dep.date)+(warn?' <b class="neg">¿aportaste este mes?</b>':'')+'</span>');
-  }
-  hl.innerHTML = hlParts.join("");
-
-  const goalEl = document.getElementById("heroGoal");
-  const xr = computeXirr();
-  if(xr){
-    let badgeCls, badgeText;
-    if(xr.annualized<5){ badgeCls="low"; badgeText="por debajo de tu meta"; }
-    else if(xr.annualized<=15){ badgeCls="ok"; badgeText="dentro de tu meta"; }
-    else { badgeCls="high"; badgeText="por encima de tu meta"; }
-    goalEl.innerHTML = 'Cuánto ganás por año, en promedio <span class="dim hoverable-pt" data-tip="Esto es el XIRR: pondera cuándo y cuánto invertiste en cada momento, para saber qué ganaste realmente vos, no solo si subió o bajó la cartera. Si acabás de hacer un aporte grande, este número puede quedar muy alto o muy bajo por unos días — se va acomodando solo con el tiempo.">ⓘ</span>: <b class="mono">'+pct(xr.annualized)+'</b> '+
-      '<span class="badge '+badgeCls+'">'+badgeText+'</span> <span class="dim">· tu meta: 5–15% anual</span>'+
-      (xr.complete?'':' <span class="dim hoverable-pt" data-tip="Todavía no se pudo convertir a dólares alguno de tus movimientos en pesos, así que este número es una aproximación.">(parcial ⓘ)</span>');
-    bindTooltips(goalEl);
-  } else { goalEl.innerHTML = ""; }
 
   // Por plataforma: barra apilada compacta + etiquetas
   const bp = document.getElementById("byPlatform");
@@ -1379,39 +1343,6 @@ function renderResumen(){
       '<div class="dim mono" style="font-size:.72rem;margin-top:2px">vos '+pct(myPct)+' · benchmark '+pct(benchPct)+'</div>'+
       (bench.complete?'':'<div class="dim" style="font-size:.66rem;margin-top:2px">estimado parcial</div>');
   } else { benchCard.style.display = "none"; }
-
-  // Sugerencia de aporte: guia de rebalanceo con logica real (grupo mas atrasado vs. meta)
-  const rebalRows = Object.keys(GROUP_TARGETS).map(g=>{
-    const current = byGroup[g] ? byGroup[g].value : 0;
-    const p = totalValue>0 ? current/totalValue*100 : 0;
-    const [lo,hi] = GROUP_TARGETS[g];
-    return {group:g, p, lo, hi, under: p<lo?lo-p:0, over: p>hi?p-hi:0};
-  });
-  // Prioridad: primero los grupos donde no tenes NADA (un hueco estructural pesa mas
-  // que estar corto en algo que ya tenes), y recien despues por tamaño de la brecha.
-  const under = rebalRows.filter(r=>r.under>0)
-    .sort((a,b)=> (a.p===0?1:0)!==(b.p===0?1:0) ? (b.p===0?1:0)-(a.p===0?1:0) : b.under-a.under)[0];
-  const over = rebalRows.filter(r=>r.over>0).sort((a,b)=>b.over-a.over)[0];
-  const rebalBody = document.getElementById("rebalanceBody");
-  const actionHead = '<div class="action-head"><div class="action-icon">'+ICON_TARGET+'</div><span class="action-title">Sugerencia de aporte</span></div>';
-  if(totalValue<=0){
-    rebalBody.innerHTML = actionHead+'<p class="action-text">Cargá tus tenencias para ver esto.</p>';
-  } else if(under){
-    const overText = over ? 'Estás <b>sobreponderado en '+over.group+'</b> ('+over.p.toFixed(0)+'% vs. objetivo '+over.hi+'%). ' : '';
-    const fillPct = Math.min(100, under.lo>0 ? under.p/under.lo*100 : 0);
-    rebalBody.innerHTML = actionHead+
-      '<p class="action-text">'+overText+'Tu próximo aporte conviene dirigirlo a <b>'+under.group+'</b> para acercarte a tu meta.</p>'+
-      '<div class="action-progress-row"><span>'+under.group+'</span><span class="mono">'+under.p.toFixed(0)+'% → objetivo '+under.lo+'%</span></div>'+
-      '<div class="action-progress"><div class="action-progress-fill" style="width:'+fillPct.toFixed(0)+'%"></div></div>'+
-      '<button class="action-cta" id="btnRebalCta" data-goto-group="'+under.group+'">Aportar a '+under.group+' '+ICON_ARROW_R+'</button>';
-    const cta = document.getElementById("btnRebalCta");
-    if(cta) cta.addEventListener("click", ()=>{ tenenciasFilter={platform:null, group:cta.dataset.gotoGroup}; goToTab("tenencias"); renderTenencias(); });
-  } else if(over){
-    rebalBody.innerHTML = actionHead+
-      '<p class="action-text">Estás <b>sobreponderado en '+over.group+'</b> ('+over.p.toFixed(0)+'% vs. objetivo '+over.hi+'%). Tu próximo aporte podría ir a otro tipo de activo para balancear.</p>';
-  } else {
-    rebalBody.innerHTML = actionHead+'<p class="action-text"><b>Tu cartera está dentro de los rangos que definiste.</b> Podés repartir el próximo aporte como venís haciendo.</p>';
-  }
 
   // Evolucion mini-chart en Resumen (mismo dibujo que la pestaña Evolucion, mas chico)
   const liveResumen = reconstruirEvolucionEnVivo();
