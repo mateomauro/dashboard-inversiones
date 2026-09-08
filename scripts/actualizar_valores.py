@@ -44,6 +44,10 @@ SELL_TYPES = {"venta", "rescate_fci"}
 CEDEAR_RATIOS = {
     "QQQ": 20, "AAPL": 20, "MSFT": 30, "GOOGL": 58, "NVDA": 24,
     "EFA": 18, "EEM": 5,
+    # Agregados set-2026 (plan de diversificacion). Ratios verificados contra el
+    # precio real de mercado: la prima resultante dio +4,4%/+7,0%/-1,1%, en linea
+    # con la del resto de los CEDEARs.
+    "GLD": 50, "XLV": 30, "XLP": 15,
 }
 # SPY tuvo un split de ratio (20:1 -> 60:1) el 01/06/2026 anunciado por BYMA/Cocos.
 # No aparece como movimiento en el extracto (es un ajuste automatico del custodio);

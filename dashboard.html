@@ -21,7 +21,7 @@
     --line:rgba(15,23,42,.08);--line-soft:rgba(15,23,42,.05);--pos:#15905F;--pos-soft:rgba(21,144,95,.1);
     --neg:#DC2626;--neg-soft:rgba(220,38,38,.1);
     --accent:#2F6FED;--accent-fg:#FFFFFF;
-    --c-fondo:#1B3A6B;--c-acciones:#2F6FED;--c-etf:#7EA2E8;--c-cripto:#B6C2D4;--c-otro:#94A3B8;
+    --c-fondo:#1B3A6B;--c-acciones:#2F6FED;--c-etf:#7EA2E8;--c-cripto:#B6C2D4;--c-otro:#94A3B8;--c-oro:#C79A3B;--c-defensivo:#3E8E7E;
     --accent-soft:rgba(47,111,237,.08);
     --shadow:0 1px 2px rgba(15,23,42,.04),0 6px 18px -10px rgba(15,23,42,.12);
     --action-grad-1:#F0F5FF;--action-grad-2:#E7EFFE;--action-border:rgba(47,111,237,.2);
@@ -33,7 +33,7 @@
       --line:rgba(255,255,255,.07);--line-soft:rgba(255,255,255,.045);--pos:#4ECF9B;--pos-soft:rgba(63,184,137,.16);
       --neg:#F87171;--neg-soft:rgba(248,113,113,.14);
       --accent:#5B93FF;--accent-fg:#0A111F;
-      --c-fondo:#2B4A80;--c-acciones:#5B93FF;--c-etf:#8FB0E8;--c-cripto:#4A5A76;--c-otro:#5C6B82;
+      --c-fondo:#2B4A80;--c-acciones:#5B93FF;--c-etf:#8FB0E8;--c-cripto:#4A5A76;--c-otro:#5C6B82;--c-oro:#D9AE4E;--c-defensivo:#4FA795;
       --accent-soft:rgba(91,147,255,.12);
       --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 20px -10px rgba(0,0,0,.5);
       --action-grad-1:#17233D;--action-grad-2:#132B4D;--action-border:rgba(91,147,255,.28);
@@ -45,7 +45,7 @@
     --line:rgba(255,255,255,.07);--line-soft:rgba(255,255,255,.045);--pos:#4ECF9B;--pos-soft:rgba(63,184,137,.16);
     --neg:#F87171;--neg-soft:rgba(248,113,113,.14);
     --accent:#5B93FF;--accent-fg:#0A111F;
-    --c-fondo:#2B4A80;--c-acciones:#5B93FF;--c-etf:#8FB0E8;--c-cripto:#4A5A76;--c-otro:#5C6B82;
+    --c-fondo:#2B4A80;--c-acciones:#5B93FF;--c-etf:#8FB0E8;--c-cripto:#4A5A76;--c-otro:#5C6B82;--c-oro:#D9AE4E;--c-defensivo:#4FA795;
     --action-grad-1:#17233D;--action-grad-2:#132B4D;--action-border:rgba(91,147,255,.28);
     --action-title-c:#BCD3FF;--action-text-c:#C3CDDA;--action-track:#22375C;
     --accent-soft:rgba(91,147,255,.12);
@@ -429,7 +429,7 @@
         <div class="field"><label>Ticker</label><input type="text" id="hTicker" placeholder="ej. EFA"></div>
         <div class="field"><label>Nombre</label><input type="text" id="hName" placeholder="ej. Desarrollados"></div>
         <div class="field"><label>Grupo</label>
-          <select id="hGroup"><option>Acciones</option><option>ETFs Internac.</option><option>Fondo</option><option>Cripto</option><option>Otro</option></select>
+          <select id="hGroup"><option>Acciones</option><option>ETFs Internac.</option><option>Oro</option><option>Defensivos</option><option>Fondo</option><option>Cripto</option><option>Otro</option></select>
         </div>
         <div class="field"><label>Invertido US$</label><input type="text" id="hCost" placeholder="0,00"></div>
         <div class="field"><label>Vale hoy US$</label><input type="text" id="hValue" placeholder="0,00"></div>
@@ -565,7 +565,7 @@ const TYPE_LABELS = {
   rescate_fci:"Rescate FCI", deposito:"Depósito", retiro:"Retiro", dividendo:"Dividendo",
   ajuste:"Ajuste", otro:"Otro"
 };
-const GROUP_COLOR = {Fondo:"var(--c-fondo)",Acciones:"var(--c-acciones)","ETFs Internac.":"var(--c-etf)",Cripto:"var(--c-cripto)",Otro:"var(--c-otro)"};
+const GROUP_COLOR = {Fondo:"var(--c-fondo)",Acciones:"var(--c-acciones)","ETFs Internac.":"var(--c-etf)",Oro:"var(--c-oro)",Defensivos:"var(--c-defensivo)",Cripto:"var(--c-cripto)",Otro:"var(--c-otro)"};
 
 // ---------- iconos SVG (reemplazan caracteres de texto tipo ▸ × ↻ ✓) ----------
 const ICON_CHEVRON = '<svg class="icon" width="9" height="9" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 1.5l4 3.5-4 3.5"/></svg>';
@@ -917,7 +917,7 @@ function effectiveCostBasis(h){
 // BTC y fondos: cantidad real x precio/VCP publico = exacto. CEDEARs con ratio
 // oficial: aproximado (~95%+), el CEDEAR cotiza con una prima/descuento propio
 // del mercado argentino que ningun dato publico gratuito capta.
-const CEDEAR_RATIOS = {QQQ:20, AAPL:20, MSFT:30, GOOGL:58, NVDA:24, EFA:18, EEM:5};
+const CEDEAR_RATIOS = {QQQ:20, AAPL:20, MSFT:30, GOOGL:58, NVDA:24, EFA:18, EEM:5, GLD:50, XLV:30, XLP:15};
 const SPY_RATIO_AFTER = 60; // split de ratio (20:1 -> 60:1) el 01/06/2026
 const COINGECKO_TICKERS = new Set(["BTC"]);
 // Fondos propios de Cocos/Uala, con la misma correccion x1000 de cantidad de
@@ -1241,7 +1241,10 @@ function renderAll(){
 }
 
 // ---------- RESUMEN ----------
-const GROUP_TARGETS = {Fondo:[65,70], Acciones:[15,20], "ETFs Internac.":[10,15], Cripto:[0,5]};
+// Metas definidas en set-2026 tras el analisis de diversificacion: baja la
+// concentracion argentina de ~70% a ~22%, suma oro (unico activo con correlacion
+// baja: 0,10 contra el S&P) y sectores defensivos. Objetivo 10-13% anual en USD.
+const GROUP_TARGETS = {Fondo:[20,25], Acciones:[33,39], Oro:[12,16], Defensivos:[11,15], "ETFs Internac.":[9,13], Cripto:[3,5]};
 
 function lastDepositInfo(){
   let last = null;
@@ -1384,7 +1387,10 @@ function renderResumen(){
     const [lo,hi] = GROUP_TARGETS[g];
     return {group:g, p, lo, hi, under: p<lo?lo-p:0, over: p>hi?p-hi:0};
   });
-  const under = rebalRows.filter(r=>r.under>0).sort((a,b)=>b.under-a.under)[0];
+  // Prioridad: primero los grupos donde no tenes NADA (un hueco estructural pesa mas
+  // que estar corto en algo que ya tenes), y recien despues por tamaño de la brecha.
+  const under = rebalRows.filter(r=>r.under>0)
+    .sort((a,b)=> (a.p===0?1:0)!==(b.p===0?1:0) ? (b.p===0?1:0)-(a.p===0?1:0) : b.under-a.under)[0];
   const over = rebalRows.filter(r=>r.over>0).sort((a,b)=>b.over-a.over)[0];
   const rebalBody = document.getElementById("rebalanceBody");
   const actionHead = '<div class="action-head"><div class="action-icon">'+ICON_TARGET+'</div><span class="action-title">Sugerencia de aporte</span></div>';

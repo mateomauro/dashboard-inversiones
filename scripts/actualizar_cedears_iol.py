@@ -37,7 +37,7 @@ OUT_FILE = ROOT / "data" / "cedears_iol.json"
 HEADERS = {"User-Agent": "Mozilla/5.0 (compatible; inversiones-tracker/1.0)"}
 
 # Mismos 8 tickers de CEDEAR que ya seguimos por ratio (ver actualizar_valores.py)
-TICKERS = ["QQQ", "SPY", "AAPL", "MSFT", "GOOGL", "NVDA", "EFA", "EEM"]
+TICKERS = ["QQQ", "SPY", "AAPL", "MSFT", "GOOGL", "NVDA", "EFA", "EEM", "GLD", "XLV", "XLP"]
 MERCADO = "bCBA"
 
 

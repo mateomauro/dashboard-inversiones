@@ -33,6 +33,7 @@ YAHOO_SYMBOLS = {
     "MSFT": "MSFT", "GOOGL": "GOOGL", "NVDA": "NVDA",
     "EFA": "EFA", "EEM": "EEM", "EWZ": "EWZ",
     "BIL": "BIL",  # T-Bills EE.UU., proxy de referencia para el grupo Fondo (renta fija en USD)
+    "GLD": "GLD", "XLV": "XLV", "XLP": "XLP",  # oro y sectores defensivos (plan set-2026)
 }
 COINGECKO_IDS = {"BTC": "bitcoin"}
 
