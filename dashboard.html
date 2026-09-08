@@ -105,7 +105,12 @@
   .hero-badge.neg{background:var(--neg-soft);color:var(--neg)}
   .hero-badge svg{flex:none}
   .hero-sub{font-size:.9rem;color:var(--muted);font-variant-numeric:tabular-nums;display:flex;align-items:center;gap:9px;flex-wrap:wrap}
-  .hero-secondary{margin-top:16px;padding-top:14px;border-top:1px solid var(--line-soft)}
+  .hero-cash{margin-top:14px;padding-top:12px;border-top:1px solid var(--line-soft);font-size:.84rem;color:var(--muted);display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .hero-cash .amt{font-weight:700;color:var(--fg);font-variant-numeric:tabular-nums}
+  .hero-cash .warn-dot{width:7px;height:7px;border-radius:50%;background:var(--neg);flex:none}
+  .donut-card,.targets-card,.plat-card{display:flex;flex-direction:column}
+  .donut-wrap{flex:1}
+  .legend-falta{font-size:.72rem;color:var(--muted);font-variant-numeric:tabular-nums;margin-left:8px;white-space:nowrap}
   .hero-highlights{display:flex;gap:20px;margin-top:10px;font-size:.8rem;flex-wrap:wrap;color:var(--muted)}
   .hero-highlights .lbl{color:var(--faint);margin-right:4px}
   .hero-goal{font-size:.82rem;color:var(--muted);display:flex;align-items:center;gap:8px;flex-wrap:wrap}
@@ -125,8 +130,8 @@
   #view-resumen.active{display:flex;flex-direction:column;gap:14px}
   @media (min-width:900px){
     #view-resumen.active{
-      display:grid;grid-template-columns:2fr 1fr;align-items:start;gap:16px;
-      grid-template-areas:"hero hero" "donut targets" "plat plat";
+      display:grid;grid-template-columns:repeat(3,1fr);gap:16px;align-items:stretch;
+      grid-template-areas:"hero hero hero" "donut targets plat";
     }
     .hero{grid-area:hero}
     .donut-card{grid-area:donut}
@@ -134,9 +139,12 @@
     .targets-card{grid-area:targets;margin:0}
   }
   .card-title{font-size:.95rem;font-weight:700;color:var(--fg);margin:0 0 12px}
-  .resumen-evo-card svg.chart{height:150px}
 
   .donut-wrap{display:flex;align-items:center;gap:18px}
+  @media (min-width:900px){
+    .donut-wrap{flex-direction:column;align-items:center;gap:14px}
+    .donut-legend{width:100%}
+  }
   .donut-svg{flex:none}
   .donut-legend{flex:1;display:flex;flex-direction:column;gap:9px;min-width:0}
   .donut-legend-row{display:flex;align-items:center;gap:8px;cursor:pointer;padding:9px 6px;margin:-9px -6px;min-height:44px;border-radius:8px;transition:background .12s}
@@ -359,8 +367,7 @@
       <div class="hero-label">Tenés hoy</div>
       <div class="hero-total" id="totalValue"><span class="u">US$</span>0</div>
       <div class="hero-sub" id="totalSub"></div>
-      <div class="hero-secondary">
-      </div>
+      <div class="hero-cash" id="heroCash"></div>
     </div>
     <div class="card donut-card">
       <h3 class="card-title">Distribución por tipo de activo</h3>
@@ -1178,6 +1185,27 @@ function lastDepositInfo(){
   return {date:last, days: Math.max(0, Math.round((Date.now()-new Date(last+"T00:00:00").getTime())/86400000))};
 }
 
+// Efectivo sin invertir (no esta en holdings): {plataforma: {ARS: x, USD: y}}
+function totalCashUSD(){
+  if(!STATE || !STATE.cash) return 0;
+  const rate = latestDolarVenta();
+  let t = 0;
+  Object.values(STATE.cash).forEach(m=>{
+    t += (m.USD||0);
+    if(m.ARS && rate) t += m.ARS/rate;
+  });
+  return t;
+}
+// Desde cuando venis invirtiendo (para dar contexto al % de ganancia)
+function mesesInvirtiendo(){
+  let min = null;
+  Object.keys((STATE&&STATE.platforms)||{}).forEach(p=>{
+    (STATE.platforms[p].movements||[]).forEach(m=>{ if(m.date && (!min || m.date<min)) min=m.date; });
+  });
+  if(!min) return null;
+  return Math.max(1, Math.round((Date.now()-new Date(min+"T00:00:00").getTime())/86400000/30.44));
+}
+
 // ---------- Donut reutilizable: recibe [{label, value, color}] y dibuja anillo + leyenda ----------
 function drawDonut(svgId, legendId, items, centroArriba, centroAbajo, onClick){
   const svg = document.getElementById(svgId), legend = document.getElementById(legendId);
@@ -1192,7 +1220,8 @@ function drawDonut(svgId, legendId, items, centroArriba, centroAbajo, onClick){
     offset += len;
     legendHtml += '<div class="donut-legend-row"'+(onClick?' data-donut-key="'+escapeHtml(it.key||it.label)+'"':'')+'>'+
       '<span class="dot" style="background:'+it.color+'"></span><span class="name">'+escapeHtml(it.label)+'</span>'+
-      '<span class="pct mono">'+(frac*100).toFixed(0)+'%</span></div>';
+      '<span class="pct mono">'+(frac*100).toFixed(0)+'%</span>'+
+      (it.extra?'<span class="legend-falta">'+escapeHtml(it.extra)+'</span>':'')+'</div>';
   });
   svg.innerHTML = '<g transform="rotate(-90 '+cx+' '+cy+')" fill="none" stroke-width="'+sw+'">'+circles+'</g>'+
     (centroArriba?'<text x="'+cx+'" y="'+(cy-4)+'" text-anchor="middle" font-size="14" font-weight="700" style="fill:var(--faint)" font-family="Hanken Grotesk">'+centroArriba+'</text>':'')+
@@ -1224,11 +1253,24 @@ function renderResumen(){
   if(perfCost>0){
     const gain=perfValue-perfCost, p=gain/perfCost*100;
     const badgeCls = cls(gain), arrow = gain>=0 ? ICON_ARROW_UP : ICON_ARROW_DOWN;
+    const meses = mesesInvirtiendo();
+    const periodo = meses ? (meses>=24 ? ' en '+(meses/12).toFixed(1)+' años' : ' en '+meses+' meses') : '';
     sub.innerHTML = '<span class="hero-badge '+badgeCls+'">'+arrow+' '+signed(gain)+' ('+pct(p)+')</span>'+
-      '<span>invertido US$ '+fmt.format(perfCost)+'</span>'+
+      '<span>invertido US$ '+fmt.format(perfCost)+periodo+'</span>'+
       (sinCosto? ' <span class="dim hoverable-pt" data-tip="Todavía no sabemos cuánto pagaste por '+sinCosto+' de tus activos, así que los dejamos afuera de este porcentaje para no distorsionarlo. Su valor sí está incluido en el total de arriba.">· '+sinCosto+' '+(sinCosto===1?'activo':'activos')+' sin precio de compra cargado ⓘ</span>' : '');
     bindTooltips(sub);
   } else { sub.textContent = "Cargá el costo de tus tenencias para ver la ganancia."; }
+
+  // Efectivo sin invertir: es plata tuya que no rinde nada y no esta protegida
+  // por Caja de Valores, asi que va a la vista y no escondida.
+  const cashEl = document.getElementById("heroCash");
+  if(cashEl){
+    const cash = totalCashUSD();
+    cashEl.innerHTML = cash>0.5
+      ? '<span class="warn-dot"></span><span>Sin invertir <span class="amt">US$ '+fmt.format(cash)+'</span></span>'
+      : '';
+    cashEl.style.display = cash>0.5 ? "" : "none";
+  }
 
 
   // 1) Distribucion real por tipo de activo
@@ -1240,9 +1282,14 @@ function renderResumen(){
 
   // 2) Objetivo: mismo formato que el de arriba para poder compararlos de un vistazo.
   //    Uso el punto medio de cada rango (ej. 20-25% -> 22,5%).
+  const baseTotal = totalValue + totalCashUSD();  // incluye el efectivo: es plata a repartir
   const objItems = Object.keys(GROUP_TARGETS).map(k=>{
     const [lo,hi] = GROUP_TARGETS[k];
-    return {key:k, label:k, value:(lo+hi)/2, color:GROUP_COLOR[k]||"var(--c-otro)"};
+    const meta = (lo+hi)/2;
+    const actual = byGroup[k] ? byGroup[k].value : 0;
+    const falta = baseTotal*meta/100 - actual;
+    return {key:k, label:k, value:meta, color:GROUP_COLOR[k]||"var(--c-otro)",
+            extra: falta>5 ? 'faltan US$ '+fmt.format(falta) : (falta<-5 ? 'sobran US$ '+fmt.format(-falta) : 'ok')};
   }).sort((a,b)=>b.value-a.value);
   drawDonut("targetDonut","targetLegend", objItems, "meta", "");
 
