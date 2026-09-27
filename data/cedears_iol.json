@@ -1,59 +1,59 @@
 {
-  "updated": "2026-09-26T00:25:19Z",
+  "updated": "2026-09-27T00:20:22Z",
   "precios": {
     "QQQ": {
       "precioARS": 60325.0,
-      "fechaHora": "2026-09-25T17:00:01.9844198-03:00",
+      "fechaHora": "2026-09-25T17:00:01.983",
       "moneda": "peso_Argentino"
     },
     "SPY": {
       "precioARS": 20860.0,
-      "fechaHora": "2026-09-25T17:14:26.7259765-03:00",
+      "fechaHora": "2026-09-25T17:14:26.727",
       "moneda": "peso_Argentino"
     },
     "AAPL": {
       "precioARS": 27580.0,
-      "fechaHora": "2026-09-25T17:00:02.6666234-03:00",
+      "fechaHora": "2026-09-25T17:00:02.667",
       "moneda": "peso_Argentino"
     },
     "MSFT": {
       "precioARS": 27840.0,
-      "fechaHora": "2026-09-25T17:00:01.4071443-03:00",
+      "fechaHora": "2026-09-25T17:00:01.407",
       "moneda": "peso_Argentino"
     },
     "GOOGL": {
       "precioARS": 9615.0,
-      "fechaHora": "2026-09-25T17:00:01.0893969-03:00",
+      "fechaHora": "2026-09-25T17:00:01.09",
       "moneda": "peso_Argentino"
     },
     "NVDA": {
       "precioARS": 15200.0,
-      "fechaHora": "2026-09-25T17:00:01.9736809-03:00",
+      "fechaHora": "2026-09-25T17:00:01.973",
       "moneda": "peso_Argentino"
     },
     "EFA": {
       "precioARS": 9515.0,
-      "fechaHora": "2026-09-25T17:00:01.3185326-03:00",
+      "fechaHora": "2026-09-25T17:00:01.32",
       "moneda": "peso_Argentino"
     },
     "EEM": {
       "precioARS": 22040.0,
-      "fechaHora": "2026-09-25T17:00:01.9917189-03:00",
+      "fechaHora": "2026-09-25T17:00:01.993",
       "moneda": "peso_Argentino"
     },
     "GLD": {
       "precioARS": 12760.0,
-      "fechaHora": "2026-09-25T17:00:02.7245677-03:00",
+      "fechaHora": "2026-09-25T17:00:02.723",
       "moneda": "peso_Argentino"
     },
     "XLV": {
       "precioARS": 9555.0,
-      "fechaHora": "2026-09-25T17:00:02.7923522-03:00",
+      "fechaHora": "2026-09-25T17:00:02.793",
       "moneda": "peso_Argentino"
     },
     "XLP": {
       "precioARS": 8325.0,
-      "fechaHora": "2026-09-25T17:00:02.7904267-03:00",
+      "fechaHora": "2026-09-25T17:00:02.79",
       "moneda": "peso_Argentino"
     }
   }
