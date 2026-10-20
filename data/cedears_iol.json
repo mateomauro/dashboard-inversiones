@@ -1,59 +1,59 @@
 {
-  "updated": "2026-10-18T23:58:45Z",
+  "updated": "2026-10-20T00:56:58Z",
   "precios": {
     "QQQ": {
-      "precioARS": 57575.0,
-      "fechaHora": "2026-10-16T17:00:02.807",
+      "precioARS": 58475.0,
+      "fechaHora": "2026-10-19T17:00:02.4204127-03:00",
       "moneda": "peso_Argentino"
     },
     "SPY": {
-      "precioARS": 20620.0,
-      "fechaHora": "2026-10-16T17:06:36.63",
+      "precioARS": 20780.0,
+      "fechaHora": "2026-10-19T17:00:02.4059357-03:00",
       "moneda": "peso_Argentino"
     },
     "AAPL": {
-      "precioARS": 27800.0,
-      "fechaHora": "2026-10-16T17:00:04.543",
+      "precioARS": 27780.0,
+      "fechaHora": "2026-10-19T17:00:03.8120664-03:00",
       "moneda": "peso_Argentino"
     },
     "MSFT": {
-      "precioARS": 28520.0,
-      "fechaHora": "2026-10-16T17:00:01.34",
+      "precioARS": 28860.0,
+      "fechaHora": "2026-10-19T17:00:01.2632428-03:00",
       "moneda": "peso_Argentino"
     },
     "GOOGL": {
-      "precioARS": 9530.0,
-      "fechaHora": "2026-10-16T17:00:00.697",
+      "precioARS": 9670.0,
+      "fechaHora": "2026-10-19T17:00:00.7253572-03:00",
       "moneda": "peso_Argentino"
     },
     "NVDA": {
-      "precioARS": 14510.0,
-      "fechaHora": "2026-10-16T17:00:02.77",
+      "precioARS": 14720.0,
+      "fechaHora": "2026-10-19T17:00:02.3913396-03:00",
       "moneda": "peso_Argentino"
     },
     "EFA": {
-      "precioARS": 9335.0,
-      "fechaHora": "2026-10-16T17:00:01.157",
+      "precioARS": 9305.0,
+      "fechaHora": "2026-10-19T17:00:01.0922183-03:00",
       "moneda": "peso_Argentino"
     },
     "EEM": {
-      "precioARS": 20370.0,
-      "fechaHora": "2026-10-16T17:00:02.83",
+      "precioARS": 20600.0,
+      "fechaHora": "2026-10-19T17:00:02.4394473-03:00",
       "moneda": "peso_Argentino"
     },
     "GLD": {
-      "precioARS": 12390.0,
-      "fechaHora": "2026-10-16T17:00:04.71",
+      "precioARS": 12330.0,
+      "fechaHora": "2026-10-19T17:00:03.9247467-03:00",
       "moneda": "peso_Argentino"
     },
     "XLV": {
-      "precioARS": 9880.0,
-      "fechaHora": "2026-10-16T17:00:05",
+      "precioARS": 9865.0,
+      "fechaHora": "2026-10-19T17:00:04.0972945-03:00",
       "moneda": "peso_Argentino"
     },
     "XLP": {
       "precioARS": 8860.0,
-      "fechaHora": "2026-10-16T17:00:04.997",
+      "fechaHora": "2026-10-19T17:00:04.0946337-03:00",
       "moneda": "peso_Argentino"
     }
   }
